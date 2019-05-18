@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:sfml_choke.xcodeproj">
+      location = "self:/Users/vladislavkhudiakov/Documents/bin/study/sfml_choke/platformer_game.xcodeproj">
    </FileRef>
 </Workspace>

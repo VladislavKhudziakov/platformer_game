@@ -23,10 +23,12 @@
 
 #include "objects/gameObject.hpp"
 #include "objects/Game.hpp"
+#include "objects/Map.hpp"
 
 
 int main(int, char const**)
 {
+  GO::Map(10, 10);
   GO::Game game;
   game.start();
 

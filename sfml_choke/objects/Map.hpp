@@ -16,11 +16,13 @@ namespace GO {
   {
   private:
     std::string content;
-    int width;
-    int height;
+    std::string fileName;
     
   public:
-    Map(int, int);
+    Map();
+    Map(const std::string&);
+    void loadFromFile(const std::string&);
+    const std::string& getFileContent();
     ~Map();
   };
 }

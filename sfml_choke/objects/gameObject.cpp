@@ -117,6 +117,7 @@ namespace GO {
   
   void GameObject::moveLeft()
   {
+    node.setOrigin({ node.getLocalBounds().width, 0 });
     node.setScale(-scale.x, scale.y);
     
     auto timer = walkingTimer.getElapsedTime();
@@ -151,6 +152,7 @@ namespace GO {
   
   void GameObject::moveRight()
   {
+    node.setOrigin({ node.getLocalBounds().width, 0 });
     node.setScale(scale.x, scale.y);
     
     auto timer = walkingTimer.getElapsedTime();

@@ -8,26 +8,44 @@
 
 #include "Map.hpp"
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include "ResourcePath.hpp"
 
 namespace GO {
   
-  Map::Map(int w, int h)
+  Map::Map() { };
+  
+
+  Map::Map(const std::string& fileName)
   {
-    width = w;
-    height = h;
-    
-    for (int i = 0; i < h; i++) {
-      std:: string line;
-      for (int j = 0; j < w; j++) {
-        line += " ";
-      }
-      line += "\n";
-      
-      content += line;
-    }
-    
-    std::cout << content;
+    loadFromFile(fileName);
   }
+  
+  
+  void Map::loadFromFile(const std::string& fileName)
+  {
+    this->fileName = fileName;
+    std::ifstream fin;
+    std::stringstream strStream;
+    fin.open(resourcePath() + fileName);
+    
+    if (!fin.is_open()) {
+      std::cout << "error in map loading\n";
+    } else {
+      strStream << fin.rdbuf();
+      content = strStream.str();
+      fin.close();
+      std::cout << "map loaded successful\n";
+    }
+  }
+  
+  
+  const std::string& Map::getFileContent()
+  {
+    return content;
+  }
+  
   
   Map::~Map() { };
 }

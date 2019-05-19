@@ -9,7 +9,12 @@
 #ifndef Map_hpp
 #define Map_hpp
 
-#include <string>
+#include <iostream>
+#include <vector>
+#include "gameObject.hpp"
+#include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
+#include "../global.h"
 
 namespace GO {
   class Map

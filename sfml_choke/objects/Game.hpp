@@ -13,6 +13,7 @@
 #include <vector>
 #include "gameObject.hpp"
 #include "Map.hpp"
+#include "MapSprite.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "../global.h"
@@ -31,13 +32,16 @@ namespace GO {
     sf::RenderWindow* gameWindow;
     GO::GameObject* player;
     GO::Map map;
-    std::vector<sf::RectangleShape*> mapObjects;
+    std::vector<sf::Drawable* > mapObjects;
     
     void onUpdate();
     void inputKeysHandler();
     mapBlockData calculateBlockSize();
     void assertMapBuilding();
     void renderMap();
+    double calculateMapSpriteCoeff(const mapBlockData&);
+    sf::Vector2f calculateSpriteScale(
+      const sf::Sprite*, const mapBlockData&,  double);
     
   public:
     Game();

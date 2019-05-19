@@ -65,17 +65,47 @@ namespace GO {
   }
   
   
+  double Game::calculateMapSpriteCoeff(const Game::mapBlockData& blockData)
+  {
+    if (blockData.width >= blockData.height) {
+      return  blockData.height / blockData.width;
+    } else {
+      return blockData.width / blockData.height;
+    }
+  }
+  
+  
+  sf::Vector2f Game::calculateSpriteScale(
+    const sf::Sprite* mapSprite, const Game::mapBlockData& blockData, double sizeCoeff)
+  {
+    if (blockData.width >= blockData.height) {
+      
+      sf::Vector2f spriteSize(
+        blockData.width * sizeCoeff, blockData.height);
+      
+      auto textureSize = mapSprite->getTexture()->getSize();
+      
+      return sf::Vector2f(
+        spriteSize.x / textureSize.x, spriteSize.y / textureSize.y);
+      
+    } else {
+      sf::Vector2f spriteSize(
+        blockData.width, blockData.height * sizeCoeff);
+      
+      auto textureSize = mapSprite->getTexture()->getSize();
+      
+      return sf::Vector2f(
+       spriteSize.x / textureSize.x, spriteSize.y / textureSize.y);
+      
+    }
+  }
+  
+  
   void Game::buildMap()
   {
     Game::mapBlockData blockData = calculateBlockSize();
     
-    double sizeCoeff;
-    
-    if (blockData.width >= blockData.height) {
-      sizeCoeff = blockData.height / blockData.width;
-    } else {
-      sizeCoeff = blockData.width / blockData.height;
-    }
+    double sizeCoeff = calculateMapSpriteCoeff(blockData);
     
     auto mapContent = map.getFileContent();
     
@@ -90,25 +120,17 @@ namespace GO {
           currColumn++;
           
           if (strChar == 'b') {
-            auto mapBlock = new sf::RectangleShape();
+            auto texture = new sf::Texture();
             
-            if (blockData.width >= blockData.height) {
-              mapBlock->setSize(
-                sf::Vector2f(blockData.width * sizeCoeff, blockData.height));
-            } else {
-              mapBlock->setSize(
-                sf::Vector2f(blockData.width, blockData.height * sizeCoeff));
-            }
+            texture->loadFromFile(resourcePath() + "wall.png");
+            auto mapBlock = new sf::Sprite(*texture);
             
-            sf::Vector2f currPos;
+            mapBlock->scale(calculateSpriteScale(mapBlock, blockData, sizeCoeff));
             
-            currPos.x = currColumn * blockData.width;
-            currPos.y = currLine * blockData.height;
+            sf::Vector2f currPos(
+              currColumn * blockData.width, currLine * blockData.height);
             
-            
-            mapBlock->setPosition(currPos);
-            mapBlock->setFillColor(sf::Color::White);
-            
+            mapBlock->setPosition(currPos.x, currPos.y);
             mapObjects.push_back(mapBlock);
           }
         } else {
@@ -126,7 +148,7 @@ namespace GO {
   
   void Game::renderMap()
   {
-    for (sf::RectangleShape* currBlock : mapObjects) {
+    for (sf::Drawable* currBlock : mapObjects) {
       gameWindow->draw(*currBlock);
     }
   }
@@ -196,7 +218,8 @@ namespace GO {
           gameWindow->close();
         }
 
-        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+        if (event.type == sf::Event::KeyPressed &&
+            event.key.code == sf::Keyboard::Escape) {
           gameWindow->close();
         }
       }

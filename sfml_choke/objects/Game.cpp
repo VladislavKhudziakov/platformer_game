@@ -65,7 +65,7 @@ namespace GO {
   }
   
   
-  double Game::calculateMapSpriteCoeff(const Game::mapBlockData& blockData)
+  double Game::calculateMapSpriteCoeff(const GO::mapBlockData& blockData)
   {
     if (blockData.width >= blockData.height) {
       return  blockData.height / blockData.width;
@@ -76,7 +76,7 @@ namespace GO {
   
   
   sf::Vector2f Game::calculateSpriteScale(
-    const sf::Sprite* mapSprite, const Game::mapBlockData& blockData, double sizeCoeff)
+    const sf::Sprite* mapSprite, const GO::mapBlockData& blockData, double sizeCoeff)
   {
     if (blockData.width >= blockData.height) {
       
@@ -103,7 +103,7 @@ namespace GO {
   
   void Game::buildMap()
   {
-    Game::mapBlockData blockData = calculateBlockSize();
+    GO::mapBlockData blockData = calculateBlockSize();
     
     double sizeCoeff = calculateMapSpriteCoeff(blockData);
     
@@ -121,15 +121,17 @@ namespace GO {
           
           if (strChar == 'b') {
             auto texture = new sf::Texture();
-            
+//
             texture->loadFromFile(resourcePath() + "wall.png");
-            auto mapBlock = new sf::Sprite(*texture);
+            sf::Sprite* mapBlock = new sf::Sprite(*texture);
             
+//            GO::MapSprite* mapBlock = new GO::MapSprite(*texture);
+
             mapBlock->scale(calculateSpriteScale(mapBlock, blockData, sizeCoeff));
-            
+
             sf::Vector2f currPos(
               currColumn * blockData.width, currLine * blockData.height);
-            
+
             mapBlock->setPosition(currPos.x, currPos.y);
             mapObjects.push_back(mapBlock);
           }
@@ -154,7 +156,7 @@ namespace GO {
   }
   
   
-  Game::mapBlockData Game::calculateBlockSize()
+  GO::mapBlockData Game::calculateBlockSize()
   {
    mapBlockData blocksData;
     

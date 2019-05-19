@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <vector>
+#include "GameBlockData.h"
 #include "gameObject.hpp"
 #include "Map.hpp"
 #include "MapSprite.hpp"
@@ -19,16 +20,10 @@
 #include "../global.h"
 
 namespace GO {
+  
   class Game
   {
   private:
-    struct mapBlockData {
-      double width;
-      double height;
-      double columnsCount;
-      double linesCount;
-    };
-    
     sf::RenderWindow* gameWindow;
     GO::GameObject* player;
     GO::Map map;
@@ -51,6 +46,7 @@ namespace GO {
     void start();
     void stop();
   };
+  
 }
 
 

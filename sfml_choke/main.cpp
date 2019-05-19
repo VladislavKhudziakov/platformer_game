@@ -14,16 +14,16 @@
 // function `resourcePath()` from ResourcePath.hpp
 //
 
+//
+//#include <iostream>
+//#include <SFML/Audio.hpp>
+//#include <SFML/Graphics.hpp>
 
-#include <iostream>
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
+//#include "ResourcePath.hpp"
 
-#include "ResourcePath.hpp"
-
-#include "objects/gameObject.hpp"
+//#include "objects/gameObject.hpp"
 #include "objects/Game.hpp"
-#include "objects/Map.hpp"
+//#include "objects/Map.hpp"
 
 
 int main(int, char const**)

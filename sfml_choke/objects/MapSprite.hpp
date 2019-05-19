@@ -15,21 +15,22 @@
 #include <SFML/Graphics.hpp>
 #include "../ResourcePath.hpp"
 #include "../global.h"
+#include "GameBlockData.h"
+
 
 namespace GO {
-  class MapSprite
+  class MapSprite : public sf::Sprite
   {
   private:
     sf::Texture skin;
-    sf::Sprite node;
     
   public:
     MapSprite();
     MapSprite(const sf::Texture&);
+    MapSprite(const sf::Texture&, const sf::IntRect&);
     MapSprite(const std::string&);
-    ~MapSprite();
-    const sf::Sprite& getNode();
-    operator sf::Sprite();
+    double calculateMapSpriteCoeff(const mapBlockData&);
+    sf::Vector2f calculateSpriteScale(const mapBlockData&, double);    
   };
 }
 

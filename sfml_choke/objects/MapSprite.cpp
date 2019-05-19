@@ -9,53 +9,59 @@
 #include "MapSprite.hpp"
 
 namespace GO {
-//  class MapSprite
-//  {
-//  private:
-//    sf::Texture skin;
-//    sf::Sprite node;
-//
-//  public:
-//    MapSprite();
-//    MapSprite(const sf::Texture&);
-//    MapSprite(const std::string&);
-//    ~MapSprite();
-//  };
-  MapSprite::MapSprite()
+  
+  MapSprite::MapSprite() : sf::Sprite(skin)
   {
     skin = sf::Texture();
-    node = sf::Sprite(skin);
   }
-  
-  
-  MapSprite::MapSprite(const sf::Texture& texture)
-  {
-    skin = texture;
-    node = sf::Sprite(texture);
-  }
-  
-  
-  MapSprite::MapSprite(const std::string& texName)
+
+
+  MapSprite::MapSprite(const std::string& texName): sf::Sprite(skin)
   {
     skin = sf::Texture();
     skin.loadFromFile(resourcePath() + texName);
-    
-    node = sf::Sprite();
-    node.setTexture(skin);
   }
-  
-  
-  MapSprite::~MapSprite() { }
-  
-  
-  const sf::Sprite& MapSprite::getNode()
+
+
+  MapSprite::MapSprite(const sf::Texture& texture)
+    : skin(texture), sf::Sprite(skin) { }
+
+
+  MapSprite::MapSprite(const sf::Texture& texture, const sf::IntRect& rect)
+    : skin(texture), sf::Sprite(skin, rect) { }
+
+
+  double MapSprite::calculateMapSpriteCoeff(const mapBlockData& blockData)
   {
-    return node;
+    if (blockData.width >= blockData.height) {
+      return  blockData.height / blockData.width;
+    } else {
+      return blockData.width / blockData.height;
+    }
   }
-  
-  
-   MapSprite::operator sf::Sprite()
+
+
+  sf::Vector2f MapSprite::calculateSpriteScale(
+     const mapBlockData& blockData, double sizeCoeff)
   {
-    return node;
+    if (blockData.width >= blockData.height) {
+
+      sf::Vector2f spriteSize(
+        blockData.width * sizeCoeff, blockData.height);
+
+      auto textureSize = this->getTexture()->getSize();
+
+      return sf::Vector2f(
+        spriteSize.x / textureSize.x, spriteSize.y / textureSize.y);
+
+    } else {
+      sf::Vector2f spriteSize(
+        blockData.width, blockData.height * sizeCoeff);
+
+      auto textureSize = this->getTexture()->getSize();
+
+      return sf::Vector2f(
+        spriteSize.x / textureSize.x, spriteSize.y / textureSize.y);
+    }
   }
 }

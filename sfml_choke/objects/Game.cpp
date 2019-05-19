@@ -85,11 +85,16 @@ namespace GO {
           if (strChar == 'b') {
             auto mapBlock = new sf::RectangleShape();
             mapBlock->setSize(sf::Vector2f(blockData.width, blockData.height));
+            
             sf::Vector2f currPos;
-            currPos.x = currLine * blockData.height;
-            currPos.y = currLine * blockData.width;
+            
+            currPos.x = currColumn * blockData.width;
+            currPos.y = currLine * blockData.height;
+            
+            
             mapBlock->setPosition(currPos);
             mapBlock->setFillColor(sf::Color::White);
+            
             mapObjects.push_back(mapBlock);
           }
           
@@ -120,9 +125,9 @@ namespace GO {
     
     auto mapContent = map.getFileContent();
     
-    int lastMaxLine = 0;
+    int lastMaxSize = 0;
     int maxLineSize = 0;
-    int columnCount = 0;
+    int linesCount = 0;
     
     try {
       assertMapBuilding();
@@ -131,16 +136,16 @@ namespace GO {
         if (strChar != '\n') {
           maxLineSize++;
         } else {
-          lastMaxLine = maxLineSize > lastMaxLine ? maxLineSize : lastMaxLine;
-          columnCount++;
+          lastMaxSize = maxLineSize > lastMaxSize ? maxLineSize : lastMaxSize;
+          linesCount++;
           maxLineSize = 0;
         }
       }
       
-      blocksData.width = settings::windowWidth / lastMaxLine;
-      blocksData.height = settings::windowHeiht / columnCount;
-      blocksData.columnsCount = columnCount;
-      blocksData.linesCount = lastMaxLine;
+      blocksData.width = settings::windowWidth / lastMaxSize;
+      blocksData.height = settings::windowHeiht / linesCount;
+      blocksData.columnsCount = lastMaxSize;
+      blocksData.linesCount = linesCount;
       
     } catch (std::logic_error err) {
       std::cout << err.what();
@@ -167,6 +172,7 @@ namespace GO {
   {
     loadMap("Map.txt");
     buildMap();
+    
     while (gameWindow->isOpen())
     {
       sf::Event event;

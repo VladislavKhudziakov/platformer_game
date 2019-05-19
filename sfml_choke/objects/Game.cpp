@@ -26,7 +26,6 @@ namespace GO {
     for (auto object : mapObjects) {
       delete object;
     }
-    
   }
   
   
@@ -70,6 +69,14 @@ namespace GO {
   {
     Game::mapBlockData blockData = calculateBlockSize();
     
+    double sizeCoeff;
+    
+    if (blockData.width >= blockData.height) {
+      sizeCoeff = blockData.height / blockData.width;
+    } else {
+      sizeCoeff = blockData.width / blockData.height;
+    }
+    
     auto mapContent = map.getFileContent();
     
     try {
@@ -84,7 +91,14 @@ namespace GO {
           
           if (strChar == 'b') {
             auto mapBlock = new sf::RectangleShape();
-            mapBlock->setSize(sf::Vector2f(blockData.width, blockData.height));
+            
+            if (blockData.width >= blockData.height) {
+              mapBlock->setSize(
+                sf::Vector2f(blockData.width * sizeCoeff, blockData.height));
+            } else {
+              mapBlock->setSize(
+                sf::Vector2f(blockData.width, blockData.height * sizeCoeff));
+            }
             
             sf::Vector2f currPos;
             
@@ -97,7 +111,6 @@ namespace GO {
             
             mapObjects.push_back(mapBlock);
           }
-          
         } else {
           currLine++;
           currColumn = 0;

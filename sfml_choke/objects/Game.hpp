@@ -22,10 +22,10 @@ namespace GO {
   {
   private:
     struct mapBlockData {
-      int width;
-      int height;
-      int columnsCount;
-      int linesCount;
+      double width;
+      double height;
+      double columnsCount;
+      double linesCount;
     };
     
     sf::RenderWindow* gameWindow;

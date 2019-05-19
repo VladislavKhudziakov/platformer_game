@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <string>
+#include <stdexcept>
 #include "../ResourcePath.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>

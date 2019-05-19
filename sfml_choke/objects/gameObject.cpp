@@ -26,7 +26,8 @@ namespace GO {
   }
   
   
-  GameObject::GameObject(std::string texName, float x, float y, float sX, float sY)
+  GameObject::GameObject(
+     std::string texName, float x, float y, float sX, float sY)
   {
     walkingCounter = 0;
     walkingTimer = sf::Clock();

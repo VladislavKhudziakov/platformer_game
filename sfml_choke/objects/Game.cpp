@@ -7,7 +7,7 @@
 //
 
 #include "Game.hpp"
-#include <iostream>
+
 namespace GO {
   
   Game::Game()
@@ -22,6 +22,11 @@ namespace GO {
   {
     delete gameWindow;
     delete player;
+    
+    for (auto object : mapObjects) {
+      delete object;
+    }
+    
   }
   
   
@@ -45,16 +50,123 @@ namespace GO {
   {
     gameWindow->clear();
     
+    renderMap();
+    
     player->onUpdate();
-
+    
     gameWindow->draw(*player);
     
     gameWindow->display();
   }
   
   
+  void Game::loadMap(const std::string& fileName)
+  {
+    map.loadFromFile(fileName);
+  }
+  
+  
+  void Game::buildMap()
+  {
+    Game::mapBlockData blockData = calculateBlockSize();
+    
+    auto mapContent = map.getFileContent();
+    
+    try {
+      assertMapBuilding();
+      
+      int currLine = 0;
+      int currColumn = 0;
+      
+      for (char strChar : mapContent) {
+        if (strChar != '\n') {
+          currColumn++;
+          
+          if (strChar == 'b') {
+            auto mapBlock = new sf::RectangleShape();
+            mapBlock->setSize(sf::Vector2f(blockData.width, blockData.height));
+            sf::Vector2f currPos;
+            currPos.x = currLine * blockData.height;
+            currPos.y = currLine * blockData.width;
+            mapBlock->setPosition(currPos);
+            mapBlock->setFillColor(sf::Color::White);
+            mapObjects.push_back(mapBlock);
+          }
+          
+        } else {
+          currLine++;
+          currColumn = 0;
+        }
+      }
+      
+    } catch (std::logic_error err) {
+      std::cout << err.what();
+      std::cout << "cannot build map from empty file or empty map";
+    }
+  }
+  
+  
+  void Game::renderMap()
+  {
+    for (sf::RectangleShape* currBlock : mapObjects) {
+      gameWindow->draw(*currBlock);
+    }
+  }
+  
+  
+  Game::mapBlockData Game::calculateBlockSize()
+  {
+   mapBlockData blocksData;
+    
+    auto mapContent = map.getFileContent();
+    
+    int lastMaxLine = 0;
+    int maxLineSize = 0;
+    int columnCount = 0;
+    
+    try {
+      assertMapBuilding();
+      
+      for (char strChar : mapContent) {
+        if (strChar != '\n') {
+          maxLineSize++;
+        } else {
+          lastMaxLine = maxLineSize > lastMaxLine ? maxLineSize : lastMaxLine;
+          columnCount++;
+          maxLineSize = 0;
+        }
+      }
+      
+      blocksData.width = settings::windowWidth / lastMaxLine;
+      blocksData.height = settings::windowHeiht / columnCount;
+      blocksData.columnsCount = columnCount;
+      blocksData.linesCount = lastMaxLine;
+      
+    } catch (std::logic_error err) {
+      std::cout << err.what();
+      std::cout << "cannot build map from empty file or empty map";
+    }
+    
+    return blocksData;
+  }
+  
+  
+  void Game::assertMapBuilding()
+  {
+    auto mapContent = map.getFileContent();
+    if (mapContent.size() > 0) {
+      return;
+    } else {
+      throw std::logic_error("invalid map size.\n");
+    }
+  }
+
+  
+  
   void Game::start()
   {
+    loadMap("Map.txt");
+    buildMap();
     while (gameWindow->isOpen())
     {
       sf::Event event;
@@ -74,6 +186,7 @@ namespace GO {
       onUpdate();
     }
   }
+  
   
   void Game::stop() { }
 }

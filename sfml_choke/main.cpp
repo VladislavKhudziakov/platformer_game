@@ -28,8 +28,7 @@
 
 int main(int, char const**)
 {
-//  GO::Map(10, 10);
-  GO::Map("Map.txt");
+//  GO::Map("Map.txt");
   GO::Game game;
   game.start();
 

@@ -15,10 +15,12 @@
 namespace settings {
   static int windowWidth = 2560;
   static int windowHeiht = 1500;
+  static int jumpSize = 200;
   
   static sf::Keyboard::Key jumpKey = sf::Keyboard::Space;
   static sf::Keyboard::Key moveLeftKey = sf::Keyboard::A;
   static sf::Keyboard::Key moveRightKey = sf::Keyboard::D;
+  
 }
 
 #endif /* global_h */

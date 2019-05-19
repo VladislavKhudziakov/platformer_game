@@ -190,7 +190,7 @@ namespace GO {
       auto point = node.getPosition();
       auto size = node.getTextureRect();
       
-      if (point.y + size.height >= settings::windowHeiht - 200) {
+      if (point.y + size.height >= settings::windowHeiht - settings::jumpSize) {
         node.move(0, -3);
       } else {
         isJump  = false;

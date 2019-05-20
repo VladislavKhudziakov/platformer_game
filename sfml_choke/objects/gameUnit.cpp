@@ -6,12 +6,12 @@
 //  Copyright © 2019 Vladislav Khudiakov. All rights reserved.
 //
 
-#include "gameObject.hpp"
+#include "gameUnit.hpp"
 #include <iostream>
 
 namespace GO {
   
-  GameObject::GameObject()
+  GameUnit::GameUnit()
   {
     walkingCounter = 0;
     walkingTimer = sf::Clock();
@@ -26,7 +26,7 @@ namespace GO {
   }
   
   
-  GameObject::GameObject(
+  GameUnit::GameUnit(
      std::string texName, float x, float y, float sX, float sY)
   {
     walkingCounter = 0;
@@ -58,7 +58,7 @@ namespace GO {
   }
   
   
-  GameObject::GameObject(GameObject& other)
+  GameUnit::GameUnit(GameUnit& other)
   {
     walkingCounter = 0;
     walkingTimer = sf::Clock();
@@ -87,10 +87,10 @@ namespace GO {
   }
   
   
-  GameObject::~GameObject() { }
+  GameUnit::~GameUnit() { }
   
   
-  void GameObject::onFall()
+  void GameUnit::onFall()
   {
     if (!onGround && !isJump) {
       
@@ -109,14 +109,14 @@ namespace GO {
   }
   
   
-  void GameObject::onUpdate()
+  void GameUnit::onUpdate()
   {
     onFall();
     onJump();
   }
   
   
-  void GameObject::moveLeft()
+  void GameUnit::moveLeft()
   {
     node.setOrigin({ node.getLocalBounds().width, 0 });
     node.setScale(-scale.x, scale.y);
@@ -151,7 +151,7 @@ namespace GO {
   }
   
   
-  void GameObject::moveRight()
+  void GameUnit::moveRight()
   {
     node.setOrigin({ node.getLocalBounds().width, 0 });
     node.setScale(scale.x, scale.y);
@@ -185,7 +185,7 @@ namespace GO {
   }
   
   
-  void GameObject::onJump()
+  void GameUnit::onJump()
   {
     if (isJump) {
       auto point = node.getPosition();
@@ -200,7 +200,7 @@ namespace GO {
   }
   
   
-  void GameObject::jump()
+  void GameUnit::jump()
   {
     if (onGround) {
       isJump = true;
@@ -209,7 +209,7 @@ namespace GO {
   }
   
   
-  GameObject::operator sf::Sprite()
+  GameUnit::operator sf::Sprite()
   {
     return node;
   }

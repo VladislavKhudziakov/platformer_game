@@ -12,7 +12,7 @@
 #include <iostream>
 #include <vector>
 #include "GameBlockData.h"
-#include "gameObject.hpp"
+#include "gameUnit.hpp"
 #include "Map.hpp"
 #include "MapSprite.hpp"
 #include <SFML/Audio.hpp>
@@ -25,7 +25,7 @@ namespace GO {
   {
   private:
     sf::RenderWindow* gameWindow;
-    GO::GameObject* player;
+    GO::GameUnit* player;
     GO::Map map;
     std::vector<GO::MapSprite* > mapObjects;
     

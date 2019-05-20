@@ -6,8 +6,8 @@
 //  Copyright © 2019 Vladislav Khudiakov. All rights reserved.
 //
 
-#ifndef gameObject_hpp
-#define gameObject_hpp
+#ifndef gameUnit_hpp
+#define gameUnit_hpp
 
 #include <stdio.h>
 #include <string>
@@ -19,7 +19,7 @@
 
 namespace GO {
   
-  class GameObject
+  class GameUnit
   {
   private:
     sf::Vector2<double> scale;
@@ -37,10 +37,10 @@ namespace GO {
     void onJump();
     
   public:
-    GameObject();
-    GameObject(GameObject&);
-    GameObject(std::string, float, float, float sX = 1.0, float sY = 1.0);
-    ~GameObject();
+    GameUnit();
+    GameUnit(GameUnit&);
+    GameUnit(std::string, float, float, float sX = 1.0, float sY = 1.0);
+    ~GameUnit();
     void onUpdate();
     void jump();
     void moveLeft();

@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include <vector>
-#include "gameObject.hpp"
+#include "gameUnit.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "../global.h"

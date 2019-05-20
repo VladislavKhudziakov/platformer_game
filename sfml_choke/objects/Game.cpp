@@ -14,7 +14,7 @@ namespace GO {
   {
     gameWindow = new sf::RenderWindow(
     sf::VideoMode(settings::windowWidth, settings::windowHeiht), "Game");
-    player = new GO::GameObject("player.png", 100, 100, 0.5, 0.5);
+    player = new GO::GameUnit("player.png", 100, 100, 0.5, 0.5);
   }
   
   

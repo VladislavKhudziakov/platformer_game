@@ -7,7 +7,6 @@
 //
 
 #include "gameUnit.hpp"
-#include <iostream>
 
 namespace GO {
   
@@ -22,6 +21,32 @@ namespace GO {
     onGround = false;
     isJump = false;
   }
+  
+  GameUnit::GameUnit(const sf::Texture& texture, float x, float y, float sX, float sY)
+  : GameObjectBase(texture)
+  {
+    walkingCounter = 0;
+    walkingTimer = sf::Clock();
+    walkingTimer.restart();
+    
+    auto timer = walkingTimer.getElapsedTime();
+    lastTime = timer.asSeconds();
+    
+    scale = sf::Vector2f(sY, sY);
+    setScale(scale);
+    
+    auto skinSize = getTexture()->getSize();
+    
+    setTextureRect(
+     sf::Rect<int>(
+       walkingCounter * skinSize.x / 4, 0, skinSize.x / 4, skinSize.y)
+   );
+    
+    move(x, y);
+    onGround = false;
+    isJump = false;
+  }
+
   
   
   GameUnit::GameUnit(

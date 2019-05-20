@@ -9,7 +9,6 @@
 #ifndef gameUnit_hpp
 #define gameUnit_hpp
 
-#include <stdio.h>
 #include <string>
 #include <stdexcept>
 #include "../ResourcePath.hpp"
@@ -39,7 +38,7 @@ namespace GO {
     GameUnit();
     GameUnit(GameUnit&);
     GameUnit(const std::string&, float x = 0, float y = 0, float sX = 1.0, float sY = 1.0);
-    GameUnit(const sf::Texture&);
+    GameUnit(const sf::Texture&, float x = 0, float y = 0, float sX = 1.0, float sY = 1.0);
     ~GameUnit();
     void onUpdate();
     void jump();

@@ -133,10 +133,13 @@ namespace GO {
   void GameUnit::moveLeft()
   {
     if (moveDirection != right) {
-      moveDirection = right;
-      
       sf::Image texImage = getTextureImage();
-      texImage.flipHorizontally();
+      
+      if (moveDirection == left) {
+        texImage.flipHorizontally();
+      }
+      
+      moveDirection = right;
       
       setTexture(texImage);
     }
@@ -165,7 +168,11 @@ namespace GO {
     size.width *= scale.x;
     size.height *= scale.y;
     
-    if (point.x > 0) {
+    if (blockWall == right) {
+      restBlockWall();
+    }
+    
+    if (point.x > 0 && blockWall != left) {
       move(-1.0, 0);
     }
   }
@@ -176,9 +183,13 @@ namespace GO {
     if (moveDirection != left) {
       
       sf::Image texImage = getTextureImage();
-      texImage.flipHorizontally();
+      
+      if (moveDirection == right) {
+        texImage.flipHorizontally();
+      }
       
       moveDirection = left;
+      
       setTexture(texImage);
     }
     
@@ -204,7 +215,11 @@ namespace GO {
     size.width *= scale.x;
     size.height *= scale.y;
     
-    if (point.x + size.width < settings::windowWidth) {
+    if (blockWall == left) {
+      restBlockWall();
+    }
+    
+    if (point.x + size.width < settings::windowWidth && blockWall != right) {
       move(1.0, 0);
     }
     
@@ -232,6 +247,48 @@ namespace GO {
       isJump = true;
       onGround = false;
     }
+  }
+  
+  
+  void GameUnit::interruptJump()
+  {
+    if (isJump) {
+      isJump = false;
+    }
+  }
+  
+  
+  void GameUnit::getOnTheGround()
+  {
+    if (!onGround) {
+      onGround = true;
+    }
+  }
+  
+  
+  void GameUnit::fall()
+  {
+    if (onGround) {
+      onGround = false;
+    }
+  }
+  
+  
+  void GameUnit::setBlockWallLeft()
+  {
+    blockWall = left;
+  }
+  
+  
+  void GameUnit::setBlockWallRight()
+  {
+    blockWall = right;
+  }
+  
+  
+  void GameUnit::restBlockWall()
+  {
+    blockWall = none;
   }
   
   

@@ -51,8 +51,9 @@ namespace GO {
     
     renderMap();
     
-    checkCollisions();
     player->onUpdate();
+
+    checkCollisions();
     
     gameWindow->draw(*player);
     
@@ -138,24 +139,28 @@ namespace GO {
         sf::Vector2f tileLeftBottomVertex = tileRect.getLeftBottomVertex();
         sf::Vector2f tileRightTopVertex = tileRect.getRightTopVertex();
         
-        if (playerLeftBottomVertex.x < tileRightTopVertex.x &&
-            playerRightTopVertex.x > tileRightTopVertex.x) {
-          std::cout << "collised left\n";
+        if (playerLeftBottomVertex.x < tileRightTopVertex.x) {
+//          std::cout << "collised left\n";
+          player->setBlockWallLeft();
+        } else {
+          player->restBlockWall();
         }
         
-        if (playerRightTopVertex.x > tileLeftBottomVertex.x &&
-            playerLeftBottomVertex.x < tileLeftBottomVertex.x) {
-          std::cout << "collised right\n";
+        if (playerRightTopVertex.x > tileLeftBottomVertex.x) {
+//          std::cout << "collised right\n";
+          player->setBlockWallRight();
+
         }
         
-        if (playerRightTopVertex.y > tileLeftBottomVertex.y &&
-            playerLeftBottomVertex.y < tileLeftBottomVertex.y) {
-          std::cout << "collised top\n";
+        if (playerRightTopVertex.y > tileLeftBottomVertex.y) {
+          player->interruptJump();
         }
         
-        if (playerLeftBottomVertex.y < tileRightTopVertex.y &&
-            playerRightTopVertex.y > tileRightTopVertex.y) {
-          std::cout << "collised bottom\n";
+        if (playerLeftBottomVertex.y < tileRightTopVertex.y) {
+//          player->getOnTheGround();
+        } else {
+//          std::cout << "fall";
+//          player->fall();
         }
       }
     }

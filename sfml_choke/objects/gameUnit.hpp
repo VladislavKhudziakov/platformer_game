@@ -29,8 +29,9 @@ namespace GO {
     float walkDelay = 0.25;
     bool onGround;
     bool isJump;
-    enum directions {left, right};
+    enum directions {none, left, right};
     int moveDirection;
+    int blockWall;
 
   protected:
     void onFall();
@@ -44,6 +45,12 @@ namespace GO {
     ~GameUnit();
     void onUpdate();
     void jump();
+    void interruptJump();
+    void getOnTheGround();
+    void fall();
+    void setBlockWallLeft();
+    void setBlockWallRight();
+    void restBlockWall();
     void moveLeft();
     void moveRight();
     void setColor(const sf::Color&);

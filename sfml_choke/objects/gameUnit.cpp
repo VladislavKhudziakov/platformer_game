@@ -165,7 +165,7 @@ namespace GO {
     size.width *= scale.x;
     size.height *= scale.y;
     
-    if (point.x > -size.width) {
+    if (point.x > 0) {
       move(-1.0, 0);
     }
   }

@@ -30,7 +30,7 @@ namespace GO {
     
   public:
     GameObjectBase();
-    GameObjectBase(const sf::Texture&);
+    GameObjectBase(const sf::Image&);
     GameObjectBase(const std::string&);
     
     void scale(float, float);
@@ -47,7 +47,7 @@ namespace GO {
     void setOrigin(const sf::Vector2f&);
     
     void setTextureRect(const sf::IntRect &);
-    void setTexture(const sf::Texture&, bool resetRect=false);
+    void setTexture(const sf::Image&, bool resetRect = false);
     
     void rotate(float);
     
@@ -55,7 +55,8 @@ namespace GO {
     const sf::Vector2f& getOrigin();
     const sf::Vector2f& getPosition();
     const sf::Vector2f& getScale();
-    const GO::HitBox* getRect();
+    const GO::HitBox& getRect();
+    const sf::Image& getTextureImage();
     
     float getRotation();
     

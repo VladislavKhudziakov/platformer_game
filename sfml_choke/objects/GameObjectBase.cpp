@@ -18,9 +18,11 @@ namespace GO {
   }
   
   
-  GameObjectBase::GameObjectBase(const sf::Texture& texture)
+  GameObjectBase::GameObjectBase(const sf::Image& texImg)
   {
-    skin = texture;
+    textureImage = texImg;
+    skin = sf::Texture();
+    skin.loadFromImage(textureImage);
     node = sf::Sprite(skin);
   }
   
@@ -97,6 +99,15 @@ namespace GO {
   }
   
   
+  void GameObjectBase::setTexture(const sf::Image& newTexImg, bool resetRect)
+  {
+    textureImage = newTexImg;
+    skin.loadFromImage(textureImage);
+    node.setTexture(skin);
+    updateRect();
+  }
+  
+  
   void GameObjectBase::setTextureRect(const sf::IntRect& rectangle)
   {
     node.setTextureRect(rectangle);
@@ -123,12 +134,6 @@ namespace GO {
   void GameObjectBase::setOrigin(const sf::Vector2f& origin)
   {
     node.setOrigin(origin);
-  }
-  
-  
-  void GameObjectBase::setTexture(const sf::Texture& texture, bool resetRect)
-  {
-    node.setTexture(texture, resetRect);
   }
   
   
@@ -162,9 +167,15 @@ namespace GO {
   }
   
   
-  const GO::HitBox* GameObjectBase::getRect()
+  const GO::HitBox& GameObjectBase::getRect()
   {
-    return &rect;
+    return rect;
+  }
+  
+  
+  const sf::Image& GameObjectBase::getTextureImage()
+  {
+    return textureImage;
   }
   
   

@@ -22,7 +22,7 @@ namespace GO {
     isJump = false;
   }
   
-  GameUnit::GameUnit(const sf::Texture& texture, float x, float y, float sX, float sY)
+  GameUnit::GameUnit(const sf::Image& texture, float x, float y, float sX, float sY)
   : GameObjectBase(texture)
   {
     walkingCounter = 0;
@@ -76,7 +76,7 @@ namespace GO {
   }
   
   
-  GameUnit::GameUnit(GameUnit& other) : GameObjectBase(*other.getTexture())
+  GameUnit::GameUnit(GameUnit& other) : GameObjectBase(other.getTextureImage())
   {
     walkingCounter = 0;
     walkingTimer = sf::Clock();
@@ -132,10 +132,14 @@ namespace GO {
   
   void GameUnit::moveLeft()
   {
-//    setOrigin({ getNode()->getLocalBounds().width, 0 });
-//    rotate(180);
-//    GameObjectBase::textureImage.flipHorizontally();
-//    setScale(-scale.x, scale.y);
+    if (moveDirection != right) {
+      moveDirection = right;
+      
+      sf::Image texImage = getTextureImage();
+      texImage.flipHorizontally();
+      
+      setTexture(texImage);
+    }
     
     auto timer = walkingTimer.getElapsedTime();
     double now = timer.asSeconds();
@@ -169,9 +173,14 @@ namespace GO {
   
   void GameUnit::moveRight()
   {
-//    setOrigin({ getNode()->getLocalBounds().width, 0 });
-//    rotate(180);
-//    setScale(scale.x, scale.y);
+    if (moveDirection != left) {
+      
+      sf::Image texImage = getTextureImage();
+      texImage.flipHorizontally();
+      
+      moveDirection = left;
+      setTexture(texImage);
+    }
     
     auto timer = walkingTimer.getElapsedTime();
     double now = timer.asSeconds();

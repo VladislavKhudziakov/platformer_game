@@ -130,7 +130,7 @@ namespace GO {
   {
     for (GO::MapSprite* currBlock : mapObjects) {
       
-      if (*player->getRect() == *currBlock->getRect()) {
+      if (player->getRect() == currBlock->getRect()) {
         std::cout << "x: " << player->getPosition().x << " y: " << player->getPosition().y << std::endl;
       }
     }

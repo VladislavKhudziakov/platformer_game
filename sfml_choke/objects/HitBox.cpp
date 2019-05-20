@@ -31,6 +31,18 @@ namespace GO {
   }
   
   
+  const sf::Vector2f& HitBox::getLeftBottomVertex()
+  {
+    return LB;
+  }
+  
+  
+   const sf::Vector2f& HitBox::getRightTopVertex()
+  {
+    return RT;
+  }
+  
+  
   bool operator==(const GO::HitBox& self, const GO::HitBox& other)
   {
     if(((self.RT.x > other.LB.x && self.LB.x < other.RT.x)) &&

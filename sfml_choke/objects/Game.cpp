@@ -128,10 +128,35 @@ namespace GO {
   
   void Game::checkCollisions()
   {
-    for (GO::MapSprite* currBlock : mapObjects) {
+    for (GO::MapSprite* currTile : mapObjects) {
+      GO::HitBox playerRect = player->getRect();
+      GO::HitBox tileRect = currTile->getRect();
       
-      if (player->getRect() == currBlock->getRect()) {
-        std::cout << "x: " << player->getPosition().x << " y: " << player->getPosition().y << std::endl;
+      if (playerRect == tileRect) {
+        sf::Vector2f playerLeftBottomVertex = playerRect.getLeftBottomVertex();
+        sf::Vector2f playerRightTopVertex = playerRect.getRightTopVertex();
+        sf::Vector2f tileLeftBottomVertex = tileRect.getLeftBottomVertex();
+        sf::Vector2f tileRightTopVertex = tileRect.getRightTopVertex();
+        
+        if (playerLeftBottomVertex.x < tileRightTopVertex.x &&
+            playerRightTopVertex.x > tileRightTopVertex.x) {
+          std::cout << "collised left\n";
+        }
+        
+        if (playerRightTopVertex.x > tileLeftBottomVertex.x &&
+            playerLeftBottomVertex.x < tileLeftBottomVertex.x) {
+          std::cout << "collised right\n";
+        }
+        
+        if (playerRightTopVertex.y > tileLeftBottomVertex.y &&
+            playerLeftBottomVertex.y < tileLeftBottomVertex.y) {
+          std::cout << "collised top\n";
+        }
+        
+        if (playerLeftBottomVertex.y < tileRightTopVertex.y &&
+            playerRightTopVertex.y > tileRightTopVertex.y) {
+          std::cout << "collised bottom\n";
+        }
       }
     }
   }

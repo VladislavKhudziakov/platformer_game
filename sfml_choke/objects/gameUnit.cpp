@@ -22,6 +22,7 @@ namespace GO {
     isJump = false;
   }
   
+  
   GameUnit::GameUnit(const sf::Image& texture, float x, float y, float sX, float sY)
   : GameObjectBase(texture)
   {
@@ -46,7 +47,6 @@ namespace GO {
     onGround = false;
     isJump = false;
   }
-
   
   
   GameUnit::GameUnit(

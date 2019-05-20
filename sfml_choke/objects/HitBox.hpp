@@ -23,8 +23,8 @@ namespace GO {
     HitBox();
     HitBox(const sf::Vector2f&, const sf::Vector2f&);
     void update(const sf::Vector2f&, const sf::Vector2f&);
-//    bool operator==(const GO::HitBox& other);
-//    bool operator!=(const GO::HitBox& other);
+    const sf::Vector2f& getLeftBottomVertex();
+    const sf::Vector2f& getRightTopVertex();
     bool friend operator==(const GO::HitBox& self, const GO::HitBox& other);
     bool friend operator!=(const GO::HitBox& self, const GO::HitBox& other);
   };

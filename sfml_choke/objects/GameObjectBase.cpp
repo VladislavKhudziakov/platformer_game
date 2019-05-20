@@ -187,12 +187,12 @@ namespace GO {
     double height = scale.y * size.height;
     sf::Vector2f position = getPosition();
     
-    sf::Vector2f leftBottomTile = sf::Vector2f(
+    sf::Vector2f leftBottomVertex = sf::Vector2f(
       position.x - width / 2, position.y - height / 2);
-    sf::Vector2f rightTopTile = sf::Vector2f(
+    sf::Vector2f rightTopVertex = sf::Vector2f(
       position.x + width / 2, position.y + height / 2);
 
-    rect.update(rightTopTile, leftBottomTile);
+    rect.update(rightTopVertex, leftBottomVertex);
   }
   
   

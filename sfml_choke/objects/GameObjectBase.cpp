@@ -86,6 +86,11 @@ namespace GO {
   }
   
   
+  void GameObjectBase::setTextureRect(const sf::IntRect& rectangle)
+  {
+    node.setTextureRect(rectangle);
+  }
+  
   const sf::Vector2f& GameObjectBase::getPosition()
   {
     return node.getPosition();
@@ -95,6 +100,36 @@ namespace GO {
   const sf::Vector2f& GameObjectBase::getScale()
   {
     return node.getScale();
+  }
+  
+
+  void GameObjectBase::setOrigin(float x, float y)
+  {
+    node.setOrigin(x, y);
+  }
+  
+  
+  void GameObjectBase::setOrigin(const sf::Vector2f& origin)
+  {
+    node.setOrigin(origin);
+  }
+  
+  
+  void GameObjectBase::setTexture(const sf::Texture& texture, bool resetRect)
+  {
+    node.setTexture(texture, resetRect);
+  }
+  
+  
+  const sf::IntRect& GameObjectBase::getTextureRect()
+  {
+    return node.getTextureRect();
+  }
+  
+  
+  const sf::Vector2f& GameObjectBase::getOrigin()
+  {
+    return node.getOrigin();
   }
   
   

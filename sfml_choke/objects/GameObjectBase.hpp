@@ -29,20 +29,35 @@ namespace GO {
     GameObjectBase();
     GameObjectBase(const sf::Texture&);
     GameObjectBase(const std::string&);
+    
     void scale(float, float);
     void scale(const sf::Vector2f&);
     void setScale(float, float);
     void setScale(const sf::Vector2f&);
+    
     void move(float, float);
     void move(const sf::Vector2f&);
     void setPosition(float, float);
     void setPosition(const sf::Vector2f&);
+    
+    void setOrigin(float x, float y);
+    void setOrigin(const sf::Vector2f&);
+    
+    void setTextureRect(const sf::IntRect &);
+    void setTexture(const sf::Texture&, bool resetRect=false);
+    
     void rotate(float);
+    
+    const sf::IntRect& getTextureRect();
+    const sf::Vector2f& getOrigin();
     const sf::Vector2f& getPosition();
     const sf::Vector2f& getScale();
+    
     float getRotation();
+    
     const sf::Sprite* getNode();
     const sf::Texture* getTexture();
+    
     operator sf::Sprite();
     operator sf::Sprite*();
   };

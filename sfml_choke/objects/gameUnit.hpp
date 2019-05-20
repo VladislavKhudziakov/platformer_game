@@ -13,18 +13,17 @@
 #include <string>
 #include <stdexcept>
 #include "../ResourcePath.hpp"
+#include "GameObjectBase.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "../global.h"
 
 namespace GO {
   
-  class GameUnit
+  class GameUnit : public GameObjectBase
   {
   private:
-    sf::Vector2<double> scale;
-    sf::Sprite node;
-    sf::Texture skin;
+    sf::Vector2f scale;
     int walkingCounter;
     sf::Clock walkingTimer;
     float lastTime;
@@ -39,7 +38,8 @@ namespace GO {
   public:
     GameUnit();
     GameUnit(GameUnit&);
-    GameUnit(std::string, float, float, float sX = 1.0, float sY = 1.0);
+    GameUnit(const std::string&, float x = 0, float y = 0, float sX = 1.0, float sY = 1.0);
+    GameUnit(const sf::Texture&);
     ~GameUnit();
     void onUpdate();
     void jump();
@@ -47,6 +47,7 @@ namespace GO {
     void moveRight();
     void setColor(const sf::Color&);
     operator sf::Sprite();
+    operator sf::Sprite*();
   };
 }
 

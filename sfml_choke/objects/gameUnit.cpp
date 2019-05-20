@@ -11,7 +11,7 @@
 
 namespace GO {
   
-  GameUnit::GameUnit()
+  GameUnit::GameUnit() : GameObjectBase()
   {
     walkingCounter = 0;
     walkingTimer = sf::Clock();
@@ -19,15 +19,14 @@ namespace GO {
     lastTime = timer.asSeconds();
     
     walkingCounter = 0;
-    skin = sf::Texture();
-    node = sf::Sprite();
     onGround = false;
     isJump = false;
   }
   
   
   GameUnit::GameUnit(
-     std::string texName, float x, float y, float sX, float sY)
+   const std::string& texName, float x, float y, float sX, float sY)
+  : GameObjectBase(texName)
   {
     walkingCounter = 0;
     walkingTimer = sf::Clock();
@@ -36,29 +35,23 @@ namespace GO {
     auto timer = walkingTimer.getElapsedTime();
     lastTime = timer.asSeconds();
     
-    skin = sf::Texture();
-    skin.loadFromFile(resourcePath() + texName);
+    scale = sf::Vector2f(sY, sY);
+    setScale(scale);
     
-    node = sf::Sprite();
-    node.setTexture(skin);
+    auto skinSize = getTexture()->getSize();
     
-    scale = sf::Vector2<double>(sY, sY);
-    node.setScale(scale.x, scale.y);
-    
-    auto skinSize = skin.getSize();
-    
-    node.setTextureRect(
+    setTextureRect(
       sf::Rect<int>(
         walkingCounter * skinSize.x / 4, 0, skinSize.x / 4, skinSize.y)
     );
     
-    node.move(sf::Vector2<float>(x, y));
+    move(x, y);
     onGround = false;
     isJump = false;
   }
   
   
-  GameUnit::GameUnit(GameUnit& other)
+  GameUnit::GameUnit(GameUnit& other) : GameObjectBase(*other.getTexture())
   {
     walkingCounter = 0;
     walkingTimer = sf::Clock();
@@ -67,21 +60,17 @@ namespace GO {
     auto timer = walkingTimer.getElapsedTime();
     lastTime = timer.asSeconds();
     
-    skin = other.skin;
-    node = other.node;
-    node.setTexture(skin);
-    
     scale = other.scale;
-    node.setScale(scale.x, scale.y);
+    GameObjectBase::setScale(scale.x, scale.y);
     
-    auto skinSize = skin.getSize();
+    auto skinSize = getTexture()->getSize();
     
-    node.setTextureRect(
+    setTextureRect(
       sf::Rect<int>(
         walkingCounter * skinSize.x / 4, 0, skinSize.x / 4, skinSize.y)
     );
     
-    node.move(other.node.getPosition());
+    move(other.getPosition());
     onGround = false;
     isJump = false;
   }
@@ -94,14 +83,14 @@ namespace GO {
   {
     if (!onGround && !isJump) {
       
-      auto scale = node.getScale();
-      auto point = node.getPosition();
-      auto size = node.getTextureRect();
+      auto scale = getScale();
+      auto point = getPosition();
+      auto size = getNode()->getTextureRect();
       size.width *= scale.x;
       size.height *= scale.y;
       
       if (point.y + size.height <= settings::windowHeiht) {
-        node.move(0, 1.5);
+        move(0, 1.5);
       } else {
         onGround = true;
       }
@@ -118,8 +107,8 @@ namespace GO {
   
   void GameUnit::moveLeft()
   {
-    node.setOrigin({ node.getLocalBounds().width, 0 });
-    node.setScale(-scale.x, scale.y);
+    setOrigin({ getNode()->getLocalBounds().width, 0 });
+    setScale(-scale.x, scale.y);
     
     auto timer = walkingTimer.getElapsedTime();
     double now = timer.asSeconds();
@@ -128,9 +117,9 @@ namespace GO {
       
       walkingCounter = walkingCounter + 1 >= 4 ? 0 : walkingCounter + 1;
       
-      auto skinSize = skin.getSize();
+      auto skinSize = getTexture()->getSize();
       
-      node.setTextureRect(
+      setTextureRect(
         sf::Rect<int>(
         walkingCounter * skinSize.x / 4,
         0, skinSize.x / 4, skinSize.y));
@@ -138,23 +127,23 @@ namespace GO {
       lastTime = now;
     }
     
-    auto scale = node.getScale();
-    auto point = node.getPosition();
-    auto size = node.getTextureRect();
+    auto scale = getScale();
+    auto point = getPosition();
+    auto size = getTextureRect();
     
     size.width *= scale.x;
     size.height *= scale.y;
     
     if (point.x > -size.width) {
-      node.move(-1.0, 0);
+      move(-1.0, 0);
     }
   }
   
   
   void GameUnit::moveRight()
   {
-    node.setOrigin({ node.getLocalBounds().width, 0 });
-    node.setScale(scale.x, scale.y);
+    setOrigin({ getNode()->getLocalBounds().width, 0 });
+    setScale(scale.x, scale.y);
     
     auto timer = walkingTimer.getElapsedTime();
     double now = timer.asSeconds();
@@ -162,9 +151,9 @@ namespace GO {
     if (now >= lastTime + walkDelay) {
       walkingCounter = walkingCounter + 1 >= 4 ? 0 : walkingCounter + 1;
 
-      auto skinSize = skin.getSize();
+      auto skinSize = getTexture()->getSize();
 
-      node.setTextureRect(
+      setTextureRect(
         sf::Rect<int>(
           walkingCounter * skinSize.x / 4,
           0, skinSize.x / 4, skinSize.y));
@@ -172,14 +161,14 @@ namespace GO {
       lastTime = now;
     }
     
-    auto scale = node.getScale();
-    auto point = node.getPosition();
-    auto size = node.getTextureRect();
+    auto scale = getScale();
+    auto point = getPosition();
+    auto size = getNode()->getTextureRect();
     size.width *= scale.x;
     size.height *= scale.y;
     
     if (point.x + size.width < settings::windowWidth) {
-      node.move(1.0, 0);
+      move(1.0, 0);
     }
     
   }
@@ -188,13 +177,13 @@ namespace GO {
   void GameUnit::onJump()
   {
     if (isJump) {
-      auto point = node.getPosition();
-      auto size = node.getTextureRect();
+      auto point = getPosition();
+      auto size = getNode()->getTextureRect();
       
       if (point.y + size.height >= settings::windowHeiht - settings::jumpSize) {
-        node.move(0, -3);
+        move(0, -3);
       } else {
-        isJump  = false;
+        isJump = false;
       }
     }
   }
@@ -211,7 +200,13 @@ namespace GO {
   
   GameUnit::operator sf::Sprite()
   {
-    return node;
+    return GameObjectBase::operator sf::Sprite();
+  }
+  
+  
+  GameUnit::operator sf::Sprite*()
+  {
+    return GameObjectBase::operator sf::Sprite*();
   }
   
 }

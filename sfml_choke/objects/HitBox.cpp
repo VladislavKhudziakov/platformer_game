@@ -31,10 +31,10 @@ namespace GO {
   }
   
   
-  bool HitBox::operator==(const GO::HitBox& other)
+  bool operator==(const GO::HitBox& self, const GO::HitBox& other)
   {
-    if(((RT.x > other.LB.x && LB.x < other.RT.x)) &&
-       (RT.y > other.LB.y && LB.y < other.RT.y)) {
+    if(((self.RT.x > other.LB.x && self.LB.x < other.RT.x)) &&
+       (self.RT.y > other.LB.y && self.LB.y < other.RT.y)) {
       return true;
     } else {
       return false;
@@ -42,13 +42,12 @@ namespace GO {
   }
   
   
-  bool HitBox::operator!=(const GO::HitBox& other)
+  bool operator!=(const GO::HitBox& self, const GO::HitBox& other)
   {
-    if(!((RT.x > other.LB.x && LB.x < other.RT.x)) &&
-       (RT.y > other.LB.y && LB.y < other.RT.y)) {
+    if(!((self.RT.x > other.LB.x && self.LB.x < other.RT.x)) &&
+       (self.RT.y > other.LB.y && self.LB.y < other.RT.y)) {
       return true;
     } else {
       return false;
     }
-  }
-}
+  }}

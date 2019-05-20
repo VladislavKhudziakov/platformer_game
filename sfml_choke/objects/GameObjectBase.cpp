@@ -12,6 +12,7 @@ namespace GO {
   
   GameObjectBase::GameObjectBase()
   {
+    textureImage = sf::Image();
     skin = sf::Texture();
     node = sf::Sprite(skin);
   }
@@ -26,8 +27,10 @@ namespace GO {
   
   GameObjectBase::GameObjectBase(const std::string& textureName)
   {
+    textureImage = sf::Image();
+    textureImage.loadFromFile(resourcePath() + textureName);
     skin = sf::Texture();
-    skin.loadFromFile(resourcePath() + textureName);
+    skin.loadFromImage(textureImage);
     node = sf::Sprite(skin);
   }
   
@@ -35,48 +38,56 @@ namespace GO {
   void GameObjectBase::scale(float scaleX, float scaleY)
   {
     node.scale(scaleX, scaleY);
+    updateRect();
   }
   
   
   void GameObjectBase::scale(const sf::Vector2f& scale)
   {
     node.scale(scale);
+    updateRect();
   }
   
   
   void GameObjectBase::setScale(float scaleX, float scaleY)
   {
     node.setScale(scaleX, scaleY);
+    updateRect();
   }
   
   
   void GameObjectBase::setScale(const sf::Vector2f& scale)
   {
     node.setScale(scale);
+    updateRect();
   }
   
   
   void GameObjectBase::move(float offsetX, float offsetY)
   {
     node.move(offsetX, offsetY);
+    updateRect();
   }
   
   
   void GameObjectBase::move(const sf::Vector2f& offset)
   {
     node.move(offset);
+    updateRect();
   }
   
   
   void GameObjectBase::setPosition(float x, float y)
   {
     node.setPosition(x, y);
+    updateRect();
   }
   
   
   void GameObjectBase::setPosition(const sf::Vector2f& point)
   {
     node.setPosition(point);
+    updateRect();
   }
   
   
@@ -148,6 +159,29 @@ namespace GO {
   const sf::Texture* GameObjectBase::getTexture()
   {
     return &skin;
+  }
+  
+  
+  const GO::HitBox* GameObjectBase::getRect()
+  {
+    return &rect;
+  }
+  
+  
+  void GameObjectBase::updateRect()
+  {
+    sf::IntRect size = getTextureRect();
+    sf::Vector2f scale = getScale();
+    double width = scale.x * size.width;
+    double height = scale.y * size.height;
+    sf::Vector2f position = getPosition();
+    
+    sf::Vector2f leftBottomTile = sf::Vector2f(
+      position.x - width / 2, position.y - height / 2);
+    sf::Vector2f rightTopTile = sf::Vector2f(
+      position.x + width / 2, position.y + height / 2);
+
+    rect.update(rightTopTile, leftBottomTile);
   }
   
   

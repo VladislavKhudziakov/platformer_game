@@ -16,13 +16,16 @@
 #include "../ResourcePath.hpp"
 #include "../global.h"
 #include "GameBlockData.h"
+#include "HitBox.hpp"
 
 
 namespace GO {
   class GameObjectBase
   {
   private:
+    sf::Image textureImage;
     sf::Texture skin;
+    GO::HitBox rect;
     sf::Sprite node;
     
   public:
@@ -52,11 +55,14 @@ namespace GO {
     const sf::Vector2f& getOrigin();
     const sf::Vector2f& getPosition();
     const sf::Vector2f& getScale();
+    const GO::HitBox* getRect();
     
     float getRotation();
     
     const sf::Sprite* getNode();
     const sf::Texture* getTexture();
+    
+    void updateRect();
     
     operator sf::Sprite();
     operator sf::Sprite*();

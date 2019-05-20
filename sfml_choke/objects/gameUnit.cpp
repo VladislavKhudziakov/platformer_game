@@ -132,8 +132,10 @@ namespace GO {
   
   void GameUnit::moveLeft()
   {
-    setOrigin({ getNode()->getLocalBounds().width, 0 });
-    setScale(-scale.x, scale.y);
+//    setOrigin({ getNode()->getLocalBounds().width, 0 });
+//    rotate(180);
+//    GameObjectBase::textureImage.flipHorizontally();
+//    setScale(-scale.x, scale.y);
     
     auto timer = walkingTimer.getElapsedTime();
     double now = timer.asSeconds();
@@ -167,8 +169,9 @@ namespace GO {
   
   void GameUnit::moveRight()
   {
-    setOrigin({ getNode()->getLocalBounds().width, 0 });
-    setScale(scale.x, scale.y);
+//    setOrigin({ getNode()->getLocalBounds().width, 0 });
+//    rotate(180);
+//    setScale(scale.x, scale.y);
     
     auto timer = walkingTimer.getElapsedTime();
     double now = timer.asSeconds();

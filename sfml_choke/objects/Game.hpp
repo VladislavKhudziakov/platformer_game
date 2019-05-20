@@ -35,6 +35,7 @@ namespace GO {
     void assertMapBuilding();
     void renderMap();
     double calculateMapSpriteSizeAspect(const GO::mapBlockData&);
+    void checkCollisions();
     
   public:
     Game();

@@ -51,6 +51,7 @@ namespace GO {
     
     renderMap();
     
+    checkCollisions();
     player->onUpdate();
     
     gameWindow->draw(*player);
@@ -125,6 +126,44 @@ namespace GO {
   }
   
   
+  void Game::checkCollisions()
+  {
+//    sf::Vector2<unsigned int> size = player->getTexture()->getSize();
+//    sf::Vector2f scale = player->getScale();
+//    double width = scale.x * size.x;
+//    double height = scale.y * size.y;
+//    sf::Vector2f position = player->getPosition();
+//
+//    double playerLeft = position.x - width / 2;
+//    double playerRight = position.x + width / 2;
+//    double playerTop = position.y + height / 2;
+//    double playerBottom = position.y - height / 2;
+    
+    for (GO::MapSprite* currBlock : mapObjects) {
+      
+//      sf::Vector2<unsigned int> size = currBlock->getTexture()->getSize();
+//      sf::Vector2f scale = currBlock->getScale();
+//      double width = scale.x * size.x;
+//      double height = scale.y * size.y;
+//      sf::Vector2f position = currBlock->getPosition();
+//
+//      double tileLeft = position.x - width / 2;
+//      double tileRight = position.x + width / 2;
+//      double tileTop = position.y + height / 2;
+//      double tileBottom = position.y - height / 2;
+      
+//      if (playerTop > tileBottom || playerBottom < tileTop || playerRight < tileLeft || playerLeft > tileRight)
+//      {
+//
+//      } else {
+//        std::cout << "player: " << playerTop << std::endl;
+//        std::cout << "tile: " << tileTop << std::endl;
+//      }
+
+    }
+  }
+  
+  
   GO::mapBlockData Game::getBlocksData()
   {
    mapBlockData blocksData;
@@ -172,7 +211,6 @@ namespace GO {
     }
   }
 
-  
   
   void Game::start()
   {

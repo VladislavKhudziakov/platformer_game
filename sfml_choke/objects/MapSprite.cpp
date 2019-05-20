@@ -9,24 +9,13 @@
 #include "MapSprite.hpp"
 
 namespace GO {
-  
-  double MapSprite::calculateMapSpriteCoeff(const mapBlockData& blockData)
-  {
-    if (blockData.width >= blockData.height) {
-      return  blockData.height / blockData.width;
-    } else {
-      return blockData.width / blockData.height;
-    }
-  }
-
-
   sf::Vector2f MapSprite::calculateSpriteScale(
-     const mapBlockData& blockData, double sizeCoeff)
+     const mapBlockData& blockData, double sizeAspect)
   {
     if (blockData.width >= blockData.height) {
 
       sf::Vector2f spriteSize(
-        blockData.width * sizeCoeff, blockData.height);
+        blockData.width * sizeAspect, blockData.height);
 
       auto textureSize = GameObjectBase::getTexture()->getSize();
 
@@ -35,7 +24,7 @@ namespace GO {
 
     } else {
       sf::Vector2f spriteSize(
-        blockData.width, blockData.height * sizeCoeff);
+        blockData.width, blockData.height * sizeAspect);
 
       auto textureSize = GameObjectBase::getTexture()->getSize();
 

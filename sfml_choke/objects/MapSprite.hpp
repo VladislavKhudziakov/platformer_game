@@ -26,7 +26,6 @@ namespace GO {
     MapSprite() : GameObjectBase() { }
     MapSprite(const sf::Texture& texture) : GameObjectBase(texture) { }
     MapSprite(const std::string& textureName) : GameObjectBase(textureName) { }
-    double calculateMapSpriteCoeff(const mapBlockData&);
     sf::Vector2f calculateSpriteScale(const mapBlockData&, double);
   };
 }

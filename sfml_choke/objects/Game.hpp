@@ -31,12 +31,10 @@ namespace GO {
     
     void onUpdate();
     void inputKeysHandler();
-    mapBlockData calculateBlockSize();
+    GO::mapBlockData getBlocksData();
     void assertMapBuilding();
     void renderMap();
-    double calculateMapSpriteCoeff(const mapBlockData&);
-    sf::Vector2f calculateSpriteScale(
-      const sf::Sprite*, const mapBlockData&,  double);
+    double calculateMapSpriteSizeAspect(const GO::mapBlockData&);
     
   public:
     Game();

@@ -65,7 +65,7 @@ namespace GO {
   }
   
   
-  double Game::calculateMapSpriteCoeff(const GO::mapBlockData& blockData)
+  double Game::calculateMapSpriteSizeAspect(const GO::mapBlockData& blockData)
   {
     if (blockData.width >= blockData.height) {
       return  blockData.height / blockData.width;
@@ -75,39 +75,13 @@ namespace GO {
   }
   
   
-  sf::Vector2f Game::calculateSpriteScale(
-    const sf::Sprite* mapSprite, const GO::mapBlockData& blockData, double sizeCoeff)
-  {
-    if (blockData.width >= blockData.height) {
-      
-      sf::Vector2f spriteSize(
-        blockData.width * sizeCoeff, blockData.height);
-      
-      auto textureSize = mapSprite->getTexture()->getSize();
-      
-      return sf::Vector2f(
-        spriteSize.x / textureSize.x, spriteSize.y / textureSize.y);
-      
-    } else {
-      sf::Vector2f spriteSize(
-        blockData.width, blockData.height * sizeCoeff);
-      
-      auto textureSize = mapSprite->getTexture()->getSize();
-      
-      return sf::Vector2f(
-       spriteSize.x / textureSize.x, spriteSize.y / textureSize.y);
-      
-    }
-  }
-  
-  
   void Game::buildMap()
   {
-    GO::mapBlockData blockData = calculateBlockSize();
+    GO::mapBlockData blockData = getBlocksData();
     
-    double sizeCoeff = calculateMapSpriteCoeff(blockData);
+    double sizeAspect = calculateMapSpriteSizeAspect(blockData);
     
-    auto mapContent = map.getFileContent();
+    std::string mapContent = map.getFileContent();
     
     try {
       assertMapBuilding();
@@ -118,17 +92,15 @@ namespace GO {
       for (char strChar : mapContent) {
         if (strChar != '\n') {
           currColumn++;
-          
           if (strChar == 'b') {
             GO::MapSprite* mapBlock = new GO::MapSprite("wall.png");
             
-            auto scale = mapBlock->calculateSpriteScale(blockData, sizeCoeff);
-            mapBlock->scale(scale.x, scale.y);
+            mapBlock->scale(mapBlock->calculateSpriteScale(blockData, sizeAspect));
 
             sf::Vector2f currPos(
               currColumn * blockData.width, currLine * blockData.height);
             
-           mapBlock->setPosition(currPos.x, currPos.y);
+            mapBlock->setPosition(currPos);
             
             mapObjects.push_back(mapBlock);
           }
@@ -153,7 +125,7 @@ namespace GO {
   }
   
   
-  GO::mapBlockData Game::calculateBlockSize()
+  GO::mapBlockData Game::getBlocksData()
   {
    mapBlockData blocksData;
     

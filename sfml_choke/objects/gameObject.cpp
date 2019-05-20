@@ -209,12 +209,6 @@ namespace GO {
   }
   
   
-  sf::Sprite* GameObject::getNode()
-  {
-    return &node;
-  }
-  
-  
   GameObject::operator sf::Sprite()
   {
     return node;

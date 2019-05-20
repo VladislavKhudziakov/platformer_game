@@ -16,21 +16,18 @@
 #include "../ResourcePath.hpp"
 #include "../global.h"
 #include "GameBlockData.h"
+#include "GameObjectBase.hpp"
 
 
 namespace GO {
-  class MapSprite : public sf::Sprite
+  class MapSprite : public GameObjectBase
   {
-  private:
-    sf::Texture skin;
-    
   public:
-    MapSprite();
-    MapSprite(const sf::Texture&);
-    MapSprite(const sf::Texture&, const sf::IntRect&);
-    MapSprite(const std::string&);
+    MapSprite() : GameObjectBase() { }
+    MapSprite(const sf::Texture& texture) : GameObjectBase(texture) { }
+    MapSprite(const std::string& textureName) : GameObjectBase(textureName) { }
     double calculateMapSpriteCoeff(const mapBlockData&);
-    sf::Vector2f calculateSpriteScale(const mapBlockData&, double);    
+    sf::Vector2f calculateSpriteScale(const mapBlockData&, double);
   };
 }
 

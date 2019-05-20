@@ -120,19 +120,16 @@ namespace GO {
           currColumn++;
           
           if (strChar == 'b') {
-            auto texture = new sf::Texture();
-//
-            texture->loadFromFile(resourcePath() + "wall.png");
-            sf::Sprite* mapBlock = new sf::Sprite(*texture);
+            GO::MapSprite* mapBlock = new GO::MapSprite("wall.png");
             
-//            GO::MapSprite* mapBlock = new GO::MapSprite(*texture);
-
-            mapBlock->scale(calculateSpriteScale(mapBlock, blockData, sizeCoeff));
+            auto scale = mapBlock->calculateSpriteScale(blockData, sizeCoeff);
+            mapBlock->scale(scale.x, scale.y);
 
             sf::Vector2f currPos(
               currColumn * blockData.width, currLine * blockData.height);
-
-            mapBlock->setPosition(currPos.x, currPos.y);
+            
+           mapBlock->setPosition(currPos.x, currPos.y);
+            
             mapObjects.push_back(mapBlock);
           }
         } else {
@@ -150,7 +147,7 @@ namespace GO {
   
   void Game::renderMap()
   {
-    for (sf::Drawable* currBlock : mapObjects) {
+    for (GO::MapSprite* currBlock : mapObjects) {
       gameWindow->draw(*currBlock);
     }
   }

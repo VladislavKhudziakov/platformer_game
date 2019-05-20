@@ -10,27 +10,6 @@
 
 namespace GO {
   
-  MapSprite::MapSprite() : sf::Sprite(skin)
-  {
-    skin = sf::Texture();
-  }
-
-
-  MapSprite::MapSprite(const std::string& texName): sf::Sprite(skin)
-  {
-    skin = sf::Texture();
-    skin.loadFromFile(resourcePath() + texName);
-  }
-
-
-  MapSprite::MapSprite(const sf::Texture& texture)
-    : skin(texture), sf::Sprite(skin) { }
-
-
-  MapSprite::MapSprite(const sf::Texture& texture, const sf::IntRect& rect)
-    : skin(texture), sf::Sprite(skin, rect) { }
-
-
   double MapSprite::calculateMapSpriteCoeff(const mapBlockData& blockData)
   {
     if (blockData.width >= blockData.height) {
@@ -49,7 +28,7 @@ namespace GO {
       sf::Vector2f spriteSize(
         blockData.width * sizeCoeff, blockData.height);
 
-      auto textureSize = this->getTexture()->getSize();
+      auto textureSize = GameObjectBase::getTexture()->getSize();
 
       return sf::Vector2f(
         spriteSize.x / textureSize.x, spriteSize.y / textureSize.y);
@@ -58,7 +37,7 @@ namespace GO {
       sf::Vector2f spriteSize(
         blockData.width, blockData.height * sizeCoeff);
 
-      auto textureSize = this->getTexture()->getSize();
+      auto textureSize = GameObjectBase::getTexture()->getSize();
 
       return sf::Vector2f(
         spriteSize.x / textureSize.x, spriteSize.y / textureSize.y);

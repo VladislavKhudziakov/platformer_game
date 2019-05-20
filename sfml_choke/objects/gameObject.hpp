@@ -46,7 +46,6 @@ namespace GO {
     void moveLeft();
     void moveRight();
     void setColor(const sf::Color&);
-    sf::Sprite* getNode();
     operator sf::Sprite();
   };
 }

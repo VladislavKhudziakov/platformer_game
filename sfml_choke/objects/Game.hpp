@@ -27,7 +27,7 @@ namespace GO {
     sf::RenderWindow* gameWindow;
     GO::GameObject* player;
     GO::Map map;
-    std::vector<sf::Drawable* > mapObjects;
+    std::vector<GO::MapSprite* > mapObjects;
     
     void onUpdate();
     void inputKeysHandler();

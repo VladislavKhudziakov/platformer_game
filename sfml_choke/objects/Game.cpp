@@ -47,8 +47,8 @@ namespace GO {
   
   void Game::onUpdate()
   {
-    float now = timer.getElapsedTime().asMilliseconds();
-    float deltaTime = now - prevFrameTime;
+    double now = timer.getElapsedTime().asMicroseconds();
+    double deltaTime = now - prevFrameTime;
     prevFrameTime = now;
     
     gameWindow->clear();
@@ -148,7 +148,7 @@ namespace GO {
     map.calculateSize();
     buildMap();
     timer.restart();
-    
+    prevFrameTime = timer.getElapsedTime().asMicroseconds();
     while (gameWindow->isOpen())
     {
       sf::Event event;

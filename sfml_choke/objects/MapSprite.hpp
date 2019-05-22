@@ -26,7 +26,7 @@ namespace GO {
     
   public:
     MapSprite();
-    MapSprite(const sf::Image& texImg);
+    MapSprite(const sf::Texture&);
     MapSprite(const std::string& textureName);
   };
 }

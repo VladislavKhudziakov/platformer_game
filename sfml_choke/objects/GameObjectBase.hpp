@@ -23,14 +23,13 @@ namespace GO {
   class GameObjectBase
   {
   private:
-    sf::Image textureImage;
     sf::Texture skin;
     sf::Vector2f size;
     sf::Sprite node;
     
   public:
     GameObjectBase();
-    GameObjectBase(const sf::Image&);
+    GameObjectBase(const sf::Texture&);
     GameObjectBase(const std::string&);
     
     virtual void scale(float, float);
@@ -47,7 +46,7 @@ namespace GO {
     virtual void setOrigin(const sf::Vector2f&);
     
     virtual void setTextureRect(const sf::IntRect &);
-    virtual void setTexture(const sf::Image&, bool resetRect = false);
+    virtual void setTexture(const sf::Texture&, bool resetRect = false);
     
     virtual void rotate(float);
     
@@ -56,7 +55,6 @@ namespace GO {
     virtual const sf::Vector2f& getPosition();
     virtual const sf::Vector2f& getScale();
     virtual const sf::Vector2f& getSize();
-    virtual const sf::Image& getTextureImage();
     
     virtual float getRotation();
     

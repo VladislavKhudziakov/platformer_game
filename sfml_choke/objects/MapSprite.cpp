@@ -15,7 +15,7 @@ namespace GO {
   }
   
   
-  MapSprite::MapSprite(const sf::Image& texImg) : GameObjectBase(texImg)
+  MapSprite::MapSprite(const sf::Texture& texture) : GameObjectBase(texture)
   {
     calculateSpriteScale();
   }

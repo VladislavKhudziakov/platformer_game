@@ -22,14 +22,12 @@ namespace GO {
   class GameUnit : public GameObjectBase
   {
   private:
-    int walkingCounter;
+    int walkingCounter = 0;
     sf::Clock walkingTimer;
     float lastTime;
     float walkDelay = 0.25;
-    bool onGround;
-    bool isJump;
-    enum directions {none, left, right};
-    int moveDirection;
+    float dy = 0.1;
+    bool onGround = false;
     
   protected:
     void onFall();
@@ -39,7 +37,7 @@ namespace GO {
     GameUnit();
     GameUnit(GameUnit&);
     GameUnit(const std::string&, float x = 0, float y = 0, float sX = 1.0, float sY = 1.0);
-    GameUnit(const sf::Image&, float x = 0, float y = 0, float sX = 1.0, float sY = 1.0);
+    GameUnit(const sf::Texture&, float x = 0, float y = 0, float sX = 1.0, float sY = 1.0);
     ~GameUnit();
     void onUpdate();
     void jump();

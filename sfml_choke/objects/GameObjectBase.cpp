@@ -12,27 +12,23 @@ namespace GO {
   
   GameObjectBase::GameObjectBase()
   {
-    textureImage = sf::Image();
     skin = sf::Texture();
     node = sf::Sprite(skin);
   }
   
   
-  GameObjectBase::GameObjectBase(const sf::Image& texImg)
+  GameObjectBase::GameObjectBase(const sf::Texture& texture)
   {
-    textureImage = texImg;
-    skin = sf::Texture();
-    skin.loadFromImage(textureImage);
+    skin = texture;
     node = sf::Sprite(skin);
   }
   
   
   GameObjectBase::GameObjectBase(const std::string& textureName)
   {
-    textureImage = sf::Image();
-    textureImage.loadFromFile(resourcePath() + textureName);
+    
     skin = sf::Texture();
-    skin.loadFromImage(textureImage);
+    skin.loadFromFile(resourcePath() + textureName);
     node = sf::Sprite(skin);
   }
   
@@ -95,10 +91,9 @@ namespace GO {
   }
   
   
-  void GameObjectBase::setTexture(const sf::Image& newTexImg, bool resetRect)
+  void GameObjectBase::setTexture(const sf::Texture& newTex, bool resetRect)
   {
-    textureImage = newTexImg;
-    skin.loadFromImage(textureImage);
+    skin = newTex;
     node.setTexture(skin);
     updateSize();
   }
@@ -167,12 +162,6 @@ namespace GO {
   const sf::Vector2f& GameObjectBase::getSize()
   {
     return size;
-  }
-  
-  
-  const sf::Image& GameObjectBase::getTextureImage()
-  {
-    return textureImage;
   }
   
   

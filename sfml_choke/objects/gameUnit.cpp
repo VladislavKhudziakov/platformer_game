@@ -15,7 +15,7 @@ namespace GO {
     walkingCounter = 0;
     walkingTimer = sf::Clock();
     auto timer = walkingTimer.getElapsedTime();
-    lastTime = timer.asSeconds();
+    lastTime = timer.asMilliseconds();
   }
   
   
@@ -27,8 +27,7 @@ namespace GO {
     walkingTimer.restart();
     
     auto timer = walkingTimer.getElapsedTime();
-    lastTime = timer.asSeconds();
-    
+    lastTime = timer.asMilliseconds();
     auto skinSize = getTexture()->getSize();
     
     int rectWidth =  skinSize.x / 4;
@@ -117,11 +116,14 @@ namespace GO {
   }
   
   
-  void GameUnit::onUpdate()
+  void GameUnit::onUpdate(double delta)
   {
     onFall();
     onJump();
-    hitBox.top += dy;
+    
+    hitBox.top += dy * delta;
+    hitBox.left += dx * delta;
+    
     setPosition(hitBox.left, hitBox.top);
   }
   
@@ -129,7 +131,7 @@ namespace GO {
   void GameUnit::moveLeft()
   {
     auto timer = walkingTimer.getElapsedTime();
-    double now = timer.asSeconds();
+    double now = timer.asMilliseconds();
     
     if (now >= lastTime + walkDelay) {
       
@@ -151,7 +153,8 @@ namespace GO {
     auto point = getPosition();
     
     if (point.x > 0) {
-      hitBox.left -= 0.1;
+//      hitBox.left -= 0.1;d
+      dx = -0.1;
     }
   }
   
@@ -159,7 +162,7 @@ namespace GO {
   void GameUnit::moveRight()
   {
     auto timer = walkingTimer.getElapsedTime();
-    double now = timer.asSeconds();
+    double now = timer.asMilliseconds();
     
     if (now >= lastTime + walkDelay) {
       walkingCounter = walkingCounter + 1 >= 4 ? 0 : walkingCounter + 1;
@@ -174,7 +177,8 @@ namespace GO {
     }
     
     if (getPosition().x + getSize().x < settings::windowWidth) {
-      hitBox.left += 0.1;
+//      hitBox.left += 0.1;
+      dx = 0.1;
     }
     
   }
@@ -201,6 +205,13 @@ namespace GO {
       dy = -0.1;
     }
   }
+  
+  
+  void GameUnit::stop()
+  {
+    dx = 0;
+  }
+  
   
   void GameUnit::calculateSpriteScale()
   {
@@ -232,5 +243,4 @@ namespace GO {
   {
     return GameObjectBase::operator sf::Sprite*();
   }
-  
 }

@@ -26,6 +26,8 @@ namespace GO {
     sf::RenderWindow* gameWindow;
     GO::GameUnit* player;
     GO::Map map;
+    sf::Clock timer;
+    double prevFrameTime;
     std::vector<GO::MapSprite* > mapObjects;
     
     void onUpdate();

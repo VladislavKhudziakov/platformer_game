@@ -41,16 +41,25 @@ namespace GO {
     if (sf::Keyboard::isKeyPressed(settings::jumpKey)) {
       player->jump();
     }
+    
   }
   
   
   void Game::onUpdate()
   {
+    float now = timer.getElapsedTime().asMilliseconds();
+    float deltaTime = now - prevFrameTime;
+    prevFrameTime = now;
+    
     gameWindow->clear();
     
     renderMap();
     
-    player->onUpdate();
+    player->stop();
+    
+    inputKeysHandler();
+    
+    player->onUpdate(deltaTime);
 
     checkCollisions();
     
@@ -138,6 +147,7 @@ namespace GO {
     loadMap("Map.txt");
     map.calculateSize();
     buildMap();
+    timer.restart();
     
     while (gameWindow->isOpen())
     {
@@ -148,15 +158,15 @@ namespace GO {
         if (event.type == sf::Event::Closed) {
           gameWindow->close();
         }
-
+        
         if (event.type == sf::Event::KeyPressed &&
             event.key.code == sf::Keyboard::Escape) {
           gameWindow->close();
         }
       }
-
-      inputKeysHandler();
+      
       onUpdate();
+      
     }
   }
   

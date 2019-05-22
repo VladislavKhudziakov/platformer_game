@@ -25,7 +25,8 @@ namespace GO {
     int walkingCounter = 0;
     sf::Clock walkingTimer;
     float lastTime;
-    float walkDelay = 0.25;
+    float walkDelay = 250;
+    float prevFrame;
     float dy = 0.1;
     float dx = 0;
     sf::FloatRect hitBox;
@@ -40,11 +41,11 @@ namespace GO {
     GameUnit(const std::string&, float x = 0, float y = 0, float sX = 1.0, float sY = 1.0);
     GameUnit(const sf::Texture&, float x = 0, float y = 0, float sX = 1.0, float sY = 1.0);
     ~GameUnit();
-    void onUpdate();
+    void onUpdate(double);
     void jump();
-    void fall();
     void moveLeft();
     void moveRight();
+    void stop();
     void calculateSpriteScale();
     void setColor(const sf::Color&);
     operator sf::Sprite();

@@ -13,7 +13,8 @@ namespace GO {
   Game::Game()
   {
     gameWindow = new sf::RenderWindow();
-    player = new GO::GameUnit("player.png", 100, 100, 0.5, 0.5);
+    player = new GO::GameUnit("player.png", 0, 0, 0.5, 0.5);
+//    player->calculateSpriteScale();
   }
   
   
@@ -50,7 +51,7 @@ namespace GO {
     
     renderMap();
     
-//    player->onUpdate();
+    player->onUpdate();
 
     checkCollisions();
     

@@ -33,15 +33,14 @@ namespace GO {
     auto timer = walkingTimer.getElapsedTime();
     lastTime = timer.asSeconds();
     
-    scale = sf::Vector2f(sY, sY);
-    setScale(scale);
-    
     auto skinSize = getTexture()->getSize();
     
     setTextureRect(
      sf::Rect<int>(
        walkingCounter * skinSize.x / 4, 0, skinSize.x / 4, skinSize.y)
    );
+    
+    calculateSpriteScale();
     
     move(x, y);
     onGround = false;
@@ -60,8 +59,6 @@ namespace GO {
     auto timer = walkingTimer.getElapsedTime();
     lastTime = timer.asSeconds();
     
-    scale = sf::Vector2f(sY, sY);
-    setScale(scale);
     
     auto skinSize = getTexture()->getSize();
     
@@ -69,6 +66,8 @@ namespace GO {
       sf::Rect<int>(
         walkingCounter * skinSize.x / 4, 0, skinSize.x / 4, skinSize.y)
     );
+    
+    calculateSpriteScale();
     
     move(x, y);
     onGround = false;
@@ -85,8 +84,6 @@ namespace GO {
     auto timer = walkingTimer.getElapsedTime();
     lastTime = timer.asSeconds();
     
-    scale = other.scale;
-    GameObjectBase::setScale(scale.x, scale.y);
     
     auto skinSize = getTexture()->getSize();
     
@@ -94,6 +91,8 @@ namespace GO {
       sf::Rect<int>(
         walkingCounter * skinSize.x / 4, 0, skinSize.x / 4, skinSize.y)
     );
+    
+    calculateSpriteScale();
     
     move(other.getPosition());
     onGround = false;
@@ -115,7 +114,7 @@ namespace GO {
       size.height *= scale.y;
       
       if (point.y + size.height <= settings::windowHeight) {
-        move(0, 1.5);
+        move(0, 0.05);
       } else {
         onGround = true;
       }
@@ -161,19 +160,10 @@ namespace GO {
       lastTime = now;
     }
     
-    auto scale = getScale();
     auto point = getPosition();
-    auto size = getTextureRect();
     
-    size.width *= scale.x;
-    size.height *= scale.y;
-    
-    if (blockWall == right) {
-      restBlockWall();
-    }
-    
-    if (point.x > 0 && blockWall != left) {
-      move(-1.0, 0);
+    if (point.x > 0) {
+      move(-0.3, 0);
     }
   }
   
@@ -210,7 +200,7 @@ namespace GO {
     }
     
     if (getPosition().x + getSize().x < settings::windowWidth) {
-      move(1.0, 0);
+      move(0.3, 0);
     }
     
   }
@@ -220,10 +210,9 @@ namespace GO {
   {
     if (isJump) {
       auto point = getPosition();
-      auto size = getNode()->getTextureRect();
       
-      if (point.y + size.height >= settings::windowHeight - settings::jumpSize) {
-        move(0, -3);
+      if (point.y + getSize().x >= settings::windowHeight - settings::jumpSize * settings::sprite_resolution) {
+        move(0, -0.1);
       } else {
         isJump = false;
       }
@@ -239,22 +228,38 @@ namespace GO {
     }
   }
   
+//
+//  void GameUnit::interruptJump()
+//  {
+//    if (isJump) {
+//      isJump = false;
+//    }
+//  }
+//
+//
+//  void GameUnit::getOnTheGround()
+//  {
+//    if (!onGround) {
+//      onGround = true;
+//    }
+//  }
   
-  void GameUnit::interruptJump()
+  void GameUnit::calculateSpriteScale()
   {
-    if (isJump) {
-      isJump = false;
+    updateSize();
+    sf::Vector2f spriteSize = getSize();
+    sf::Vector2f currScale(1., 1.);
+    
+    if (spriteSize.x != settings::sprite_resolution * settings::playerWidth) {
+      currScale.x = double(settings::sprite_resolution * settings::playerWidth) / spriteSize.x;
     }
-  }
-  
-  
-  void GameUnit::getOnTheGround()
-  {
-    if (!onGround) {
-      onGround = true;
+    
+    if (spriteSize.y != settings::sprite_resolution * settings::playerHeight) {
+      currScale.y = double(settings::sprite_resolution * settings::playerHeight) / spriteSize.y;
     }
+    
+    scale(currScale);
   }
-  
   
   void GameUnit::fall()
   {
@@ -263,23 +268,6 @@ namespace GO {
     }
   }
   
-  
-  void GameUnit::setBlockWallLeft()
-  {
-    blockWall = left;
-  }
-  
-  
-  void GameUnit::setBlockWallRight()
-  {
-    blockWall = right;
-  }
-  
-  
-  void GameUnit::restBlockWall()
-  {
-    blockWall = none;
-  }
   
   
   GameUnit::operator sf::Sprite()

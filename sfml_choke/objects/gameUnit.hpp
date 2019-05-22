@@ -22,7 +22,6 @@ namespace GO {
   class GameUnit : public GameObjectBase
   {
   private:
-    sf::Vector2f scale;
     int walkingCounter;
     sf::Clock walkingTimer;
     float lastTime;
@@ -31,8 +30,7 @@ namespace GO {
     bool isJump;
     enum directions {none, left, right};
     int moveDirection;
-    int blockWall;
-
+    
   protected:
     void onFall();
     void onJump();
@@ -45,14 +43,10 @@ namespace GO {
     ~GameUnit();
     void onUpdate();
     void jump();
-    void interruptJump();
-    void getOnTheGround();
     void fall();
-    void setBlockWallLeft();
-    void setBlockWallRight();
-    void restBlockWall();
     void moveLeft();
     void moveRight();
+    void calculateSpriteScale();
     void setColor(const sf::Color&);
     operator sf::Sprite();
     operator sf::Sprite*();

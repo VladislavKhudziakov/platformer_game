@@ -7,9 +7,6 @@
 //
 
 #include "Map.hpp"
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include "ResourcePath.hpp"
 
 namespace GO {

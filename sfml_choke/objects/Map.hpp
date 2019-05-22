@@ -10,6 +10,8 @@
 #define Map_hpp
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <vector>
 #include "gameUnit.hpp"
 #include <SFML/Audio.hpp>

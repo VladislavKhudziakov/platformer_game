@@ -31,8 +31,10 @@ namespace GO {
       std::cout << "error in map loading\n";
     } else {
       strStream << fin.rdbuf();
-      content = strStream.str();
+      std::string mapSting = strStream.str();
       fin.close();
+      mapSting.pop_back();
+      boost::split(content, mapSting, boost::is_any_of("\n"));
       std::cout << "map loaded successful\n";
     }
   }
@@ -44,19 +46,13 @@ namespace GO {
     int maxLineSize = 0;
     int linesCount = 0;
     
-    for (char strChar : content) {
-      if (strChar != '\n') {
-        maxLineSize++;
-      } else {
-        lastMaxSize = maxLineSize > lastMaxSize ? maxLineSize : lastMaxSize;
-        linesCount++;
-        maxLineSize = 0;
-      }
-    }
+    auto it = std::max_element(content.begin(), content.end(),
+     [](const std::string& s1, const std::string& s2) {
+       return s1.length() < s2.length();
+     });
     
-//    std::cout << lastMaxSize << std::endl;
-    width = lastMaxSize;
-    height = linesCount;
+    width = it->length();
+    height = content.size();
   }
   
   
@@ -66,7 +62,7 @@ namespace GO {
   }
   
   
-  const std::string& Map::getFileContent()
+  const std::vector<std::string>& Map::get()
   {
     return content;
   }

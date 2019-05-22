@@ -12,6 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <boost/algorithm/string.hpp>
 #include <vector>
 #include "gameUnit.hpp"
 #include <SFML/Audio.hpp>
@@ -22,8 +23,8 @@ namespace GO {
   class Map
   {
   private:
-    std::string content;
     std::string fileName;
+    std::vector<std::string> content;
     int width;
     int height;
     
@@ -32,7 +33,7 @@ namespace GO {
     Map(const std::string&);
     void loadFromFile(const std::string&);
     void calculateSize();
-    const std::string& getFileContent();
+    const std::vector<std::string>& get();
     sf::Vector2f getSize();
     ~Map();
   };

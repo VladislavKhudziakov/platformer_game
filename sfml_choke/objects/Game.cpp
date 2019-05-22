@@ -52,19 +52,12 @@ namespace GO {
     prevFrameTime = now;
     
     gameWindow->clear();
-    
     renderMap();
-    
     player->stop();
-    
     inputKeysHandler();
-    
     player->onUpdate(deltaTime);
-
     checkCollisions();
-    
     gameWindow->draw(*player);
-    
     gameWindow->display();
   }
   
@@ -88,27 +81,20 @@ namespace GO {
       gameWindow->create(sf::VideoMode(
        settings::windowWidth, settings::windowHeight), "title");
       
-      std::string mapContent = map.getFileContent();
+      const std::vector<std::string>& mapContent = map.get();
       
-      int currLine = 0;
-      int currColumn = 0;
-      
-      for (char strChar : mapContent) {
-        if (strChar != '\n') {
-          currColumn++;
-          if (strChar == 'b') {
+      for (int i = 0; i < mapContent.size(); i++) {
+        for (int j = 0; j < mapContent[i].length(); j++) {
+          if (mapContent[i][j] == 'b') {
             GO::MapSprite* mapBlock = new GO::MapSprite("wall.png");
-            
-            int spritePositionX = currColumn * settings::sprite_resolution;
-            int spritePositionY = currLine * settings::sprite_resolution;
-            
+
+            int spritePositionX = j * settings::sprite_resolution;
+            int spritePositionY = i * settings::sprite_resolution;
+
             mapBlock->setPosition(spritePositionX, spritePositionY);
-            
+
             mapObjects.push_back(mapBlock);
           }
-        } else {
-          currLine++;
-          currColumn = 0;
         }
       }
     } catch (std::logic_error err) {

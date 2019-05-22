@@ -33,7 +33,6 @@ namespace GO {
     sf::Vector2f spriteSize = getSize();
     sf::Vector2f currScale(1., 1.);
     
-//    std::cout << spriteSize.y;
     if (spriteSize.x != settings::sprite_resolution) {
       currScale.x = double(settings::sprite_resolution) / spriteSize.x;
     }
@@ -42,7 +41,6 @@ namespace GO {
       currScale.y = double(settings::sprite_resolution) / spriteSize.y;
     }
     
-//
     scale(currScale);
   }
 }

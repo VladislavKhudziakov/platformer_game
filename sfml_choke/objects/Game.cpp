@@ -54,7 +54,7 @@ namespace GO {
 
     checkCollisions();
     
-//    gameWindow->draw(*player);
+    gameWindow->draw(*player);
     
     gameWindow->display();
   }
@@ -73,9 +73,11 @@ namespace GO {
       
       sf::Vector2f mapSize = map.getSize();
       
+      settings::windowWidth = mapSize.x * settings::sprite_resolution;
+      settings::windowHeight = mapSize.y * settings::sprite_resolution;
+      
       gameWindow->create(sf::VideoMode(
-       mapSize.x * settings::sprite_resolution,
-       mapSize.y * settings::sprite_resolution), "title");
+       settings::windowWidth, settings::windowHeight), "title");
       
       std::string mapContent = map.getFileContent();
       
@@ -109,7 +111,6 @@ namespace GO {
   
   void Game::renderMap()
   {
-//
     for (GO::MapSprite* currBlock : mapObjects) {
       gameWindow->draw(*currBlock);
     }

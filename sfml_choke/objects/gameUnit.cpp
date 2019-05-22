@@ -114,7 +114,7 @@ namespace GO {
       size.width *= scale.x;
       size.height *= scale.y;
       
-      if (point.y + size.height <= settings::windowHeiht) {
+      if (point.y + size.height <= settings::windowHeight) {
         move(0, 1.5);
       } else {
         onGround = true;
@@ -209,17 +209,7 @@ namespace GO {
       lastTime = now;
     }
     
-    auto scale = getScale();
-    auto point = getPosition();
-    auto size = getNode()->getTextureRect();
-    size.width *= scale.x;
-    size.height *= scale.y;
-    
-    if (blockWall == left) {
-      restBlockWall();
-    }
-    
-    if (point.x + size.width < settings::windowWidth && blockWall != right) {
+    if (getPosition().x + getSize().x < settings::windowWidth) {
       move(1.0, 0);
     }
     
@@ -232,7 +222,7 @@ namespace GO {
       auto point = getPosition();
       auto size = getNode()->getTextureRect();
       
-      if (point.y + size.height >= settings::windowHeiht - settings::jumpSize) {
+      if (point.y + size.height >= settings::windowHeight - settings::jumpSize) {
         move(0, -3);
       } else {
         isJump = false;

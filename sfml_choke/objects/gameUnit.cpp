@@ -19,7 +19,7 @@ namespace GO {
   }
   
   
-  GameUnit::GameUnit(const sf::Texture& tex, float x, float y, float sX, float sY)
+  GameUnit::GameUnit(const sf::Texture& tex, float x, float y)
     : GameObjectBase(tex)
   {
     walkingCounter = 0;
@@ -48,9 +48,8 @@ namespace GO {
   }
   
   
-  GameUnit::GameUnit(
-   const std::string& texName, float x, float y, float sX, float sY)
-  : GameObjectBase(texName)
+  GameUnit::GameUnit(const std::string& texName, float x, float y)
+    : GameObjectBase(texName)
   {
     walkingCounter = 0;
     walkingTimer = sf::Clock();
@@ -153,7 +152,6 @@ namespace GO {
     auto point = getPosition();
     
     if (point.x > 0) {
-//      hitBox.left -= 0.1;d
       dx = -0.1;
     }
   }
@@ -177,10 +175,14 @@ namespace GO {
     }
     
     if (getPosition().x + getSize().x < settings::windowWidth) {
-//      hitBox.left += 0.1;
       dx = 0.1;
     }
     
+  }
+  
+  const sf::FloatRect& GameUnit::getHitbox()
+  {
+    return hitBox;
   }
   
   
@@ -196,6 +198,32 @@ namespace GO {
         dy = 0.1;
       }
     }
+  }
+  
+  
+  void GameUnit::moveTo(float x, float y) {
+    hitBox.left = x;
+    hitBox.top = y;
+    move(hitBox.left, hitBox.top);
+  }
+  
+  
+  double GameUnit::getDirectionX() {
+    return dx;
+  }
+  
+  
+  double GameUnit::getDirectionY() {
+    return dy;
+  }
+  
+  
+  void GameUnit::getOnTheGround() {
+    dy = 0;
+  }
+  
+  void GameUnit::fall() {
+    dy = 0.1;
   }
   
   

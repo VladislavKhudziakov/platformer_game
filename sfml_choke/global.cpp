@@ -17,7 +17,7 @@ namespace settings {
   
   
   const int sprite_resolution = 32;
-  const int jumpSize = 3;
+  const int jumpSize = 5;
   
   const sf::Keyboard::Key jumpKey = sf::Keyboard::Space;
   const sf::Keyboard::Key moveLeftKey = sf::Keyboard::A;

@@ -38,16 +38,22 @@ namespace GO {
   public:
     GameUnit();
     GameUnit(GameUnit&);
-    GameUnit(const std::string&, float x = 0, float y = 0, float sX = 1.0, float sY = 1.0);
-    GameUnit(const sf::Texture&, float x = 0, float y = 0, float sX = 1.0, float sY = 1.0);
+    GameUnit(const std::string&, float x = 0, float y = 0);
+    GameUnit(const sf::Texture&, float x = 0, float y = 0);
     ~GameUnit();
     void onUpdate(double);
     void jump();
     void moveLeft();
     void moveRight();
+    void moveTo(float x, float y);
+    double getDirectionX();
+    double getDirectionY();
+    void getOnTheGround();
+    void fall();
     void stop();
     void calculateSpriteScale();
     void setColor(const sf::Color&);
+    const sf::FloatRect& getHitbox();
     operator sf::Sprite();
     operator sf::Sprite*();
   };

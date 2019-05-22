@@ -13,7 +13,8 @@ namespace GO {
   Game::Game()
   {
     gameWindow = new sf::RenderWindow();
-    player = new GO::GameUnit("player.png", 0, 0, 0.5, 0.5);
+    player = new GO::GameUnit("player.png", 100, 100);
+    player->moveTo(100, 100);
   }
   
   
@@ -114,6 +115,66 @@ namespace GO {
   
   void Game::checkCollisions()
   {
+    const sf::FloatRect& playerHitbox = player->getHitbox();
+    using settings::sprite_resolution;
+    
+    int playerTopMin = playerHitbox.top / sprite_resolution;
+    int playerTopMax = (playerHitbox.top + sprite_resolution * 2) / sprite_resolution;
+    int playerLeftMin = playerHitbox.left / sprite_resolution;
+    int playerLeftMax = (playerHitbox.left + sprite_resolution) / sprite_resolution;
+    std::vector<std::string> mapContent = map.get();
+    
+    for (int i = playerTopMin; i < playerTopMax; i++) {
+      for (int j = playerLeftMin; j < playerLeftMax; j++) {
+        std::cout << mapContent.at(i).at(j) << std::endl;
+        try {
+          if (mapContent.at(i).at(j) == 'b') {
+            
+            double playerDirection = player->getDirectionX();
+//
+            if (playerDirection > 0) {
+              double posX = j * 32 - 32;
+              player -> moveTo(posX, playerHitbox.top);
+//              std::cout << "posX: " << posX << std::endl;
+            } else if (playerDirection < 0) {
+              double posX = j * 32 + 32;
+              player -> moveTo(posX, playerHitbox.top);
+//              std::cout << "negX: " << posX << std::endl;
+            }
+          }
+        } catch (std::out_of_range) {
+          std::cout <<  "out of parameters i:" << i << "j: " << j << std::endl;
+        }
+        
+      }
+    }
+    
+    for (int i = playerTopMin; i < playerTopMax; i++) {
+      for (int j = playerLeftMin; j < playerLeftMax; j++) {
+        
+        try {
+          if (mapContent.at(i).at(j) == 'b') {
+            std::cout << "i " << i << " j " << j << std::endl;
+            double playerDirection = player->getDirectionY();
+            
+            if (playerDirection > 0) {
+              double posY = i * 32 - 32 * 2;
+              player -> moveTo(playerHitbox.left, posY);
+              player -> getOnTheGround();
+              
+//              std::cout << "posY: " << posY << std::endl;
+            } else if (playerDirection < 0) {
+              double posY = i * 32 + 32;
+              player -> moveTo(playerHitbox.left, posY);
+//              std::cout << "negY: " << posY << std::endl;
+              player -> fall();
+            }
+          }
+        } catch (std::out_of_range) {
+          std::cout <<  "out of parameters i:" << i << " j: " << j << std::endl;
+        }
+      }
+    }
   }
   
   

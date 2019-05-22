@@ -54,7 +54,7 @@ namespace GO {
 
     checkCollisions();
     
-    gameWindow->draw(*player);
+//    gameWindow->draw(*player);
     
     gameWindow->display();
   }
@@ -109,6 +109,7 @@ namespace GO {
   
   void Game::renderMap()
   {
+//
     for (GO::MapSprite* currBlock : mapObjects) {
       gameWindow->draw(*currBlock);
     }

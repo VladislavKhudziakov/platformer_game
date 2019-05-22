@@ -22,12 +22,16 @@ namespace GO {
   private:
     std::string content;
     std::string fileName;
+    int width;
+    int height;
     
   public:
     Map();
     Map(const std::string&);
     void loadFromFile(const std::string&);
+    void calculateSize();
     const std::string& getFileContent();
+    sf::Vector2f getSize();
     ~Map();
   };
 }

@@ -9,27 +9,37 @@
 #include "MapSprite.hpp"
 
 namespace GO {
-  sf::Vector2f MapSprite::calculateSpriteScale(
-     const mapBlockData& blockData, double sizeAspect)
+  MapSprite::MapSprite() : GameObjectBase()
   {
-    if (blockData.width >= blockData.height) {
-
-      sf::Vector2f spriteSize(
-        blockData.width * sizeAspect, blockData.height);
-
-      auto textureSize = GameObjectBase::getTexture()->getSize();
-
-      return sf::Vector2f(
-        spriteSize.x / textureSize.x, spriteSize.y / textureSize.y);
-
-    } else {
-      sf::Vector2f spriteSize(
-        blockData.width, blockData.height * sizeAspect);
-
-      auto textureSize = GameObjectBase::getTexture()->getSize();
-
-      return sf::Vector2f(
-        spriteSize.x / textureSize.x, spriteSize.y / textureSize.y);
+    calculateSpriteScale();
+  }
+  
+  
+  MapSprite::MapSprite(const sf::Image& texImg) : GameObjectBase(texImg)
+  {
+    calculateSpriteScale();
+  }
+  
+  
+  MapSprite::MapSprite(const std::string& texName) : GameObjectBase(texName)
+  {
+    calculateSpriteScale();
+  }
+  
+  
+  void MapSprite::calculateSpriteScale()
+  {
+    sf::Vector2f spriteSize = getSize();
+    sf::Vector2f currScale(1., 1.);
+    
+    if (spriteSize.x != settings::sprite_resolution) {
+      currScale.x = double(settings::sprite_resolution) / spriteSize.x;
     }
+    
+    if (spriteSize.y != settings::sprite_resolution) {
+      currScale.y = double(settings::sprite_resolution) / spriteSize.y;
+    }
+    
+    scale(currScale);
   }
 }

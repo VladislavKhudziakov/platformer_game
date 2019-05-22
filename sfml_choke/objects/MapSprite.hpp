@@ -22,11 +22,13 @@
 namespace GO {
   class MapSprite : public GameObjectBase
   {
+  private:
+    void calculateSpriteScale();
+    
   public:
-    MapSprite() : GameObjectBase() { }
-    MapSprite(const sf::Image& texImg) : GameObjectBase(texImg) { }
-    MapSprite(const std::string& textureName) : GameObjectBase(textureName) { }
-    sf::Vector2f calculateSpriteScale(const mapBlockData&, double);
+    MapSprite();
+    MapSprite(const sf::Image& texImg);
+    MapSprite(const std::string& textureName);
   };
 }
 

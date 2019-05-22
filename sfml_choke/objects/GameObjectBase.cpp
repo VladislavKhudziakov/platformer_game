@@ -40,56 +40,52 @@ namespace GO {
   void GameObjectBase::scale(float scaleX, float scaleY)
   {
     node.scale(scaleX, scaleY);
-    updateRect();
+    updateSize();
   }
   
   
   void GameObjectBase::scale(const sf::Vector2f& scale)
   {
     node.scale(scale);
-    updateRect();
+    updateSize();
   }
   
   
   void GameObjectBase::setScale(float scaleX, float scaleY)
   {
     node.setScale(scaleX, scaleY);
-    updateRect();
+    updateSize();
   }
   
   
   void GameObjectBase::setScale(const sf::Vector2f& scale)
   {
     node.setScale(scale);
-    updateRect();
+    updateSize();
   }
   
   
   void GameObjectBase::move(float offsetX, float offsetY)
   {
     node.move(offsetX, offsetY);
-    updateRect();
   }
   
   
   void GameObjectBase::move(const sf::Vector2f& offset)
   {
     node.move(offset);
-    updateRect();
   }
   
   
   void GameObjectBase::setPosition(float x, float y)
   {
     node.setPosition(x, y);
-    updateRect();
   }
   
   
   void GameObjectBase::setPosition(const sf::Vector2f& point)
   {
     node.setPosition(point);
-    updateRect();
   }
   
   
@@ -104,13 +100,14 @@ namespace GO {
     textureImage = newTexImg;
     skin.loadFromImage(textureImage);
     node.setTexture(skin);
-    updateRect();
+    updateSize();
   }
   
   
   void GameObjectBase::setTextureRect(const sf::IntRect& rectangle)
   {
     node.setTextureRect(rectangle);
+    updateSize();
   }
   
   const sf::Vector2f& GameObjectBase::getPosition()
@@ -167,9 +164,9 @@ namespace GO {
   }
   
   
-  const GO::HitBox& GameObjectBase::getRect()
+  const sf::Vector2f& GameObjectBase::getSize()
   {
-    return rect;
+    return size;
   }
   
   
@@ -179,20 +176,12 @@ namespace GO {
   }
   
   
-  void GameObjectBase::updateRect()
+  void GameObjectBase::updateSize()
   {
-    sf::IntRect size = getTextureRect();
+    sf::IntRect textureRect = getTextureRect();
     sf::Vector2f scale = getScale();
-    double width = scale.x * size.width;
-    double height = scale.y * size.height;
-    sf::Vector2f position = getPosition();
-    
-    sf::Vector2f leftBottomVertex = sf::Vector2f(
-      position.x - width / 2, position.y - height / 2);
-    sf::Vector2f rightTopVertex = sf::Vector2f(
-      position.x + width / 2, position.y + height / 2);
-
-    rect.update(rightTopVertex, leftBottomVertex);
+    size.y = scale.y * textureRect.height;
+    size.x = scale.x * textureRect.width;
   }
   
   

@@ -10,11 +10,9 @@
 #define GameBlockData_h
 
 namespace GO {
-  struct mapBlockData {
-    double width;
-    double height;
-    double columnsCount;
-    double linesCount;
+  struct MapData {
+    int width;
+    int height;
   };
 }
 

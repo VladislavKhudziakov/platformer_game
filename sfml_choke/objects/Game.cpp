@@ -12,8 +12,7 @@ namespace GO {
   
   Game::Game()
   {
-    gameWindow = new sf::RenderWindow(
-    sf::VideoMode(settings::windowWidth, settings::windowHeiht), "Game");
+    gameWindow = new sf::RenderWindow();
     player = new GO::GameUnit("player.png", 100, 100, 0.5, 0.5);
   }
   
@@ -51,7 +50,7 @@ namespace GO {
     
     renderMap();
     
-    player->onUpdate();
+//    player->onUpdate();
 
     checkCollisions();
     
@@ -67,26 +66,18 @@ namespace GO {
   }
   
   
-  double Game::calculateMapSpriteSizeAspect(const GO::mapBlockData& blockData)
-  {
-    if (blockData.width >= blockData.height) {
-      return  blockData.height / blockData.width;
-    } else {
-      return blockData.width / blockData.height;
-    }
-  }
-  
-  
   void Game::buildMap()
   {
-    GO::mapBlockData blockData = getBlocksData();
-    
-    double sizeAspect = calculateMapSpriteSizeAspect(blockData);
-    
-    std::string mapContent = map.getFileContent();
-    
     try {
       assertMapBuilding();
+      
+      sf::Vector2f mapSize = map.getSize();
+      
+      gameWindow->create(sf::VideoMode(
+       mapSize.x * settings::sprite_resolution,
+       mapSize.y * settings::sprite_resolution), "title");
+      
+      std::string mapContent = map.getFileContent();
       
       int currLine = 0;
       int currColumn = 0;
@@ -97,12 +88,10 @@ namespace GO {
           if (strChar == 'b') {
             GO::MapSprite* mapBlock = new GO::MapSprite("wall.png");
             
-            mapBlock->scale(mapBlock->calculateSpriteScale(blockData, sizeAspect));
-
-            sf::Vector2f currPos(
-              currColumn * blockData.width, currLine * blockData.height);
+            int spritePositionX = currColumn * settings::sprite_resolution;
+            int spritePositionY = currLine * settings::sprite_resolution;
             
-            mapBlock->setPosition(currPos);
+            mapBlock->setPosition(spritePositionX, spritePositionY);
             
             mapObjects.push_back(mapBlock);
           }
@@ -111,7 +100,6 @@ namespace GO {
           currColumn = 0;
         }
       }
-      
     } catch (std::logic_error err) {
       std::cout << err.what();
       std::cout << "cannot build map from empty file or empty map";
@@ -129,85 +117,13 @@ namespace GO {
   
   void Game::checkCollisions()
   {
-    for (GO::MapSprite* currTile : mapObjects) {
-      GO::HitBox playerRect = player->getRect();
-      GO::HitBox tileRect = currTile->getRect();
-      
-      if (playerRect == tileRect) {
-        sf::Vector2f playerLeftBottomVertex = playerRect.getLeftBottomVertex();
-        sf::Vector2f playerRightTopVertex = playerRect.getRightTopVertex();
-        sf::Vector2f tileLeftBottomVertex = tileRect.getLeftBottomVertex();
-        sf::Vector2f tileRightTopVertex = tileRect.getRightTopVertex();
-        
-        if (playerLeftBottomVertex.x < tileRightTopVertex.x) {
-//          std::cout << "collised left\n";
-          player->setBlockWallLeft();
-        } else {
-          player->restBlockWall();
-        }
-        
-        if (playerRightTopVertex.x > tileLeftBottomVertex.x) {
-//          std::cout << "collised right\n";
-          player->setBlockWallRight();
-
-        }
-        
-        if (playerRightTopVertex.y > tileLeftBottomVertex.y) {
-          player->interruptJump();
-        }
-        
-        if (playerLeftBottomVertex.y < tileRightTopVertex.y) {
-//          player->getOnTheGround();
-        } else {
-//          std::cout << "fall";
-//          player->fall();
-        }
-      }
-    }
-  }
-  
-  
-  GO::mapBlockData Game::getBlocksData()
-  {
-   mapBlockData blocksData;
-    
-    auto mapContent = map.getFileContent();
-    
-    int lastMaxSize = 0;
-    int maxLineSize = 0;
-    int linesCount = 0;
-    
-    try {
-      assertMapBuilding();
-      
-      for (char strChar : mapContent) {
-        if (strChar != '\n') {
-          maxLineSize++;
-        } else {
-          lastMaxSize = maxLineSize > lastMaxSize ? maxLineSize : lastMaxSize;
-          linesCount++;
-          maxLineSize = 0;
-        }
-      }
-      
-      blocksData.width = settings::windowWidth / lastMaxSize;
-      blocksData.height = settings::windowHeiht / linesCount;
-      blocksData.columnsCount = lastMaxSize;
-      blocksData.linesCount = linesCount;
-      
-    } catch (std::logic_error err) {
-      std::cout << err.what();
-      std::cout << "cannot build map from empty file or empty map";
-    }
-    
-    return blocksData;
   }
   
   
   void Game::assertMapBuilding()
   {
-    auto mapContent = map.getFileContent();
-    if (mapContent.size() > 0) {
+    sf::Vector2f mapSize = map.getSize();
+    if (mapSize.x > 0 && mapSize.y > 0) {
       return;
     } else {
       throw std::logic_error("invalid map size.\n");
@@ -218,6 +134,7 @@ namespace GO {
   void Game::start()
   {
     loadMap("Map.txt");
+    map.calculateSize();
     buildMap();
     
     while (gameWindow->isOpen())

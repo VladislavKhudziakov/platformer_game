@@ -31,10 +31,9 @@ namespace GO {
     
     void onUpdate();
     void inputKeysHandler();
-    GO::mapBlockData getBlocksData();
     void assertMapBuilding();
     void renderMap();
-    double calculateMapSpriteSizeAspect(const GO::mapBlockData&);
+
     void checkCollisions();
     
   public:

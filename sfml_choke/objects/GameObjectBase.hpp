@@ -25,7 +25,7 @@ namespace GO {
   private:
     sf::Image textureImage;
     sf::Texture skin;
-    GO::HitBox rect;
+    sf::Vector2f size;
     sf::Sprite node;
     
   public:
@@ -33,40 +33,40 @@ namespace GO {
     GameObjectBase(const sf::Image&);
     GameObjectBase(const std::string&);
     
-    void scale(float, float);
-    void scale(const sf::Vector2f&);
-    void setScale(float, float);
-    void setScale(const sf::Vector2f&);
+    virtual void scale(float, float);
+    virtual void scale(const sf::Vector2f&);
+    virtual void setScale(float, float);
+    virtual void setScale(const sf::Vector2f&);
     
-    void move(float, float);
-    void move(const sf::Vector2f&);
-    void setPosition(float, float);
-    void setPosition(const sf::Vector2f&);
+    virtual void move(float, float);
+    virtual void move(const sf::Vector2f&);
+    virtual void setPosition(float, float);
+    virtual void setPosition(const sf::Vector2f&);
     
-    void setOrigin(float x, float y);
-    void setOrigin(const sf::Vector2f&);
+    virtual void setOrigin(float x, float y);
+    virtual void setOrigin(const sf::Vector2f&);
     
-    void setTextureRect(const sf::IntRect &);
-    void setTexture(const sf::Image&, bool resetRect = false);
+    virtual void setTextureRect(const sf::IntRect &);
+    virtual void setTexture(const sf::Image&, bool resetRect = false);
     
-    void rotate(float);
+    virtual void rotate(float);
     
-    const sf::IntRect& getTextureRect();
-    const sf::Vector2f& getOrigin();
-    const sf::Vector2f& getPosition();
-    const sf::Vector2f& getScale();
-    const GO::HitBox& getRect();
-    const sf::Image& getTextureImage();
+    virtual const sf::IntRect& getTextureRect();
+    virtual const sf::Vector2f& getOrigin();
+    virtual const sf::Vector2f& getPosition();
+    virtual const sf::Vector2f& getScale();
+    virtual const sf::Vector2f& getSize();
+    virtual const sf::Image& getTextureImage();
     
-    float getRotation();
+    virtual float getRotation();
     
-    const sf::Sprite* getNode();
-    const sf::Texture* getTexture();
+    virtual const sf::Sprite* getNode();
+    virtual const sf::Texture* getTexture();
     
-    void updateRect();
+    virtual void updateSize();
     
-    operator sf::Sprite();
-    operator sf::Sprite*();
+    virtual operator sf::Sprite();
+    virtual operator sf::Sprite*();
   };
 }
 #endif /* GameObjectBase_hpp */

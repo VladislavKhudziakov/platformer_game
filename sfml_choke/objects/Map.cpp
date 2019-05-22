@@ -41,6 +41,34 @@ namespace GO {
   }
   
   
+  void Map::calculateSize()
+  {
+    int lastMaxSize = 0;
+    int maxLineSize = 0;
+    int linesCount = 0;
+    
+    for (char strChar : content) {
+      if (strChar != '\n') {
+        maxLineSize++;
+      } else {
+        lastMaxSize = maxLineSize > lastMaxSize ? maxLineSize : lastMaxSize;
+        linesCount++;
+        maxLineSize = 0;
+      }
+    }
+    
+//    std::cout << lastMaxSize << std::endl;
+    width = lastMaxSize;
+    height = linesCount;
+  }
+  
+  
+  sf::Vector2f Map::getSize()
+  {
+    return sf::Vector2f(width, height);
+  }
+  
+  
   const std::string& Map::getFileContent()
   {
     return content;

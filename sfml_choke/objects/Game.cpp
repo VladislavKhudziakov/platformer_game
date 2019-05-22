@@ -14,7 +14,6 @@ namespace GO {
   {
     gameWindow = new sf::RenderWindow();
     player = new GO::GameUnit("player.png", 0, 0, 0.5, 0.5);
-//    player->calculateSpriteScale();
   }
   
   

@@ -114,7 +114,7 @@ namespace GO {
       size.height *= scale.y;
       
       if (point.y + size.height <= settings::windowHeight) {
-        move(0, 0.05);
+        move(0, 0.2);
       } else {
         onGround = true;
       }
@@ -163,7 +163,7 @@ namespace GO {
     auto point = getPosition();
     
     if (point.x > 0) {
-      move(-0.3, 0);
+      move(-0.1, 0);
     }
   }
   
@@ -200,7 +200,7 @@ namespace GO {
     }
     
     if (getPosition().x + getSize().x < settings::windowWidth) {
-      move(0.3, 0);
+      move(0.1, 0);
     }
     
   }
@@ -210,9 +210,9 @@ namespace GO {
   {
     if (isJump) {
       auto point = getPosition();
-      
-      if (point.y + getSize().x >= settings::windowHeight - settings::jumpSize * settings::sprite_resolution) {
-        move(0, -0.1);
+      double jumpHeight = settings::jumpSize * settings::sprite_resolution;
+      if (point.y + getSize().x >= settings::windowHeight - jumpHeight) {
+        move(0, -0.3);
       } else {
         isJump = false;
       }
@@ -228,22 +228,6 @@ namespace GO {
     }
   }
   
-//
-//  void GameUnit::interruptJump()
-//  {
-//    if (isJump) {
-//      isJump = false;
-//    }
-//  }
-//
-//
-//  void GameUnit::getOnTheGround()
-//  {
-//    if (!onGround) {
-//      onGround = true;
-//    }
-//  }
-  
   void GameUnit::calculateSpriteScale()
   {
     updateSize();
@@ -251,11 +235,13 @@ namespace GO {
     sf::Vector2f currScale(1., 1.);
     
     if (spriteSize.x != settings::sprite_resolution * settings::playerWidth) {
-      currScale.x = double(settings::sprite_resolution * settings::playerWidth) / spriteSize.x;
+      double spriteWidth = settings::sprite_resolution * settings::playerWidth;
+      currScale.x = spriteWidth / spriteSize.x;
     }
     
     if (spriteSize.y != settings::sprite_resolution * settings::playerHeight) {
-      currScale.y = double(settings::sprite_resolution * settings::playerHeight) / spriteSize.y;
+      double spriteHeight = settings::sprite_resolution * settings::playerHeight;
+      currScale.y = spriteHeight / spriteSize.y;
     }
     
     scale(currScale);
@@ -267,7 +253,6 @@ namespace GO {
       onGround = false;
     }
   }
-  
   
   
   GameUnit::operator sf::Sprite()

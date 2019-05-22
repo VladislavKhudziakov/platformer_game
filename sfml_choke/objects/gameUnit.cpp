@@ -19,8 +19,8 @@ namespace GO {
   }
   
   
-  GameUnit::GameUnit(const sf::Texture& texture, float x, float y, float sX, float sY)
-  : GameObjectBase(texture)
+  GameUnit::GameUnit(const sf::Texture& tex, float x, float y, float sX, float sY)
+    : GameObjectBase(tex)
   {
     walkingCounter = 0;
     walkingTimer = sf::Clock();
@@ -31,13 +31,21 @@ namespace GO {
     
     auto skinSize = getTexture()->getSize();
     
+    int rectWidth =  skinSize.x / 4;
+    int rectHeight = skinSize.y;
+    
     setTextureRect(
      sf::IntRect(walkingCounter * skinSize.x / 4, 0, skinSize.x / 4, skinSize.y)
    );
     
+    hitBox.top = y;
+    hitBox.left = x;
+    hitBox.width = rectWidth;
+    hitBox.height = rectHeight;
+    
     calculateSpriteScale();
     
-    move(x, y);
+    move(hitBox.top, hitBox.left);
   }
   
   
@@ -94,7 +102,7 @@ namespace GO {
   
   void GameUnit::onFall()
   {
-    if (!onGround && dy > 0) {
+    if (dy > 0) {
       
       auto scale = getScale();
       auto point = getPosition();
@@ -102,10 +110,8 @@ namespace GO {
       size.width *= scale.x;
       size.height *= scale.y;
       
-      if (point.y + size.height <= settings::windowHeight) {
-        move(0, dy);
-      } else {
-        onGround = true;
+      if (!(point.y + size.height <= settings::windowHeight)) {
+        dy = 0;
       }
     }
   }
@@ -115,6 +121,8 @@ namespace GO {
   {
     onFall();
     onJump();
+    hitBox.top += dy;
+    setPosition(hitBox.left, hitBox.top);
   }
   
   
@@ -131,9 +139,11 @@ namespace GO {
       
       int rectWidth = skinSize.x / 4;
       int rectHeight = skinSize.y;
+      
       setTextureRect(
         sf::IntRect(
-          rectWidth * walkingCounter + rectWidth, 0, -rectWidth, rectHeight));
+          rectWidth * walkingCounter + rectWidth, 0, -rectWidth, rectHeight)
+      );
       
       lastTime = now;
     }
@@ -141,7 +151,7 @@ namespace GO {
     auto point = getPosition();
     
     if (point.x > 0) {
-      move(-0.1, 0);
+      hitBox.left -= 0.1;
     }
   }
   
@@ -158,14 +168,13 @@ namespace GO {
 
       setTextureRect(
         sf::Rect<int>(
-          walkingCounter * skinSize.x / 4,
-          0, skinSize.x / 4, skinSize.y));
+          walkingCounter * skinSize.x / 4, 0, skinSize.x / 4, skinSize.y));
       
       lastTime = now;
     }
     
     if (getPosition().x + getSize().x < settings::windowWidth) {
-      move(0.1, 0);
+      hitBox.left += 0.1;
     }
     
   }
@@ -178,7 +187,7 @@ namespace GO {
       double jumpHeight = settings::jumpSize * settings::sprite_resolution;
       
       if (point.y + getSize().y >= settings::windowHeight - jumpHeight) {
-        move(0, dy);
+        hitBox.top += dy;
       } else {
         dy = 0.1;
       }
@@ -188,8 +197,7 @@ namespace GO {
   
   void GameUnit::jump()
   {
-    if (onGround) {
-      onGround = false;
+    if (dy == 0) {
       dy = -0.1;
     }
   }
@@ -211,13 +219,6 @@ namespace GO {
     }
     
     scale(currScale);
-  }
-  
-  void GameUnit::fall()
-  {
-    if (onGround) {
-      onGround = false;
-    }
   }
   
   

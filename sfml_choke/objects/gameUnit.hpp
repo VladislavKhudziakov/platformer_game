@@ -27,7 +27,8 @@ namespace GO {
     float lastTime;
     float walkDelay = 0.25;
     float dy = 0.1;
-    bool onGround = false;
+    float dx = 0;
+    sf::FloatRect hitBox;
     
   protected:
     void onFall();

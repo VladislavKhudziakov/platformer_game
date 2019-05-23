@@ -37,14 +37,14 @@ namespace GO {
      sf::IntRect(walkingCounter * skinSize.x / 4, 0, skinSize.x / 4, skinSize.y)
    );
     
+    calculateSpriteScale();
+    
     hitBox.top = y;
     hitBox.left = x;
     hitBox.width = rectWidth;
     hitBox.height = rectHeight;
     
-    calculateSpriteScale();
-    
-    move(hitBox.top, hitBox.left);
+    setPosition(hitBox.left, hitBox.top);
   }
   
   
@@ -61,14 +61,27 @@ namespace GO {
     
     auto skinSize = getTexture()->getSize();
     
+    int rectWidth =  skinSize.x / 4;
+    int rectHeight = skinSize.y;
+    
     setTextureRect(
       sf::Rect<int>(
         walkingCounter * skinSize.x / 4, 0, skinSize.x / 4, skinSize.y)
     );
     
+    sf::Vector2f scale = getScale();
+    
+    hitBox.top = y;
+    hitBox.left = x;
+//    hitBox.width = rectWidth * scale.x;
+//    hitBox.height = rectHeight * scale.y;
+//
+//    std::cout << rectWidth * scale.x << std::endl;
+//    std::cout << rectHeight * scale.y << std::endl;
+    
     calculateSpriteScale();
     
-    move(x, y);
+    setPosition(hitBox.left, hitBox.top);
   }
   
   
@@ -115,15 +128,54 @@ namespace GO {
   }
   
   
-  void GameUnit::onUpdate(double delta)
+  void GameUnit::onUpdate(double delta, const std::vector<std::string>& map)
   {
     onFall();
     onJump();
-    
+    hitBox.left += dx * delta / 200;
+    colX(map);
     hitBox.top += dy * delta / 200;
-    hitBox.left += dx * delta/ 200;
+    colY(map);
     
     setPosition(hitBox.left, hitBox.top);
+  }
+  
+  void GameUnit::colX(const std::vector<std::string>& map)
+  {
+    for (int i = hitBox.top / 32; i < (hitBox.top + 32 * 2) / 32; i++) {
+      for (int j = hitBox.left / 32; j < (hitBox.left + 32) / 32; j++) {
+        try {
+          if (map.at(i).at(j) == 'b') {
+            if (dx > 0) hitBox.left = j * 32 - 32;
+            if (dx < 0) hitBox.left = j * 32 + 32;
+          }
+        } catch (std::out_of_range) {
+          std::cout <<  "out of parameters i:" << i << "j: " << j << std::endl;
+        }
+        
+      }
+    }
+  }
+  
+  void GameUnit::colY(const std::vector<std::string>& map)
+  {std::cout <<  " imin:" << hitBox.top / 32 << " imax: " << (hitBox.top + hitBox.height) / 32 << std::endl;
+    for (int i = hitBox.top / 32; i < (hitBox.top + 32 * 2) / 32; i++) {
+      for (int j = hitBox.left / 32; j < (hitBox.left + 32) / 32; j++) {
+        try {
+          if (map.at(i).at(j) == 'b') {
+//            std::cout <<  " i:" << i << "j: " << j << std::endl;
+            if (dy > 0) {
+              hitBox.top = i * 32 - 32 * 2;
+            }
+            if (dy < 0) {
+              hitBox.top = i * 32 + 32;
+            }
+          }
+        } catch (std::out_of_range) {
+          std::cout <<  "out of parameters i:" << i << "j: " << j << std::endl;
+        }
+      }
+    }
   }
   
   

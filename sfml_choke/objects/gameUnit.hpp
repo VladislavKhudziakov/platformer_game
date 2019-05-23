@@ -41,7 +41,7 @@ namespace GO {
     GameUnit(const std::string&, float x = 0, float y = 0);
     GameUnit(const sf::Texture&, float x = 0, float y = 0);
     ~GameUnit();
-    void onUpdate(double);
+    void onUpdate(double, const std::vector<std::string>&);
     void jump();
     void moveLeft();
     void moveRight();
@@ -51,6 +51,8 @@ namespace GO {
     void getOnTheGround();
     void fall();
     void stop();
+    void colX(const std::vector<std::string>&);
+    void colY(const std::vector<std::string>&);
     void calculateSpriteScale();
     void setColor(const sf::Color&);
     const sf::FloatRect& getHitbox();

@@ -10,6 +10,10 @@
 #define global_h
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include <map>
+#include <vector>
+
+bool exist(const std::vector<char>&, char);
 
 namespace settings {
   
@@ -25,6 +29,9 @@ namespace settings {
   extern const sf::Keyboard::Key moveRightKey;
   extern const int playerHeight;
   extern const int playerWidth;
+  
+  extern const std::map<char, sf::Vector2i> tileMap;
+  extern const std::vector<char> walls;
 }
 
 #endif /* global_h */

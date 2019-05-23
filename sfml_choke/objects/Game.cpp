@@ -51,7 +51,6 @@ namespace GO {
     double now = timer.getElapsedTime().asMicroseconds();
     double deltaTime = now - prevFrameTime;
     prevFrameTime = now;
-    
     gameWindow->clear();
     renderMap();
     player->stop();
@@ -85,14 +84,15 @@ namespace GO {
       
       for (int i = 0; i < mapContent.size(); i++) {
         for (int j = 0; j < mapContent[i].length(); j++) {
-          if (mapContent.at(i).at(j) == 'b') {
-            GO::MapSprite* mapBlock = new GO::MapSprite("wall.png");
-
+          if (settings::tileMap.count(mapContent[i][j]) > 0) {
+            GO::MapSprite* mapBlock = new GO::MapSprite("tileSet.png");
             int spritePositionX = j * settings::sprite_resolution;
             int spritePositionY = i * settings::sprite_resolution;
-
+            
             mapBlock->setPosition(spritePositionX, spritePositionY);
-
+            auto texPos = settings::tileMap.at(mapContent[i][j]);
+            std::cout << texPos.x <<"   " <<  texPos.y << std::endl;
+            mapBlock->setTextureRect(sf::IntRect(texPos.x * 32, texPos.y * 32, 32, 32));
             mapObjects.push_back(mapBlock);
           }
         }
@@ -147,7 +147,6 @@ namespace GO {
       }
       
       onUpdate();
-      
     }
   }
   

@@ -148,7 +148,7 @@ namespace GO {
     for (int i = hitBox.top / tileSize; i < (hitBox.top + hitBox.height) / tileSize; i++) {
       for (int j = hitBox.left / tileSize; j < (hitBox.left + hitBox.width) / tileSize; j++) {
         try {
-          if (map.at(i).at(j) == 'b') {
+          if (exist(settings::walls, map[i][j])) {
             if (dx > 0) hitBox.left = j * tileSize - tileSize;
             if (dx < 0) hitBox.left = j * tileSize + tileSize;
           }
@@ -167,7 +167,7 @@ namespace GO {
     for (int i = hitBox.top / tileSize; i < (hitBox.top + hitBox.height) / tileSize; i++) {
       for (int j = hitBox.left / tileSize; j < (hitBox.left + hitBox.width) / tileSize; j++) {
         try {
-          if (map.at(i).at(j) == 'b') {
+          if (exist(settings::walls, map[i][j])) {
             if (dy > 0) {
               hitBox.top = i * tileSize - tileSize * 2;
               onGround = true;

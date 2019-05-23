@@ -23,7 +23,7 @@ namespace GO {
   
   MapSprite::MapSprite(const std::string& texName) : GameObjectBase(texName)
   {
-    calculateSpriteScale();
+//    calculateSpriteScale();
   }
   
   

@@ -112,11 +112,6 @@ namespace GO {
   }
   
   
-  void Game::checkCollisions()
-  {
-  }
-  
-  
   void Game::assertMapBuilding()
   {
     sf::Vector2f mapSize = map.getSize();

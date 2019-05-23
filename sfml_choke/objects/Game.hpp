@@ -34,8 +34,6 @@ namespace GO {
     void inputKeysHandler();
     void assertMapBuilding();
     void renderMap();
-
-    void checkCollisions();
     
   public:
     Game();

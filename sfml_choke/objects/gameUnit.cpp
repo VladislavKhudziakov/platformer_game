@@ -39,10 +39,12 @@ namespace GO {
     
     calculateSpriteScale();
     
+    sf::Vector2f size = getSize();
+    
     hitBox.top = y;
     hitBox.left = x;
-    hitBox.width = rectWidth;
-    hitBox.height = rectHeight;
+    hitBox.width = size.x;
+    hitBox.height = size.y;
     
     setPosition(hitBox.left, hitBox.top);
   }
@@ -69,12 +71,15 @@ namespace GO {
         walkingCounter * skinSize.x / 4, 0, skinSize.x / 4, skinSize.y)
     );
     
-    sf::Vector2f scale = getScale();
+    calculateSpriteScale();
+    
+    sf::Vector2f size = getSize();
     
     hitBox.top = y;
     hitBox.left = x;
-    
-    calculateSpriteScale();
+    hitBox.width = size.x;
+    hitBox.height = size.y;
+
     
     setPosition(hitBox.left, hitBox.top);
   }
@@ -138,12 +143,14 @@ namespace GO {
   
   void GameUnit::colX(const std::vector<std::string>& map)
   {
-    for (int i = hitBox.top / 32; i < (hitBox.top + 32 * 2) / 32; i++) {
-      for (int j = hitBox.left / 32; j < (hitBox.left + 32) / 32; j++) {
+    int tileSize = settings::sprite_resolution;
+    
+    for (int i = hitBox.top / tileSize; i < (hitBox.top + hitBox.height) / tileSize; i++) {
+      for (int j = hitBox.left / tileSize; j < (hitBox.left + hitBox.width) / tileSize; j++) {
         try {
           if (map.at(i).at(j) == 'b') {
-            if (dx > 0) hitBox.left = j * 32 - 32;
-            if (dx < 0) hitBox.left = j * 32 + 32;
+            if (dx > 0) hitBox.left = j * tileSize - tileSize;
+            if (dx < 0) hitBox.left = j * tileSize + tileSize;
           }
         } catch (std::out_of_range) {
           std::cout <<  "out of parameters i:" << i << "j: " << j << std::endl;
@@ -155,16 +162,18 @@ namespace GO {
   
   void GameUnit::colY(const std::vector<std::string>& map)
   {
-    for (int i = hitBox.top / 32; i < (hitBox.top + 32 * 2) / 32; i++) {
-      for (int j = hitBox.left / 32; j < (hitBox.left + 32) / 32; j++) {
+    int tileSize = settings::sprite_resolution;
+    
+    for (int i = hitBox.top / tileSize; i < (hitBox.top + hitBox.height) / tileSize; i++) {
+      for (int j = hitBox.left / tileSize; j < (hitBox.left + hitBox.width) / tileSize; j++) {
         try {
           if (map.at(i).at(j) == 'b') {
             if (dy > 0) {
-              hitBox.top = i * 32 - 32 * 2;
+              hitBox.top = i * tileSize - tileSize * 2;
               onGround = true;
             }
             if (dy < 0) {
-              hitBox.top = i * 32 + 32;
+              hitBox.top = i * tileSize + tileSize;
             }
           }
         } catch (std::out_of_range) {
@@ -181,7 +190,6 @@ namespace GO {
     double now = timer.asMilliseconds();
     
     if (now >= lastTime + walkDelay) {
-      
       walkingCounter = walkingCounter + 1 >= 4 ? 0 : walkingCounter + 1;
       
       auto skinSize = getTexture()->getSize();

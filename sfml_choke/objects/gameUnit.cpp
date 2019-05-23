@@ -73,11 +73,6 @@ namespace GO {
     
     hitBox.top = y;
     hitBox.left = x;
-//    hitBox.width = rectWidth * scale.x;
-//    hitBox.height = rectHeight * scale.y;
-//
-//    std::cout << rectWidth * scale.x << std::endl;
-//    std::cout << rectHeight * scale.y << std::endl;
     
     calculateSpriteScale();
     
@@ -123,6 +118,7 @@ namespace GO {
       
       if (!(point.y + size.height <= settings::windowHeight)) {
         dy = 0;
+        onGround = true;
       }
     }
   }
@@ -152,20 +148,20 @@ namespace GO {
         } catch (std::out_of_range) {
           std::cout <<  "out of parameters i:" << i << "j: " << j << std::endl;
         }
-        
       }
     }
   }
   
+  
   void GameUnit::colY(const std::vector<std::string>& map)
-  {std::cout <<  " imin:" << hitBox.top / 32 << " imax: " << (hitBox.top + hitBox.height) / 32 << std::endl;
+  {
     for (int i = hitBox.top / 32; i < (hitBox.top + 32 * 2) / 32; i++) {
       for (int j = hitBox.left / 32; j < (hitBox.left + 32) / 32; j++) {
         try {
           if (map.at(i).at(j) == 'b') {
-//            std::cout <<  " i:" << i << "j: " << j << std::endl;
             if (dy > 0) {
               hitBox.top = i * 32 - 32 * 2;
+              onGround = true;
             }
             if (dy < 0) {
               hitBox.top = i * 32 + 32;
@@ -229,7 +225,6 @@ namespace GO {
     if (getPosition().x + getSize().x < settings::windowWidth) {
       dx = 0.1;
     }
-    
   }
   
   const sf::FloatRect& GameUnit::getHitbox()
@@ -240,11 +235,11 @@ namespace GO {
   
   void GameUnit::onJump()
   {
-    if (dy < 0) {
+    if (!onGround && dy < 0) {
       sf::Vector2f point = getPosition();
       double jumpHeight = settings::jumpSize * settings::sprite_resolution;
       
-      if (point.y + getSize().y >= settings::windowHeight - jumpHeight) {
+      if (point.y + getSize().y >= jumpStartY - jumpHeight) {
         hitBox.top += dy;
       } else {
         dy = 0.1;
@@ -281,8 +276,10 @@ namespace GO {
   
   void GameUnit::jump()
   {
-    if (dy == 0) {
+    if (onGround) {
       dy = -0.1;
+      jumpStartY = hitBox.top;
+      onGround = false;
     }
   }
   

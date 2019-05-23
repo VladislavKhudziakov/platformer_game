@@ -29,6 +29,8 @@ namespace GO {
     float prevFrame;
     float dy = 0.1;
     float dx = 0;
+    float jumpStartY = 0;
+    bool onGround = false;
     sf::FloatRect hitBox;
     
   protected:

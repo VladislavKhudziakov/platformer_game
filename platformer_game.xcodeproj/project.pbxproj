@@ -16,7 +16,6 @@
 		0D7A9CB2228B506D000E4448 /* platformer_game-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D7A9C9C228B4F50000E4448 /* platformer_game-Info.plist */; };
 		0D7F5FB82297220B00A394A9 /* gameUnit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D7F5FAB2297220B00A394A9 /* gameUnit.cpp */; };
 		0D7F5FB92297220B00A394A9 /* MapSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D7F5FAD2297220B00A394A9 /* MapSprite.cpp */; };
-		0D7F5FBA2297220B00A394A9 /* HitBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D7F5FB02297220B00A394A9 /* HitBox.cpp */; };
 		0D7F5FBB2297220B00A394A9 /* GameObjectBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D7F5FB22297220B00A394A9 /* GameObjectBase.cpp */; };
 		0D7F5FBC2297220B00A394A9 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D7F5FB52297220B00A394A9 /* Map.cpp */; };
 		0D7F5FBF2297225600A394A9 /* global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D7F5FBD2297225600A394A9 /* global.cpp */; };
@@ -27,7 +26,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0D1DCA34228DA1BB00884C4A /* global.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
 		0D7A9C98228B4F50000E4448 /* platformer_game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = platformer_game.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D7A9C9C228B4F50000E4448 /* platformer_game-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "platformer_game-Info.plist"; sourceTree = "<group>"; };
 		0D7A9C9D228B4F50000E4448 /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
@@ -40,19 +38,16 @@
 		0D7F5FAB2297220B00A394A9 /* gameUnit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gameUnit.cpp; sourceTree = "<group>"; };
 		0D7F5FAC2297220B00A394A9 /* MapSprite.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MapSprite.hpp; sourceTree = "<group>"; };
 		0D7F5FAD2297220B00A394A9 /* MapSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapSprite.cpp; sourceTree = "<group>"; };
-		0D7F5FAE2297220B00A394A9 /* HitBox.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HitBox.hpp; sourceTree = "<group>"; };
-		0D7F5FB02297220B00A394A9 /* HitBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HitBox.cpp; sourceTree = "<group>"; };
 		0D7F5FB12297220B00A394A9 /* GameObjectBase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GameObjectBase.hpp; sourceTree = "<group>"; };
 		0D7F5FB22297220B00A394A9 /* GameObjectBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameObjectBase.cpp; sourceTree = "<group>"; };
 		0D7F5FB32297220B00A394A9 /* gameUnit.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = gameUnit.hpp; sourceTree = "<group>"; };
 		0D7F5FB42297220B00A394A9 /* Map.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Map.hpp; sourceTree = "<group>"; };
 		0D7F5FB52297220B00A394A9 /* Map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Map.cpp; sourceTree = "<group>"; };
-		0D7F5FB62297220B00A394A9 /* GameBlockData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameBlockData.h; sourceTree = "<group>"; };
 		0D7F5FBD2297225600A394A9 /* global.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = global.cpp; sourceTree = "<group>"; };
-		0D7F5FBE2297225600A394A9 /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
 		0D7F5FC02297234F00A394A9 /* player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = player.png; path = ../../../../../../Downloads/player.png; sourceTree = "<group>"; };
 		0D7F5FC22297238F00A394A9 /* Map.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Map.txt; sourceTree = "<group>"; };
 		0D7F5FC4229723B300A394A9 /* wall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = wall.png; path = ../../../../../../Downloads/wall.png; sourceTree = "<group>"; };
+		0D7F5FC72297252800A394A9 /* global.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
 		0D987B71228DF1770071B760 /* Game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
 		0D987B72228DF1770071B760 /* Game.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Game.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -93,7 +88,8 @@
 				0D7A9CA0228B4F50000E4448 /* main.cpp */,
 				0D7A9CA2228B4F50000E4448 /* Resources */,
 				0D7A9C9B228B4F50000E4448 /* Supporting Files */,
-				0D1DCA34228DA1BB00884C4A /* global.h */,
+				0D7F5FBD2297225600A394A9 /* global.cpp */,
+				0D7F5FC72297252800A394A9 /* global.h */,
 			);
 			path = sfml_choke;
 			sourceTree = "<group>";
@@ -101,8 +97,6 @@
 		0D7A9C9B228B4F50000E4448 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				0D7F5FBD2297225600A394A9 /* global.cpp */,
-				0D7F5FBE2297225600A394A9 /* global.h */,
 				0D7A9C9C228B4F50000E4448 /* platformer_game-Info.plist */,
 			);
 			name = "Supporting Files";
@@ -125,13 +119,10 @@
 		0DF1E907228CA76900DCA9FB /* objects */ = {
 			isa = PBXGroup;
 			children = (
-				0D7F5FB62297220B00A394A9 /* GameBlockData.h */,
 				0D7F5FB22297220B00A394A9 /* GameObjectBase.cpp */,
 				0D7F5FB12297220B00A394A9 /* GameObjectBase.hpp */,
 				0D7F5FAB2297220B00A394A9 /* gameUnit.cpp */,
 				0D7F5FB32297220B00A394A9 /* gameUnit.hpp */,
-				0D7F5FB02297220B00A394A9 /* HitBox.cpp */,
-				0D7F5FAE2297220B00A394A9 /* HitBox.hpp */,
 				0D7F5FB52297220B00A394A9 /* Map.cpp */,
 				0D7F5FB42297220B00A394A9 /* Map.hpp */,
 				0D7F5FAD2297220B00A394A9 /* MapSprite.cpp */,
@@ -238,7 +229,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D7A9CA1228B4F50000E4448 /* main.cpp in Sources */,
-				0D7F5FBA2297220B00A394A9 /* HitBox.cpp in Sources */,
 				0D7A9C9E228B4F50000E4448 /* ResourcePath.mm in Sources */,
 				0D7F5FBB2297220B00A394A9 /* GameObjectBase.cpp in Sources */,
 				0D7F5FB92297220B00A394A9 /* MapSprite.cpp in Sources */,

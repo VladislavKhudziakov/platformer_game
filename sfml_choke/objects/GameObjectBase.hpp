@@ -15,8 +15,6 @@
 #include <SFML/Graphics.hpp>
 #include "../ResourcePath.hpp"
 #include "../global.h"
-#include "GameBlockData.h"
-#include "HitBox.hpp"
 
 
 namespace GO {

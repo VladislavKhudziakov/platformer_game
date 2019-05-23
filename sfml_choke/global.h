@@ -1,14 +1,13 @@
 //
 //  global.h
-//  sfml_choke
+//  platformer_game
 //
-//  Created by Vladislav Khudiakov on 5/16/19.
+//  Created by Vladislav Khudiakov on 5/23/19.
 //  Copyright © 2019 Vladislav Khudiakov. All rights reserved.
 //
 
 #ifndef global_h
 #define global_h
-
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -16,6 +15,7 @@ namespace settings {
   
   extern int windowWidth;
   extern int windowHeight;
+  
   
   extern const int sprite_resolution;
   extern const int jumpSize;

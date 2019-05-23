@@ -31,7 +31,7 @@ namespace settings {
   
   const std::map<char, sf::Vector2i> tileMap = {
     {'-', sf::Vector2i(5, 13)},
-    {'b', sf::Vector2i(12, 9)},
+    {'b', sf::Vector2i(10, 9)},
     {'g', sf::Vector2i(7, 13)},
     {'G', sf::Vector2i(7, 12)},
     {'L', sf::Vector2i(12, 7)},

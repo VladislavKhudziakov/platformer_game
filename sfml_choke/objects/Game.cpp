@@ -91,7 +91,6 @@ namespace GO {
             
             mapBlock->setPosition(spritePositionX, spritePositionY);
             auto texPos = settings::tileMap.at(mapContent[i][j]);
-            std::cout << texPos.x <<"   " <<  texPos.y << std::endl;
             mapBlock->setTextureRect(sf::IntRect(texPos.x * 32, texPos.y * 32, 32, 32));
             mapObjects.push_back(mapBlock);
           }

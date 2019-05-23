@@ -30,14 +30,14 @@ namespace settings {
   const int playerWidth = 1;
   
   const std::map<char, sf::Vector2i> tileMap = {
-    {'b', sf::Vector2i(5, 13)},
-    {'B', sf::Vector2i(12, 9)},
+    {'-', sf::Vector2i(5, 13)},
+    {'b', sf::Vector2i(12, 9)},
     {'g', sf::Vector2i(7, 13)},
     {'G', sf::Vector2i(7, 12)},
     {'L', sf::Vector2i(12, 7)},
   };
   
   const std::vector<char> walls = {
-    'B', 'g', 'G', 'b'
+    'g', 'G', 'b'
   };
 }

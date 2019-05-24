@@ -19,7 +19,7 @@
 
 namespace GO {
   
-  class GameUnit : public GameObjectBase
+  class GameUnit : private GameObjectBase
   {
   private:
     int walkingCounter = 0;

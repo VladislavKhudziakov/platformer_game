@@ -28,7 +28,7 @@ namespace GO {
     GO::Map map;
     sf::Clock timer;
     double prevFrameTime;
-    std::vector<GO::MapSprite* > mapObjects;
+    std::vector<GO::MapSprite* > tiles;
     
     void onUpdate();
     void inputKeysHandler();

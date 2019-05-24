@@ -22,7 +22,7 @@ namespace GO {
     delete gameWindow;
     delete player;
     
-    for (auto object : mapObjects) {
+    for (auto object : tiles) {
       delete object;
     }
   }
@@ -104,7 +104,7 @@ namespace GO {
             mapBlock->setTextureRect(sf::IntRect(rectLeft, rectTop, width, height));
             mapBlock->calculateSpriteScale();
             
-            mapObjects.push_back(mapBlock);
+            tiles.push_back(mapBlock);
           }
         }
       }
@@ -117,7 +117,7 @@ namespace GO {
   
   void Game::renderMap()
   {
-    for (GO::MapSprite* currBlock : mapObjects) {
+    for (GO::MapSprite* currBlock : tiles) {
       gameWindow->draw(*currBlock);
     }
   }

@@ -22,7 +22,6 @@ namespace GO {
   {
   private:
     sf::Texture skin;
-//    sf::Vector2f size;
     sf::Sprite node;
     
   public:

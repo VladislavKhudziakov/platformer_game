@@ -14,7 +14,6 @@ namespace GO {
   {
     gameWindow = new sf::RenderWindow();
     player = new GO::GameUnit("player.png", 100, 100);
-    player->moveTo(100, 100);
   }
   
   
@@ -42,7 +41,6 @@ namespace GO {
     if (sf::Keyboard::isKeyPressed(settings::jumpKey)) {
       player->jump();
     }
-
   }
   
   
@@ -51,12 +49,17 @@ namespace GO {
     double now = timer.getElapsedTime().asMicroseconds();
     double deltaTime = now - prevFrameTime;
     prevFrameTime = now;
+    
     gameWindow->clear();
+    
     renderMap();
+    
     player->stop();
     inputKeysHandler();
     player->onUpdate(deltaTime, map.get());
+    
     gameWindow->draw(*player);
+    
     gameWindow->display();
   }
   
@@ -86,12 +89,21 @@ namespace GO {
         for (int j = 0; j < mapContent[i].length(); j++) {
           if (settings::tileMap.count(mapContent[i][j]) > 0) {
             GO::MapSprite* mapBlock = new GO::MapSprite("tileSet.png");
+            
             int spritePositionX = j * settings::sprite_resolution;
             int spritePositionY = i * settings::sprite_resolution;
             
             mapBlock->setPosition(spritePositionX, spritePositionY);
             auto texPos = settings::tileMap.at(mapContent[i][j]);
-            mapBlock->setTextureRect(sf::IntRect(texPos.x * 32, texPos.y * 32, 32, 32));
+            
+            int rectLeft = texPos.x * settings::sprite_resolution;
+            int rectTop = texPos.y * settings::sprite_resolution;
+            int width = settings::sprite_resolution;
+            int height = settings::sprite_resolution;
+            
+            mapBlock->setTextureRect(sf::IntRect(rectLeft, rectTop, width, height));
+            mapBlock->calculateSpriteScale();
+            
             mapObjects.push_back(mapBlock);
           }
         }
@@ -128,6 +140,7 @@ namespace GO {
     map.calculateSize();
     buildMap();
     timer.restart();
+    
     prevFrameTime = timer.getElapsedTime().asMicroseconds();
     while (gameWindow->isOpen())
     {

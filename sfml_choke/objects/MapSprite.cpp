@@ -9,36 +9,25 @@
 #include "MapSprite.hpp"
 
 namespace GO {
-  MapSprite::MapSprite() : GameObjectBase()
-  {
-    calculateSpriteScale();
-  }
+  MapSprite::MapSprite() : GameObjectBase() { }
   
+  MapSprite::MapSprite(const sf::Texture& texture) : GameObjectBase(texture) { }
   
-  MapSprite::MapSprite(const sf::Texture& texture) : GameObjectBase(texture)
-  {
-    calculateSpriteScale();
-  }
-  
-  
-  MapSprite::MapSprite(const std::string& texName) : GameObjectBase(texName)
-  {
-//    calculateSpriteScale();
-  }
+  MapSprite::MapSprite(const std::string& texName) : GameObjectBase(texName) { }
   
   
   void MapSprite::calculateSpriteScale()
   {
-    updateSize();
-    sf::Vector2f spriteSize = getSize();
     sf::Vector2f currScale(1., 1.);
     
-    if (spriteSize.x != settings::sprite_resolution) {
-      currScale.x = double(settings::sprite_resolution) / spriteSize.x;
+    sf::IntRect texRect = getTextureRect();
+    
+    if (texRect.width != settings::sprite_resolution) {
+      currScale.x = double(settings::sprite_resolution) / texRect.width;
     }
     
-    if (spriteSize.y != settings::sprite_resolution) {
-      currScale.y = double(settings::sprite_resolution) / spriteSize.y;
+    if (texRect.height != settings::sprite_resolution) {
+      currScale.y = double(settings::sprite_resolution) / texRect.height;
     }
     
     scale(currScale);

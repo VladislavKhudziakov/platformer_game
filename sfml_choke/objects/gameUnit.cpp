@@ -33,18 +33,18 @@ namespace GO {
     int rectWidth =  skinSize.x / 4;
     int rectHeight = skinSize.y;
     
-    setTextureRect(
-     sf::IntRect(walkingCounter * skinSize.x / 4, 0, skinSize.x / 4, skinSize.y)
-   );
+    sf::IntRect texRect(walkingCounter * rectWidth, 0, rectWidth, rectHeight);
+    
+    setTextureRect(texRect);
     
     calculateSpriteScale();
     
-    sf::Vector2f size = getSize();
+    sf::Vector2f scale = getScale();
     
     hitBox.top = y;
     hitBox.left = x;
-    hitBox.width = size.x;
-    hitBox.height = size.y;
+    hitBox.width = rectWidth * scale.x;
+    hitBox.height = rectHeight * scale.y;
     
     setPosition(hitBox.left, hitBox.top);
   }
@@ -66,20 +66,18 @@ namespace GO {
     int rectWidth =  skinSize.x / 4;
     int rectHeight = skinSize.y;
     
-    setTextureRect(
-      sf::Rect<int>(
-        walkingCounter * skinSize.x / 4, 0, skinSize.x / 4, skinSize.y)
-    );
+    sf::IntRect texRect(walkingCounter * rectWidth, 0, rectWidth, rectHeight);
+    
+    setTextureRect(texRect);
     
     calculateSpriteScale();
     
-    sf::Vector2f size = getSize();
+    sf::Vector2f scale = getScale();
     
     hitBox.top = y;
     hitBox.left = x;
-    hitBox.width = size.x;
-    hitBox.height = size.y;
-
+    hitBox.width = rectWidth * scale.x;
+    hitBox.height = rectHeight * scale.y;
     
     setPosition(hitBox.left, hitBox.top);
   }
@@ -94,17 +92,14 @@ namespace GO {
     auto timer = walkingTimer.getElapsedTime();
     lastTime = timer.asSeconds();
     
+    setTextureRect(other.getTextureRect());
     
-    auto skinSize = getTexture()->getSize();
+    hitBox.top = other.hitBox.top;
+    hitBox.left = other.hitBox.left;
+    hitBox.width = other.hitBox.width;
+    hitBox.height = other.hitBox.height;
     
-    setTextureRect(
-      sf::Rect<int>(
-        walkingCounter * skinSize.x / 4, 0, skinSize.x / 4, skinSize.y)
-    );
-    
-    calculateSpriteScale();
-    
-    move(other.getPosition());
+    setPosition(hitBox.left, hitBox.top);
   }
   
   
@@ -230,10 +225,11 @@ namespace GO {
       lastTime = now;
     }
     
-    if (getPosition().x + getSize().x < settings::windowWidth) {
+    if (getPosition().x + hitBox.width < settings::windowWidth) {
       dx = 0.1;
     }
   }
+  
   
   const sf::FloatRect& GameUnit::getHitbox()
   {
@@ -247,38 +243,12 @@ namespace GO {
       sf::Vector2f point = getPosition();
       double jumpHeight = settings::jumpSize * settings::sprite_resolution;
       
-      if (point.y + getSize().y >= jumpStartY - jumpHeight) {
+      if (point.y + hitBox.height >= jumpStartY - jumpHeight) {
         hitBox.top += dy;
       } else {
         dy = 0.1;
       }
     }
-  }
-  
-  
-  void GameUnit::moveTo(float x, float y) {
-    hitBox.left = x;
-    hitBox.top = y;
-    move(hitBox.left, hitBox.top);
-  }
-  
-  
-  double GameUnit::getDirectionX() {
-    return dx;
-  }
-  
-  
-  double GameUnit::getDirectionY() {
-    return dy;
-  }
-  
-  
-  void GameUnit::getOnTheGround() {
-    dy = 0;
-  }
-  
-  void GameUnit::fall() {
-    dy = 0.1;
   }
   
   
@@ -300,18 +270,18 @@ namespace GO {
   
   void GameUnit::calculateSpriteScale()
   {
-    updateSize();
-    sf::Vector2f spriteSize = getSize();
+    auto r = getTextureRect();
+    
     sf::Vector2f currScale(1., 1.);
-    
-    if (spriteSize.x != settings::sprite_resolution * settings::playerWidth) {
+
+    if (r.width != settings::sprite_resolution * settings::playerWidth) {
       double spriteWidth = settings::sprite_resolution * settings::playerWidth;
-      currScale.x = spriteWidth / spriteSize.x;
+      currScale.x = spriteWidth / r.width;
     }
-    
-    if (spriteSize.y != settings::sprite_resolution * settings::playerHeight) {
+
+    if (r.height != settings::sprite_resolution * settings::playerHeight) {
       double spriteHeight = settings::sprite_resolution * settings::playerHeight;
-      currScale.y = spriteHeight / spriteSize.y;
+      currScale.y = spriteHeight / r.height;
     }
     
     scale(currScale);

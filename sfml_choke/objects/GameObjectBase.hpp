@@ -22,7 +22,7 @@ namespace GO {
   {
   private:
     sf::Texture skin;
-    sf::Vector2f size;
+//    sf::Vector2f size;
     sf::Sprite node;
     
   public:
@@ -52,14 +52,11 @@ namespace GO {
     virtual const sf::Vector2f& getOrigin();
     virtual const sf::Vector2f& getPosition();
     virtual const sf::Vector2f& getScale();
-    virtual const sf::Vector2f& getSize();
     
     virtual float getRotation();
     
     virtual const sf::Sprite* getNode();
     virtual const sf::Texture* getTexture();
-    
-    virtual void updateSize();
     
     virtual operator sf::Sprite();
     virtual operator sf::Sprite*();

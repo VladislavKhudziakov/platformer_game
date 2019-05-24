@@ -36,28 +36,24 @@ namespace GO {
   void GameObjectBase::scale(float scaleX, float scaleY)
   {
     node.scale(scaleX, scaleY);
-    updateSize();
   }
   
   
   void GameObjectBase::scale(const sf::Vector2f& scale)
   {
     node.scale(scale);
-    updateSize();
   }
   
   
   void GameObjectBase::setScale(float scaleX, float scaleY)
   {
     node.setScale(scaleX, scaleY);
-    updateSize();
   }
   
   
   void GameObjectBase::setScale(const sf::Vector2f& scale)
   {
     node.setScale(scale);
-    updateSize();
   }
   
   
@@ -95,14 +91,12 @@ namespace GO {
   {
     skin = newTex;
     node.setTexture(skin);
-    updateSize();
   }
   
   
   void GameObjectBase::setTextureRect(const sf::IntRect& rectangle)
   {
     node.setTextureRect(rectangle);
-    updateSize();
   }
   
   const sf::Vector2f& GameObjectBase::getPosition()
@@ -156,21 +150,6 @@ namespace GO {
   const sf::Texture* GameObjectBase::getTexture()
   {
     return &skin;
-  }
-  
-  
-  const sf::Vector2f& GameObjectBase::getSize()
-  {
-    return size;
-  }
-  
-  
-  void GameObjectBase::updateSize()
-  {
-    sf::IntRect textureRect = getTextureRect();
-    sf::Vector2f scale = getScale();
-    size.y = scale.y * textureRect.height;
-    size.x = scale.x * textureRect.width;
   }
   
   

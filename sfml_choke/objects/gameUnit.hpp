@@ -47,11 +47,6 @@ namespace GO {
     void jump();
     void moveLeft();
     void moveRight();
-    void moveTo(float x, float y);
-    double getDirectionX();
-    double getDirectionY();
-    void getOnTheGround();
-    void fall();
     void stop();
     void colX(const std::vector<std::string>&);
     void colY(const std::vector<std::string>&);

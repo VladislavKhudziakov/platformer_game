@@ -20,14 +20,12 @@
 
 namespace GO {
   class MapSprite : public GameObjectBase
-  {
-  private:
-    void calculateSpriteScale();
-    
+  {    
   public:
     MapSprite();
     MapSprite(const sf::Texture&);
     MapSprite(const std::string& textureName);
+    void calculateSpriteScale();
   };
 }
 

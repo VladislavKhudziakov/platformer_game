@@ -128,10 +128,10 @@ namespace GO {
   {
     onFall();
     onJump();
-    hitBox.left += dx * delta / 200;
-    colX(map);
     hitBox.top += dy * delta / 200;
     colY(map);
+    hitBox.left += dx * delta / 200;
+    colX(map);
     
     setPosition(hitBox.left, hitBox.top);
   }

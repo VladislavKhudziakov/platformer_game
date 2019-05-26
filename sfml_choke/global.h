@@ -32,6 +32,7 @@ namespace settings {
   
   extern const std::map<char, sf::Vector2i> tileMap;
   extern const std::vector<char> walls;
+  extern const std::vector<char> damageObjects;
 }
 
 #endif /* global_h */

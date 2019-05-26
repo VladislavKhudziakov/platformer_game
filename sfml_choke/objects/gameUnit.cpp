@@ -106,34 +106,30 @@ namespace GO {
   GameUnit::~GameUnit() { }
   
   
-  void GameUnit::onFall()
-  {
-    if (dy > 0) {
-      
-      auto scale = getScale();
-      auto point = getPosition();
-      auto size = getNode()->getTextureRect();
-      size.width *= scale.x;
-      size.height *= scale.y;
-      
-      if (!(point.y + size.height <= settings::windowHeight)) {
-        dy = 0;
-        onGround = true;
-      }
-    }
-  }
-  
-  
   void GameUnit::onUpdate(double delta, const std::vector<std::string>& map)
   {
-    onFall();
-    onJump();
+    if (isJump) {
+      sf::Vector2f point = getPosition();
+      double jumpHeight = settings::jumpSize * settings::sprite_resolution;
+      
+      if (!(point.y + hitBox.height >= jumpStartY - jumpHeight)) {
+        isJump = false;
+      }
+    }
+    
     hitBox.top += dy * delta / 200;
     colY(map);
+    
     hitBox.left += dx * delta / 200;
     colX(map);
     
     setPosition(hitBox.left, hitBox.top);
+    
+    dx = 0;
+    
+    if (!isJump) {
+      dy = 0.1;
+    }
   }
   
   void GameUnit::colX(const std::vector<std::string>& map)
@@ -146,7 +142,10 @@ namespace GO {
           if (exist(settings::walls, map[i][j])) {
             if (dx > 0) hitBox.left = j * tileSize - tileSize;
             if (dx < 0) hitBox.left = j * tileSize + tileSize;
+          } else if (exist(settings::damageObjects, map[i][j])) {
+            std::cout << "got dmg\n";
           }
+          
         } catch (std::out_of_range) {
           std::cout <<  "out of parameters i:" << i << "j: " << j << std::endl;
         }
@@ -169,6 +168,7 @@ namespace GO {
             }
             if (dy < 0) {
               hitBox.top = i * tileSize + tileSize;
+              isJump = false;
             }
           }
         } catch (std::out_of_range) {
@@ -237,27 +237,13 @@ namespace GO {
   }
   
   
-  void GameUnit::onJump()
-  {
-    if (!onGround && dy < 0) {
-      sf::Vector2f point = getPosition();
-      double jumpHeight = settings::jumpSize * settings::sprite_resolution;
-      
-      if (point.y + hitBox.height >= jumpStartY - jumpHeight) {
-        hitBox.top += dy;
-      } else {
-        dy = 0.1;
-      }
-    }
-  }
-  
-  
   void GameUnit::jump()
   {
-    if (onGround) {
+    if (!isJump && onGround) {
       dy = -0.1;
       jumpStartY = hitBox.top;
       onGround = false;
+      isJump = true;
     }
   }
   

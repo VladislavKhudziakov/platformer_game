@@ -54,8 +54,8 @@ namespace GO {
     
     renderMap();
     
-    player->stop();
     inputKeysHandler();
+    
     player->onUpdate(deltaTime, map.get());
     
     gameWindow->draw(*player);

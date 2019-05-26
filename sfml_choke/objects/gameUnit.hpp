@@ -19,23 +19,29 @@
 
 namespace GO {
   
-  class GameUnit : private GameObjectBase
+  class GameUnit : protected GameObjectBase
   {
   private:
+    float hp;
+    
     int walkingCounter = 0;
     sf::Clock walkingTimer;
-    float lastTime;
     float walkDelay = 250;
+    
+    float lastTime;
     float prevFrame;
+    
+    float jumpStartY = 0;
     float dy = 0.1;
     float dx = 0;
-    float jumpStartY = 0;
+    
     bool onGround = false;
+    bool isJump = false;
     sf::FloatRect hitBox;
     
   protected:
-    void onFall();
-    void onJump();
+    void colX(const std::vector<std::string>&);
+    void colY(const std::vector<std::string>&);
     
   public:
     GameUnit();
@@ -48,8 +54,6 @@ namespace GO {
     void moveLeft();
     void moveRight();
     void stop();
-    void colX(const std::vector<std::string>&);
-    void colY(const std::vector<std::string>&);
     void calculateSpriteScale();
     void setColor(const sf::Color&);
     const sf::FloatRect& getHitbox();

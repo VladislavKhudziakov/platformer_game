@@ -28,5 +28,5 @@ b-------------------------b----b
 b-------------bbbbbbb--bbbbbbbbb
 b------------------------------b
 b------------------------------b
-bGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGb
+bGGGGGGGGGGGLLLLLLLGGGGGGGGGGGGb
 bggggggggggggggggggggggggggggggb

@@ -21,7 +21,7 @@ namespace settings {
   int windowHeight;
   
   const int sprite_resolution = 32;
-  const int jumpSize = 0;
+  const int jumpSize = 3;
   
   const sf::Keyboard::Key jumpKey = sf::Keyboard::Space;
   const sf::Keyboard::Key moveLeftKey = sf::Keyboard::A;
@@ -39,5 +39,9 @@ namespace settings {
   
   const std::vector<char> walls = {
     'g', 'G', 'b'
+  };
+  
+  const std::vector<char> damageObjects = {
+    'L'
   };
 }

@@ -20,9 +20,14 @@ namespace settings {
   extern int windowWidth;
   extern int windowHeight;
   
-  
   extern const int sprite_resolution;
   extern const int jumpSize;
+  extern const float gravityForce;
+  extern const float jumpForce;
+  extern const float animDelay;
+  extern const float defaultAnimationSize;
+  
+  extern const float defaultHP;
   
   extern const sf::Keyboard::Key jumpKey;
   extern const sf::Keyboard::Key moveLeftKey;

@@ -21,25 +21,25 @@ namespace GO {
   
   class GameUnit : protected GameObjectBase
   {
-  private:
-    float hp;
+  protected:
+    float hp = settings::defaultHP;
     
     int walkingCounter = 0;
+    int animSize = settings::defaultAnimationSize;
     sf::Clock walkingTimer;
-    float walkDelay = 250;
+    float walkDelay = settings::animDelay;
     
     float lastTime;
     float prevFrame;
     
     float jumpStartY = 0;
-    float dy = 0.1;
+    float dy = settings::gravityForce;
     float dx = 0;
     
     bool onGround = false;
     bool isJump = false;
     sf::FloatRect hitBox;
     
-  protected:
     void colX(const std::vector<std::string>&);
     void colY(const std::vector<std::string>&);
     
@@ -49,16 +49,15 @@ namespace GO {
     GameUnit(const std::string&, float x = 0, float y = 0);
     GameUnit(const sf::Texture&, float x = 0, float y = 0);
     ~GameUnit();
-    void onUpdate(double, const std::vector<std::string>&);
-    void jump();
-    void moveLeft();
-    void moveRight();
-    void stop();
-    void calculateSpriteScale();
-    void setColor(const sf::Color&);
-    const sf::FloatRect& getHitbox();
-    operator sf::Sprite();
-    operator sf::Sprite*();
+    virtual void onUpdate(double, const std::vector<std::string>&);
+    virtual void jump();
+    virtual void moveLeft();
+    virtual void moveRight();
+    virtual void stop();
+    virtual void calculateSpriteScale();
+    virtual const sf::FloatRect& getHitbox();
+    virtual operator sf::Sprite();
+    virtual operator sf::Sprite*();
   };
 }
 

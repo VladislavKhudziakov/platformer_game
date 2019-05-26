@@ -128,7 +128,7 @@ namespace GO {
     dx = 0;
     
     if (!isJump) {
-      dy = 0.1;
+      dy = settings::gravityForce;
     }
   }
   
@@ -140,8 +140,10 @@ namespace GO {
       for (int j = hitBox.left / tileSize; j < (hitBox.left + hitBox.width) / tileSize; j++) {
         try {
           if (exist(settings::walls, map[i][j])) {
+            
             if (dx > 0) hitBox.left = j * tileSize - tileSize;
             if (dx < 0) hitBox.left = j * tileSize + tileSize;
+            
           } else if (exist(settings::damageObjects, map[i][j])) {
             std::cout << "got dmg\n";
           }
@@ -162,14 +164,15 @@ namespace GO {
       for (int j = hitBox.left / tileSize; j < (hitBox.left + hitBox.width) / tileSize; j++) {
         try {
           if (exist(settings::walls, map[i][j])) {
+            
             if (dy > 0) {
               hitBox.top = i * tileSize - tileSize * 2;
               onGround = true;
-            }
-            if (dy < 0) {
+            } else if (dy < 0) {
               hitBox.top = i * tileSize + tileSize;
               isJump = false;
             }
+            
           }
         } catch (std::out_of_range) {
           std::cout <<  "out of parameters i:" << i << "j: " << j << std::endl;
@@ -185,11 +188,11 @@ namespace GO {
     double now = timer.asMilliseconds();
     
     if (now >= lastTime + walkDelay) {
-      walkingCounter = walkingCounter + 1 >= 4 ? 0 : walkingCounter + 1;
+      walkingCounter = walkingCounter + 1 >= animSize ? 0 : walkingCounter + 1;
       
       auto skinSize = getTexture()->getSize();
       
-      int rectWidth = skinSize.x / 4;
+      int rectWidth = skinSize.x / animSize;
       int rectHeight = skinSize.y;
       
       setTextureRect(
@@ -240,7 +243,7 @@ namespace GO {
   void GameUnit::jump()
   {
     if (!isJump && onGround) {
-      dy = -0.1;
+      dy = settings::jumpForce;
       jumpStartY = hitBox.top;
       onGround = false;
       isJump = true;

@@ -22,6 +22,12 @@ namespace settings {
   
   const int sprite_resolution = 32;
   const int jumpSize = 3;
+  const float gravityForce = 0.1;
+  const float jumpForce = -0.1;
+  const float animDelay = 250;
+  const float defaultAnimationSize = 4;
+  
+  const float defaultHP = 100;
   
   const sf::Keyboard::Key jumpKey = sf::Keyboard::Space;
   const sf::Keyboard::Key moveLeftKey = sf::Keyboard::A;

@@ -27,25 +27,21 @@ namespace GO {
   protected:
     float hp = settings::defaultHP;
     std::string name;
-    
     int walkingCounter = 0;
     int animSize = settings::defaultAnimationSize;
     sf::Clock walkingTimer;
     float walkDelay = settings::animDelay;
-    
     float lastTime;
     float prevFrame;
-    
     float jumpStartY = 0;
     float dy = settings::gravityForce;
     float dx = 0;
-    
     bool onGround = false;
     bool isJump = false;
     sf::FloatRect hitBox;
+    virtual void colX(const std::vector<std::string>&);
+    virtual void colY(const std::vector<std::string>&);
     
-    void colX(const std::vector<std::string>&);
-    void colY(const std::vector<std::string>&);
     
   public:
     GameUnit();
@@ -63,6 +59,7 @@ namespace GO {
     virtual const sf::FloatRect& getHitbox();
     virtual operator sf::Sprite();
     virtual operator sf::Sprite*();
+    
   };
 }
 

@@ -12,6 +12,7 @@
 #include <iostream>
 #include <vector>
 #include "gameUnit.hpp"
+#include "BaseEnemy.hpp"
 #include "Map.hpp"
 #include "MapSprite.hpp"
 #include <SFML/Audio.hpp>

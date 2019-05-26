@@ -50,4 +50,8 @@ namespace settings {
   const std::vector<char> damageObjects = {
     'L'
   };
+  
+  const std::map<char, float> damageObjectsData = {
+    {'L', 0.5},
+  };
 }

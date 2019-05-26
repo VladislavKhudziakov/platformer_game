@@ -21,8 +21,12 @@ namespace GO {
   
   class GameUnit : protected GameObjectBase
   {
+  private:
+    void calculateSpriteScale();
+    
   protected:
     float hp = settings::defaultHP;
+    std::string name;
     
     int walkingCounter = 0;
     int animSize = settings::defaultAnimationSize;
@@ -46,15 +50,16 @@ namespace GO {
   public:
     GameUnit();
     GameUnit(GameUnit&);
-    GameUnit(const std::string&, float x = 0, float y = 0);
-    GameUnit(const sf::Texture&, float x = 0, float y = 0);
+    GameUnit(const std::string&, const std::string&, float x = 0, float y = 0);
+    GameUnit(const sf::Texture&, const std::string&, float x = 0, float y = 0);
     ~GameUnit();
     virtual void onUpdate(double, const std::vector<std::string>&);
     virtual void jump();
     virtual void moveLeft();
     virtual void moveRight();
+    virtual void getDamage(char);
     virtual void stop();
-    virtual void calculateSpriteScale();
+    virtual void setName(const std::string&);
     virtual const sf::FloatRect& getHitbox();
     virtual operator sf::Sprite();
     virtual operator sf::Sprite*();

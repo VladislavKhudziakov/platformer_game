@@ -13,7 +13,12 @@ namespace GO {
   Game::Game()
   {
     gameWindow = new sf::RenderWindow();
-    player = new GO::GameUnit("player.png", 100, 100);
+    player = new GO::GameUnit("player.png", "player", 100, 100);
+    
+    for (int i = 132, j = 1; i < 132 + 32 * 5; i+=32, j++) {
+      auto unit = new GO::GameUnit("player.png", &"enemy" [ j], i, 100);
+      units.push_back(unit);
+    }
   }
   
   
@@ -22,8 +27,12 @@ namespace GO {
     delete gameWindow;
     delete player;
     
-    for (auto object : tiles) {
-      delete object;
+    for (auto tile : tiles) {
+      delete tile;
+    }
+    
+    for (auto unit : units) {
+      delete unit;
     }
   }
   
@@ -48,15 +57,18 @@ namespace GO {
   {
     double now = timer.getElapsedTime().asMicroseconds();
     double deltaTime = now - prevFrameTime;
+    auto currMap = map.get();
+    
     prevFrameTime = now;
     
     gameWindow->clear();
-    
     renderMap();
+    
+    renderUnits(deltaTime, currMap);
     
     inputKeysHandler();
     
-    player->onUpdate(deltaTime, map.get());
+    player->onUpdate(deltaTime, currMap);
     
     gameWindow->draw(*player);
     
@@ -117,8 +129,8 @@ namespace GO {
   
   void Game::renderMap()
   {
-    for (GO::MapSprite* currBlock : tiles) {
-      gameWindow->draw(*currBlock);
+    for (GO::MapSprite* tile : tiles) {
+      gameWindow->draw(*tile);
     }
   }
   
@@ -130,6 +142,14 @@ namespace GO {
       return;
     } else {
       throw std::logic_error("invalid map size.\n");
+    }
+  }
+  
+   void Game::renderUnits(double delta, const std::vector<std::string>& currMap)
+  {
+    for (GO::GameUnit* unit : units) {
+      unit->onUpdate(delta, currMap);
+      gameWindow->draw(*unit);
     }
   }
 

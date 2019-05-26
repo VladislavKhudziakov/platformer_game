@@ -29,11 +29,13 @@ namespace GO {
     sf::Clock timer;
     double prevFrameTime;
     std::vector<GO::MapSprite* > tiles;
+    std::vector<GO::GameUnit* > units;
     
     void onUpdate();
     void inputKeysHandler();
     void assertMapBuilding();
     void renderMap();
+    void renderUnits(double delta, const std::vector<std::string>&);
     
   public:
     Game();

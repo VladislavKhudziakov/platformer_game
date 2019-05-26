@@ -19,9 +19,11 @@ namespace GO {
   }
   
   
-  GameUnit::GameUnit(const sf::Texture& tex, float x, float y)
+  GameUnit::GameUnit(const sf::Texture& tex, const std::string& name, float x, float y)
     : GameObjectBase(tex)
   {
+    this->name = name;
+    
     walkingCounter = 0;
     walkingTimer = sf::Clock();
     walkingTimer.restart();
@@ -50,9 +52,11 @@ namespace GO {
   }
   
   
-  GameUnit::GameUnit(const std::string& texName, float x, float y)
+  GameUnit::GameUnit(const std::string& texName,  const std::string& name, float x, float y)
     : GameObjectBase(texName)
   {
+    this->name = name;
+    
     walkingCounter = 0;
     walkingTimer = sf::Clock();
     walkingTimer.restart();
@@ -143,11 +147,7 @@ namespace GO {
             
             if (dx > 0) hitBox.left = j * tileSize - tileSize;
             if (dx < 0) hitBox.left = j * tileSize + tileSize;
-            
-          } else if (exist(settings::damageObjects, map[i][j])) {
-            std::cout << "got dmg\n";
           }
-          
         } catch (std::out_of_range) {
           std::cout <<  "out of parameters i:" << i << "j: " << j << std::endl;
         }
@@ -172,6 +172,10 @@ namespace GO {
               hitBox.top = i * tileSize + tileSize;
               isJump = false;
             }
+            
+          } else if (exist(settings::damageObjects, map[i][j])) {
+            
+            getDamage(map[i][j]);
             
           }
         } catch (std::out_of_range) {
@@ -274,6 +278,27 @@ namespace GO {
     }
     
     scale(currScale);
+  }
+  
+  
+  void GameUnit::getDamage(char damageObject)
+  {
+    if (settings::damageObjectsData.count(damageObject) > 0 && hp > 0) {
+      hp -= settings::damageObjectsData.at(damageObject);
+    }
+    
+    std::cout << "got damage from " << damageObject << ";\n";
+    std::cout << name + " curr hp: " << hp << ";\n";
+    
+    if (hp <= 0) {
+      hp = 0;
+      std::cout << "died\n";
+    }
+  }
+  
+  void GameUnit::setName(const std::string& newName)
+  {
+    name = newName;
   }
   
   

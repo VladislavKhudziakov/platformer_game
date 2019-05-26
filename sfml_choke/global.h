@@ -37,6 +37,8 @@ namespace settings {
   
   extern const std::map<char, sf::Vector2i> tileMap;
   extern const std::vector<char> walls;
+  
+  extern const std::map<char, float> damageObjectsData;
   extern const std::vector<char> damageObjects;
 }
 

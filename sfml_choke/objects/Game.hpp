@@ -36,7 +36,9 @@ namespace GO {
     void inputKeysHandler();
     void assertMapBuilding();
     void renderMap();
-    void renderUnits(double delta, const std::vector<std::string>&);
+    void renderPlayer(double, const std::vector<std::string>&);
+    void renderUnit(GO::GameUnit*, double, const std::vector<std::string>&);
+    void renderUnits(double, const std::vector<std::string>&);
     
   public:
     Game();

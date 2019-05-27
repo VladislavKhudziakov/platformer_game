@@ -8,12 +8,14 @@ namespace GO {
   class BaseEnemy : public GameUnit
   {
   protected:
-    void colX(const std::vector<std::string>&) override;
-    void colY(const std::vector<std::string>&) override;
+    bool isCollised = false;
+//    void colX(const std::vector<std::string>&) override;
+//    void colY(const std::vector<std::string>&) override;
     
   public:
-    BaseEnemy(const sf::Texture& tex, const std::string& name, float x, float y) : GameUnit(tex, name, x, y) { };
-    BaseEnemy(const std::string& texName, const std::string& name, float x, float y) : GameUnit(texName, name, x, y) { };
+    BaseEnemy(const sf::Texture&, const std::string&, float x = 0, float y = 0);
+    BaseEnemy(const std::string&, const std::string&, float x = 0, float y = 0);
+    void onUpdate(double, const std::vector<std::string>&) override;
   };
 }
 

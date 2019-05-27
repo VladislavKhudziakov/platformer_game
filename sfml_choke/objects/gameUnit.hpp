@@ -12,7 +12,10 @@
 #include <string>
 #include <stdexcept>
 #include "../ResourcePath.hpp"
+
 #include "GameObjectBase.hpp"
+#include "CollisionObject.hpp"
+
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "../global.h"
@@ -39,9 +42,10 @@ namespace GO {
     bool onGround = false;
     bool isJump = false;
     sf::FloatRect hitBox;
-    virtual void colX(const std::vector<std::string>&);
-    virtual void colY(const std::vector<std::string>&);
-    
+    virtual void detectCollisionX(const std::vector<std::string>&);
+    virtual void detectCollisionY(const std::vector<std::string>&);
+    virtual void handleCollisionX(const CollisionObject& );
+    virtual void handleCollisionY(const CollisionObject& );
     
   public:
     GameUnit();
@@ -54,6 +58,7 @@ namespace GO {
     virtual void moveLeft();
     virtual void moveRight();
     virtual void getDamage(char);
+    virtual float getHp();
     virtual void stop();
     virtual void setName(const std::string&);
     virtual const sf::FloatRect& getHitbox();

@@ -15,8 +15,8 @@ namespace GO {
     gameWindow = new sf::RenderWindow();
     player = new GO::GameUnit("player.png", "player", 100, 100);
     
-    for (int i = 132, j = 1; i < 132 + 32 * 5; i+=32, j++) {
-      auto unit = new GO::GameUnit("player.png", &"enemy" [ j], i, 100);
+    for (int i = 132, j = 1; i < 132 + 32 * 5; i += 32, j++) {
+      auto unit = new GO::BaseEnemy("player.png", "enemy" + std::to_string(j), i, 100);
       units.push_back(unit);
     }
   }
@@ -40,15 +40,15 @@ namespace GO {
   void Game::inputKeysHandler()
   {
     if (sf::Keyboard::isKeyPressed(settings::moveLeftKey)) {
-      player->moveLeft();
+      if (player) player->moveLeft();
     }
     
     if (sf::Keyboard::isKeyPressed(settings::moveRightKey)) {
-      player->moveRight();
+      if (player) player->moveRight();
     }
     
     if (sf::Keyboard::isKeyPressed(settings::jumpKey)) {
-      player->jump();
+      if (player) player->jump();
     }
   }
   
@@ -68,9 +68,7 @@ namespace GO {
     
     inputKeysHandler();
     
-    player->onUpdate(deltaTime, currMap);
-    
-    gameWindow->draw(*player);
+    renderPlayer(deltaTime, currMap);
     
     gameWindow->display();
   }
@@ -148,8 +146,7 @@ namespace GO {
    void Game::renderUnits(double delta, const std::vector<std::string>& currMap)
   {
     for (GO::GameUnit* unit : units) {
-      unit->onUpdate(delta, currMap);
-      gameWindow->draw(*unit);
+      renderUnit(unit, delta, currMap);
     }
   }
 
@@ -179,6 +176,38 @@ namespace GO {
       }
       
       onUpdate();
+    }
+  }
+  
+  
+  void Game::renderPlayer(double delta, const std::vector<std::string>& map)
+  {
+    if (player && player->getHp() <= 0) {
+      delete player;
+      player = nullptr;
+    }
+    
+    if (player) {
+      player->onUpdate(delta, map);
+      gameWindow->draw(*player);
+    }
+  }
+  
+  
+  void Game::renderUnit(GO::GameUnit* unit, double delta, const std::vector<std::string>& map)
+  {
+    if (unit && unit->getHp() <= 0) {
+      delete unit;
+      auto unitIter = std::find(units.begin(), units.end(), unit);
+      if (unitIter != units.end()) {
+        units.erase(unitIter);
+      }
+    }
+    
+    if (unit) {
+      unit->moveRight();
+      unit->onUpdate(delta, map);
+      gameWindow->draw(*unit);
     }
   }
   

@@ -103,6 +103,48 @@ namespace GO {
   }
   
   
+  void BaseEnemy::checkForPlayer(const sf::FloatRect& playerHitbox)
+  {
+    
+    int tileSize = settings::sprite_resolution;
+    
+    int fovY = 2;
+    int fovX = 4;
+    int xMin;
+    int xMax;
+    int yMin;
+    int yMax;
+    
+    int playerMinX = playerHitbox.left / tileSize;
+    int playerMaxX = (playerHitbox.left +  playerHitbox.width) / tileSize;
+    int playerMinY = playerHitbox.top / tileSize;
+    int playerMaxY = (playerHitbox.top +  playerHitbox.height) / tileSize;
+    
+    if (currDirection == unitsDir::left) {
+      xMin = hitBox.left / tileSize;
+      xMax = xMin - fovX;
+    } else if (currDirection == unitsDir::right) {
+      xMin = (hitBox.left + hitBox.width) / tileSize;
+      xMax = xMin + fovX;
+    }
+    
+    yMin = hitBox.top / tileSize - fovY;
+    yMax = (hitBox.top + hitBox.height) / tileSize + fovY;
+    
+    for (int y = yMin; y < yMax; y++) {
+      for (int x = xMin; x < xMax; x++) {
+        try {
+          if ((x == playerMinX || x == playerMaxX) && (y == playerMinY || y == playerMaxY)) {
+            std::cout << name + "'s dick is up\n";
+          }
+        } catch (std::out_of_range) {
+        }
+      }
+    }
+    
+  }
+  
+  
   void BaseEnemy::onUpdate(double delta, const std::vector<std::string>& map)
   {
     if (isJump) {
@@ -121,6 +163,8 @@ namespace GO {
     }
     
     checkForDamageObjects(map);
+    
+    checkForPlayer(playerPtr->getHitbox());
     
     hitBox.top += dy * delta / 200;
     detectCollisionY(map);

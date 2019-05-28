@@ -196,15 +196,20 @@ namespace GO {
   
   void Game::renderUnit(GO::GameUnit* unit, double delta, const std::vector<std::string>& map)
   {
+    bool isDeleted = false;
+    
     if (unit && unit->getHp() <= 0) {
+      
       delete unit;
       auto unitIter = std::find(units.begin(), units.end(), unit);
       if (unitIter != units.end()) {
         units.erase(unitIter);
       }
+      
+      isDeleted = true;
     }
     
-    if (unit) {
+    if (!isDeleted) {
       unit->onUpdate(delta, map);
       gameWindow->draw(*unit);
     }

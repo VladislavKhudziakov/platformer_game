@@ -8,6 +8,7 @@ namespace GO {
   {
     currDirection = direction;
     dx = 0.1;
+    Brain b(*this);
   }
   
   

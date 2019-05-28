@@ -3,6 +3,8 @@
 #define baseEnemy_hpp
 
 #include "gameUnit.hpp"
+#include "Brain.hpp"
+
 typedef settings::unitsDirections unitsDir;
 
 namespace GO {
@@ -12,6 +14,7 @@ namespace GO {
     unitsDir currDirection = unitsDir::none;
     void handleCollisionX(const CollisionObject&) override;
     void handleCollisionY(const CollisionObject&) override;
+    
     
   public:
     BaseEnemy(const sf::Texture&, const std::string&,

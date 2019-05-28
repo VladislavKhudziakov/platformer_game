@@ -3,7 +3,10 @@
 #define baseEnemy_hpp
 
 #include "gameUnit.hpp"
+#include "Game.hpp"
 #include "Brain.hpp"
+#include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
 
 typedef settings::unitsDirections unitsDir;
 
@@ -14,6 +17,10 @@ namespace GO {
     unitsDir currDirection = unitsDir::none;
     void handleCollisionX(const CollisionObject&) override;
     void handleCollisionY(const CollisionObject&) override;
+    void checkForDamageObjects(const std::vector<std::string>&);
+    void checkLeft(const std::vector<std::string>&);
+    void checkRight(const std::vector<std::string>&);
+    void checkForPlayer(const sf::FloatRect&);
     
     
   public:

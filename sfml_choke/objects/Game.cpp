@@ -8,6 +8,8 @@
 
 #include "Game.hpp"
 
+GO::GameUnit* playerPtr = nullptr;
+
 namespace GO {
   
   Game::Game()
@@ -157,7 +159,9 @@ namespace GO {
     map.calculateSize();
     buildMap();
     timer.restart();
-    
+    playerPtr = player;
+//    playerPtr->move(0, 0);
+//    ((GO::GameUnit)playerPtr)->move(0, 0);
     prevFrameTime = timer.getElapsedTime().asMicroseconds();
     while (gameWindow->isOpen())
     {

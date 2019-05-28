@@ -144,7 +144,7 @@ namespace GO {
     for (int i = hitBox.top / tileSize; i < (hitBox.top + hitBox.height) / tileSize; i++) {
       for (int j = hitBox.left / tileSize; j < (hitBox.left + hitBox.width) / tileSize; j++) {
         try {
-            handleCollisionX(CollisionObject(map.at(i).at(j), j, i));
+          handleCollisionX(CollisionObject(map.at(i).at(j), j, i));
         } catch (std::out_of_range) {
           std::cerr <<  "out of parameters i:" << i << "j: " << j << std::endl;
         }
@@ -306,8 +306,8 @@ namespace GO {
       hp -= settings::damageObjectsData.at(damageObject);
     }
     
-    std::cout << "got damage from " << damageObject << ";\n";
-    std::cout << name + " curr hp: " << hp << ";\n";
+//    std::cout << "got damage from " << damageObject << ";\n";
+//    std::cout << name + " curr hp: " << hp << ";\n";
     
     if (hp <= 0) {
       hp = 0;

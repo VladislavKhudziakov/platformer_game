@@ -9,6 +9,8 @@
 #ifndef gameUnit_hpp
 #define gameUnit_hpp
 
+#include "../global.h"
+
 #include <string>
 #include <stdexcept>
 #include "../ResourcePath.hpp"
@@ -18,7 +20,6 @@
 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-#include "../global.h"
 
 namespace GO {
   

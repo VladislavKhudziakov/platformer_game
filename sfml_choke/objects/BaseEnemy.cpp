@@ -8,7 +8,6 @@ namespace GO {
   {
     currDirection = direction;
     dx = 0.1;
-    Brain b(*this);
   }
   
   
@@ -40,6 +39,70 @@ namespace GO {
   }
   
   
+  void BaseEnemy::checkForDamageObjects(const std::vector<std::string>& map)
+  {
+    if (currDirection == unitsDir::left) {
+      checkLeft(map);
+    } else if (currDirection == unitsDir::right) {
+      checkRight(map);
+    }
+  }
+  
+  
+  void BaseEnemy::checkLeft(const std::vector<std::string>& map)
+  {
+    int tileSize = settings::sprite_resolution;
+    int x = hitBox.left / tileSize;
+    int yMin = hitBox.top / tileSize;
+    int yMax = (hitBox.top + hitBox.height) / tileSize + 1;
+    
+    if (x >= 0) {
+      for (int y = yMin; y < yMax; y++) {
+        try {
+         char mapBlockLabel = map.at(y).at(x);
+          
+          
+          if (exist(settings::damageObjects, mapBlockLabel)) {
+            currDirection = unitsDir::right;
+          }
+          
+        } catch (std::out_of_range err) {
+          std::cerr << err.what() << std::endl;
+          std::cerr <<name + ": out of range error: y position is out of range\n";
+          return;
+        }
+      }
+    }
+  }
+  
+  
+  void BaseEnemy::checkRight(const std::vector<std::string>& map)
+  {
+    int tileSize = settings::sprite_resolution;
+    int x = (hitBox.left + hitBox.width) / tileSize;
+    int yMin = hitBox.top / tileSize;
+    int yMax = (hitBox.top + hitBox.height) / tileSize + 1;
+
+    if (x < map.at(0).size()) {
+      
+      for (int y = yMin; y < yMax; y++) {
+        try {
+          char mapBlockLabel = map.at(y).at(x);
+          
+          if (exist(settings::damageObjects, mapBlockLabel)) {
+            currDirection = unitsDir::left;
+          }
+          
+        } catch (std::out_of_range err) {
+          std::cerr << err.what() << std::endl;
+          std::cerr <<name + ": out of range error: y position is out of range\n";
+          return;
+        }
+      }
+    }
+  }
+  
+  
   void BaseEnemy::onUpdate(double delta, const std::vector<std::string>& map)
   {
     if (isJump) {
@@ -56,6 +119,8 @@ namespace GO {
     } else if (onGround && currDirection == unitsDir::right) {
       moveRight();
     }
+    
+    checkForDamageObjects(map);
     
     hitBox.top += dy * delta / 200;
     detectCollisionY(map);

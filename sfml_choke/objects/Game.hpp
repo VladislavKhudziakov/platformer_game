@@ -19,6 +19,8 @@
 #include <SFML/Graphics.hpp>
 #include "../global.h"
 
+extern GO::GameUnit* playerPtr;
+
 namespace GO {
   
   class Game

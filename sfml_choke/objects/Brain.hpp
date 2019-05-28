@@ -7,9 +7,10 @@
 namespace GO {
   class Brain
   {
+    const GameUnit* owner;
     
   public:
-    Brain(const GO::BaseEnemy& owner);
+    Brain(const GameUnit* owner);
   };
 }
 

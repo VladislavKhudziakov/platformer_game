@@ -144,9 +144,7 @@ namespace GO {
     for (int i = hitBox.top / tileSize; i < (hitBox.top + hitBox.height) / tileSize; i++) {
       for (int j = hitBox.left / tileSize; j < (hitBox.left + hitBox.width) / tileSize; j++) {
         try {
-          if (exist(settings::walls, map.at(i).at(j))) {
             handleCollisionX(CollisionObject(map.at(i).at(j), j, i));
-          }
         } catch (std::out_of_range) {
           std::cerr <<  "out of parameters i:" << i << "j: " << j << std::endl;
         }
@@ -158,12 +156,14 @@ namespace GO {
   
   void GameUnit::handleCollisionX(const CollisionObject& colObj)
   {
-    int tileSize = settings::sprite_resolution;
-    
-    sf::Vector2i pos = colObj.getPosition();
+    if (exist(settings::walls, colObj.getLabel())) {
+      int tileSize = settings::sprite_resolution;
       
-    if (dx > 0) hitBox.left = pos.x * tileSize - tileSize;
-    if (dx < 0) hitBox.left = pos.x * tileSize + tileSize;
+      sf::Vector2i pos = colObj.getPosition();
+      
+      if (dx > 0) hitBox.left = pos.x * tileSize - tileSize;
+      if (dx < 0) hitBox.left = pos.x * tileSize + tileSize;
+    }
   }
   
   
@@ -174,14 +174,7 @@ namespace GO {
     for (int i = hitBox.top / tileSize; i < (hitBox.top + hitBox.height) / tileSize; i++) {
       for (int j = hitBox.left / tileSize; j < (hitBox.left + hitBox.width) / tileSize; j++) {
         try {
-          if (exist(settings::walls, map.at(i).at(j))) {
-                      
-            handleCollisionY(CollisionObject(map.at(i).at(j), j, i));
-            
-          } else if (exist(settings::damageObjects, map[i][j])) {
-            getDamage(map[i][j]);
-          }
-
+          handleCollisionY(CollisionObject(map.at(i).at(j), j, i));
         } catch (std::out_of_range) {
           std::cout <<  "out of parameters i:" << i << "j: " << j << std::endl;
         }
@@ -198,12 +191,16 @@ namespace GO {
     
     sf::Vector2i pos = colObj.getPosition();
     
-    if (dy > 0) {
-      hitBox.top = pos.y * tileSize - tileSize * 2;
-      onGround = true;
-    } else if (dy < 0) {
-      hitBox.top = pos.y * tileSize + tileSize;
-      isJump = false;
+    if (exist(settings::walls, colObj.getLabel())) {
+      if (dy > 0) {
+        hitBox.top = pos.y * tileSize - tileSize * 2;
+        onGround = true;
+      } else if (dy < 0) {
+        hitBox.top = pos.y * tileSize + tileSize;
+        isJump = false;
+      }
+    } else if (exist(settings::damageObjects, colObj.getLabel())) {
+      getDamage(colObj.getLabel());
     }
   }
   

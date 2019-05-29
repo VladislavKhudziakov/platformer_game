@@ -28,6 +28,7 @@ namespace GO {
     GameObjectBase();
     GameObjectBase(const sf::Texture&);
     GameObjectBase(const std::string&);
+    virtual ~GameObjectBase() { };
     
     virtual void scale(float, float);
     virtual void scale(const sf::Vector2f&);

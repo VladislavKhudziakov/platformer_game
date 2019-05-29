@@ -6,6 +6,7 @@ namespace GO {
   BaseEnemy::BaseEnemy(const sf::Texture& texture, const std::string& name,
    float x, float y, unitsDir direction) : GameUnit(texture, name, x, y)
   {
+    brain = new GO::Brain(this);
     currDirection = direction;
     dx = 0.1;
   }
@@ -14,8 +15,15 @@ namespace GO {
   BaseEnemy::BaseEnemy(const std::string& texName, const std::string& name,
    float x, float y, unitsDir direction) : GameUnit(texName, name, x, y)
   {
+    brain = new GO::Brain(this);
     currDirection = direction;
     dx = 0.1;
+  }
+  
+  
+  BaseEnemy::~BaseEnemy()
+  {
+    delete brain;
   }
   
   
@@ -61,7 +69,6 @@ namespace GO {
         try {
          char mapBlockLabel = map.at(y).at(x);
           
-          
           if (exist(settings::damageObjects, mapBlockLabel)) {
             currDirection = unitsDir::right;
           }
@@ -105,7 +112,6 @@ namespace GO {
   
   void BaseEnemy::checkForPlayer(const sf::FloatRect& playerHitbox)
   {
-    
     int tileSize = settings::sprite_resolution;
     
     int fovY = 2;
@@ -141,7 +147,6 @@ namespace GO {
         }
       }
     }
-    
   }
   
   
@@ -156,15 +161,16 @@ namespace GO {
       }
     }
     
+//    brain->think(map);
     if (onGround && currDirection == unitsDir::left) {
       moveLeft();
     } else if (onGround && currDirection == unitsDir::right) {
       moveRight();
     }
-    
+
     checkForDamageObjects(map);
-    
-    checkForPlayer(playerPtr->getHitbox());
+
+    checkForPlayer(GameData::playerPtr->getHitbox());
     
     hitBox.top += dy * delta / 200;
     detectCollisionY(map);

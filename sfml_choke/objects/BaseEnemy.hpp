@@ -2,17 +2,20 @@
 #ifndef baseEnemy_hpp
 #define baseEnemy_hpp
 
-#include "gameUnit.hpp"
-#include "Game.hpp"
 #include "Brain.hpp"
+#include "gameUnit.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
 typedef settings::unitsDirections unitsDir;
 
 namespace GO {
+  
   class BaseEnemy : public GameUnit
   {
+  private:
+    Brain* brain;
+    
   protected:
     unitsDir currDirection = unitsDir::none;
     void handleCollisionX(const CollisionObject&) override;
@@ -32,8 +35,10 @@ namespace GO {
               float x = 0, float y = 0,
               unitsDir startDirection = unitsDir::none);
     
+    virtual ~BaseEnemy();
+    
     void onUpdate(double, const std::vector<std::string>&) override;
-  };
+    };
 }
 
 #endif /* baseEnemy_hpp */

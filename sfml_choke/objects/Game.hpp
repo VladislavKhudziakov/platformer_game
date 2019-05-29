@@ -11,15 +11,18 @@
 
 #include <iostream>
 #include <vector>
+
 #include "gameUnit.hpp"
 #include "BaseEnemy.hpp"
+#include "GameData.hpp"
 #include "Map.hpp"
 #include "MapSprite.hpp"
+
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "../global.h"
 
-extern GO::GameUnit* playerPtr;
+//extern GO::GameUnit* playerPtr;
 
 namespace GO {
   

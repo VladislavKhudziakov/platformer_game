@@ -107,9 +107,6 @@ namespace GO {
   }
   
   
-  GameUnit::~GameUnit() { }
-  
-  
   void GameUnit::onUpdate(double delta, const std::vector<std::string>& map)
   {
     if (isJump) {
@@ -151,6 +148,12 @@ namespace GO {
       }
     }
     return CollisionObject('\0', 0, 0);
+  }
+  
+  
+  const std::string& GameUnit::getName()
+  {
+    return name;
   }
   
   

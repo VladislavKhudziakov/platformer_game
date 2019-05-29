@@ -15,6 +15,8 @@
 #include <stdexcept>
 #include "../ResourcePath.hpp"
 
+#include "Brain.hpp"
+
 #include "GameObjectBase.hpp"
 #include "CollisionObject.hpp"
 
@@ -22,6 +24,8 @@
 #include <SFML/Graphics.hpp>
 
 namespace GO {
+  
+//  class Brain;
   
   class GameUnit : protected GameObjectBase
   {
@@ -47,25 +51,28 @@ namespace GO {
     virtual void detectCollisionY(const std::vector<std::string>&);
     virtual void handleCollisionX(const CollisionObject& );
     virtual void handleCollisionY(const CollisionObject& );
+    friend class Brain;
     
   public:
     GameUnit();
     GameUnit(GameUnit&);
     GameUnit(const std::string&, const std::string&, float x = 0, float y = 0);
     GameUnit(const sf::Texture&, const std::string&, float x = 0, float y = 0);
-    ~GameUnit();
+    virtual ~GameUnit() { };
     virtual void onUpdate(double, const std::vector<std::string>&);
     virtual void jump();
     virtual void moveLeft();
     virtual void moveRight();
     virtual void getDamage(char);
+//    virtual void isOnGround();
     virtual float getHp();
+    
     virtual void stop();
     virtual void setName(const std::string&);
+    virtual const std::string& getName();
     virtual const sf::FloatRect& getHitbox();
     virtual operator sf::Sprite();
     virtual operator sf::Sprite*();
-    
   };
 }
 

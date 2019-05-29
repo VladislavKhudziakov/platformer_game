@@ -2,27 +2,10 @@
 #include "Brain.hpp"
 
 namespace GO {
-
-  //private:
-  //  const GameUnit* owner;
-  //  enum states {attack, patrol, stand};
-  //  int currState;
-  //
-  //protected:
-  //  void checkHazards();
-  //  void checkHazardsByLeftSide();
-  //  void checkHazardsByRightSide();
-  //  void handleCollision();
-  //  void detectPlayer();
-  //
-  //public:
-  //  Brain(const GameUnit* owner);
-  //  void think(const std::vector<std::string>&);
-  //};
   
-  
-  Brain::Brain(GameUnit* owner)
+  Brain::Brain(GameUnit* owner, settings::unitsDirections direction)
   {
+    currDirection = direction;
     this->owner = owner;
   }
   
@@ -147,8 +130,15 @@ namespace GO {
   }
 
 
-  void Brain::handleCollision()
+  void Brain::handleCollisionX(const CollisionObject& colObj)
   {
-    //TODO
+    if (exist(settings::walls, colObj.getLabel())) {
+      
+      if (currDirection == settings::unitsDirections::left) {
+        currDirection = settings::unitsDirections::right;
+      } else if (currDirection == settings::unitsDirections::right) {
+        currDirection = settings::unitsDirections::left;
+      }
+    }
   }
 }

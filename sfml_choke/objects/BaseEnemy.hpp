@@ -20,10 +20,6 @@ namespace GO {
     unitsDir currDirection = unitsDir::none;
     void handleCollisionX(const CollisionObject&) override;
     void handleCollisionY(const CollisionObject&) override;
-    void checkForDamageObjects(const std::vector<std::string>&);
-    void checkLeft(const std::vector<std::string>&);
-    void checkRight(const std::vector<std::string>&);
-    void checkForPlayer(const sf::FloatRect&);
     
     
   public:

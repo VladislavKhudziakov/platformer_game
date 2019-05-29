@@ -179,6 +179,7 @@ namespace GO {
         try {
           handleCollisionY(CollisionObject(map.at(i).at(j), j, i));
         } catch (std::out_of_range) {
+          kill();
           std::cout <<  "out of parameters i:" << i << "j: " << j << std::endl;
         }
       }
@@ -205,6 +206,12 @@ namespace GO {
     } else if (exist(settings::damageObjects, colObj.getLabel())) {
       getDamage(colObj.getLabel());
     }
+  }
+  
+  
+  void GameUnit::kill()
+  {
+    hp = 0;
   }
   
   

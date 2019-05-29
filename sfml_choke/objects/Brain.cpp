@@ -22,9 +22,47 @@ namespace GO {
       }
     }
 
+    if (currMindState == settings::unitsMindStates::attack) {
+//      std::cout << owner->name + " attacks\n";
+      attack();
+    }
     
     checkHazards(map);
     detectPlayer();
+  }
+  
+  
+  void Brain::attack()
+  {
+    if (currMindState == settings::unitsMindStates::attack) {
+      int tileSize = settings::sprite_resolution;
+      
+      int ownerX = owner->hitBox.left / tileSize;
+      
+      if (currDirection == settings::unitsDirections::right) {
+        ownerX = (owner->hitBox.left + owner->hitBox.width) / tileSize;
+      }
+      
+      int ownerY = owner->hitBox.top / tileSize;
+      
+      const sf::FloatRect& playerHitbox = GameData::playerPtr->getHitbox();
+      
+      int playerX = playerHitbox.left / tileSize;
+      int playerY = (playerHitbox.top +  playerHitbox.height) / tileSize;
+      
+      
+      if (playerY < ownerY) {
+        owner->jump();
+      } else {
+        if (ownerX > playerX) {
+          currDirection = settings::unitsDirections::left;
+          owner->moveLeft();
+        } else if (ownerX < playerX) {
+          currDirection = settings::unitsDirections::right;
+          owner->moveRight();
+        }
+      }
+    }
   }
   
 
@@ -127,7 +165,6 @@ namespace GO {
           try {
             if ((x == playerMinX || x == playerMaxX) &&
                 (y == playerMinY || y == playerMaxY)) {
-              std::cout << owner->getName() + "'s dick is up\n";
               currMindState = settings::unitsMindStates::attack;
               return;
             }

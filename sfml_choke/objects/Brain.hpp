@@ -23,6 +23,7 @@ namespace GO {
     void checkHazardsByLeftSide(const std::vector<std::string>&);
     void checkHazardsByRightSide(const std::vector<std::string>&);
     void detectPlayer();
+    void attack();
     
   public:
     Brain(GameUnit* owner,

@@ -31,6 +31,7 @@ namespace GO {
   {
   private:
     void calculateSpriteScale();
+    void kill();
     
   protected:
     float hp = settings::defaultHP;

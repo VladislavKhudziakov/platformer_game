@@ -42,6 +42,7 @@ namespace settings {
   extern const std::vector<char> damageObjects;
   
   enum class unitsDirections : int { none, left, right };
+  enum class unitsMindStates : int { attack, patrol, stand };
 }
 
 #endif /* global_h */

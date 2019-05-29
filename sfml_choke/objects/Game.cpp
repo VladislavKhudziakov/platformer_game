@@ -161,9 +161,7 @@ namespace GO {
     timer.restart();
     
     GameData::playerPtr = player;
-//    playerPtr = player;?
-//    playerPtr->move(0, 0);
-//    ((GO::GameUnit)playerPtr)->move(0, 0);
+    
     prevFrameTime = timer.getElapsedTime().asMicroseconds();
     while (gameWindow->isOpen())
     {
@@ -191,6 +189,7 @@ namespace GO {
     if (player && player->getHp() <= 0) {
       delete player;
       player = nullptr;
+      GameData::playerPtr = nullptr;
     }
     
     if (player) {

@@ -16,6 +16,7 @@ namespace GO {
   private:
     Brain* brain;
     
+    
   protected:
     unitsDir currDirection = unitsDir::none;
     void handleCollisionX(const CollisionObject&) override;
@@ -23,6 +24,8 @@ namespace GO {
     
     
   public:
+    BaseEnemy();
+    
     BaseEnemy(const sf::Texture&, const std::string&,
               float x = 0, float y = 0,
               unitsDir startDirection = unitsDir::none);
@@ -31,9 +34,13 @@ namespace GO {
               float x = 0, float y = 0,
               unitsDir startDirection = unitsDir::none);
     
+    BaseEnemy(const BaseEnemy&);
+    
     virtual ~BaseEnemy();
     
     void onUpdate(double, const std::vector<std::string>&) override;
+    
+    void operator=(const BaseEnemy&);
     };
 }
 

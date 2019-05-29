@@ -86,44 +86,46 @@ namespace GO {
 
   void Brain::detectPlayer()
   {
-    int tileSize = settings::sprite_resolution;
-
-    int fovY = 2;
-    int fovX = 4;
-    int xMin;
-    int xMax;
-    int yMin;
-    int yMax;
-
-    const sf::FloatRect& playerHitbox = GameData::playerPtr->getHitbox();
-
-    int playerMinX = playerHitbox.left / tileSize;
-    int playerMaxX = (playerHitbox.left +  playerHitbox.width) / tileSize;
-    int playerMinY = playerHitbox.top / tileSize;
-    int playerMaxY = (playerHitbox.top +  playerHitbox.height) / tileSize;
-
-    const sf::FloatRect& ownerHitBox = owner->getHitbox();
-
-    if (currDirection == settings::unitsDirections::left) {
-      xMin = ownerHitBox.left / tileSize;
-      xMax = xMin - fovX;
-    } else if (currDirection == settings::unitsDirections::right) {
-      xMin = (ownerHitBox.left + ownerHitBox.width) / tileSize;
-      xMax = xMin + fovX;
-    }
-
-    yMin = ownerHitBox.top / tileSize - fovY;
-    yMax = (ownerHitBox.top + ownerHitBox.height) / tileSize + fovY;
-
-    for (int y = yMin; y < yMax; y++) {
-      for (int x = xMin; x < xMax; x++) {
-        try {
-          if ((x == playerMinX || x == playerMaxX) &&
-             (y == playerMinY || y == playerMaxY)) {
-            std::cout << owner->getName() + "'s dick is up\n";
+    if (GameData::playerPtr) {
+      int tileSize = settings::sprite_resolution;
+      
+      int fovY = 2;
+      int fovX = 4;
+      int xMin;
+      int xMax;
+      int yMin;
+      int yMax;
+      
+      const sf::FloatRect& playerHitbox = GameData::playerPtr->getHitbox();
+      
+      int playerMinX = playerHitbox.left / tileSize;
+      int playerMaxX = (playerHitbox.left +  playerHitbox.width) / tileSize;
+      int playerMinY = playerHitbox.top / tileSize;
+      int playerMaxY = (playerHitbox.top +  playerHitbox.height) / tileSize;
+      
+      const sf::FloatRect& ownerHitBox = owner->getHitbox();
+      
+      if (currDirection == settings::unitsDirections::left) {
+        xMin = ownerHitBox.left / tileSize;
+        xMax = xMin - fovX;
+      } else if (currDirection == settings::unitsDirections::right) {
+        xMin = (ownerHitBox.left + ownerHitBox.width) / tileSize;
+        xMax = xMin + fovX;
+      }
+      
+      yMin = ownerHitBox.top / tileSize - fovY;
+      yMax = (ownerHitBox.top + ownerHitBox.height) / tileSize + fovY;
+      
+      for (int y = yMin; y < yMax; y++) {
+        for (int x = xMin; x < xMax; x++) {
+          try {
+            if ((x == playerMinX || x == playerMaxX) &&
+                (y == playerMinY || y == playerMaxY)) {
+              std::cout << owner->getName() + "'s dick is up\n";
+            }
+          } catch (std::out_of_range err) {
+            std::cerr << err.what() << std::endl;
           }
-        } catch (std::out_of_range err) {
-          std::cerr << err.what() << std::endl;
         }
       }
     }

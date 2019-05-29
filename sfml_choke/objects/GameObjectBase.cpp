@@ -99,13 +99,13 @@ namespace GO {
     node.setTextureRect(rectangle);
   }
   
-  const sf::Vector2f& GameObjectBase::getPosition()
+  const sf::Vector2f& GameObjectBase::getPosition() const
   {
     return node.getPosition();
   }
   
   
-  const sf::Vector2f& GameObjectBase::getScale()
+  const sf::Vector2f& GameObjectBase::getScale() const
   {
     return node.getScale();
   }
@@ -123,31 +123,31 @@ namespace GO {
   }
   
   
-  const sf::IntRect& GameObjectBase::getTextureRect()
+  const sf::IntRect& GameObjectBase::getTextureRect() const
   {
     return node.getTextureRect();
   }
   
   
-  const sf::Vector2f& GameObjectBase::getOrigin()
+  const sf::Vector2f& GameObjectBase::getOrigin() const
   {
     return node.getOrigin();
   }
   
   
-  float GameObjectBase::getRotation()
+  float GameObjectBase::getRotation() const
   {
     return node.getRotation();
   }
   
   
-  const sf::Sprite* GameObjectBase::getNode()
+  const sf::Sprite* GameObjectBase::getNode() const
   {
     return &node;
   }
   
   
-  const sf::Texture* GameObjectBase::getTexture()
+  const sf::Texture* GameObjectBase::getTexture() const
   {
     return &skin;
   }

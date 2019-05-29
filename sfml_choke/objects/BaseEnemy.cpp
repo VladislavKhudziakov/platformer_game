@@ -21,6 +21,19 @@ namespace GO {
   }
   
   
+  BaseEnemy::BaseEnemy(const BaseEnemy& other)
+    : GameUnit(*other.getTexture(), other.name, other.hitBox.left, other.hitBox.top)
+  {
+    brain = new Brain(this);
+  }
+  
+  
+  BaseEnemy::BaseEnemy(): GameUnit()
+  {
+    brain = nullptr;
+  }
+  
+  
   BaseEnemy::~BaseEnemy()
   {
     delete brain;
@@ -67,4 +80,5 @@ namespace GO {
       dy = settings::gravityForce;
     }
   }
+
 }

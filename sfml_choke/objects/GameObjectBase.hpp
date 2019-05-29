@@ -48,15 +48,15 @@ namespace GO {
     
     virtual void rotate(float);
     
-    virtual const sf::IntRect& getTextureRect();
-    virtual const sf::Vector2f& getOrigin();
-    virtual const sf::Vector2f& getPosition();
-    virtual const sf::Vector2f& getScale();
+    virtual const sf::IntRect& getTextureRect() const;
+    virtual const sf::Vector2f& getOrigin() const;
+    virtual const sf::Vector2f& getPosition() const;
+    virtual const sf::Vector2f& getScale() const;
     
-    virtual float getRotation();
+    virtual float getRotation() const;
     
-    virtual const sf::Sprite* getNode();
-    virtual const sf::Texture* getTexture();
+    virtual const sf::Sprite* getNode() const;
+    virtual const sf::Texture* getTexture() const;
     
     virtual operator sf::Sprite();
     virtual operator sf::Sprite*();

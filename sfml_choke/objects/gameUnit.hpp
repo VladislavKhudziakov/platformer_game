@@ -64,7 +64,6 @@ namespace GO {
     virtual void moveLeft();
     virtual void moveRight();
     virtual void getDamage(char);
-//    virtual void isOnGround();
     virtual float getHp();
     
     virtual void stop();

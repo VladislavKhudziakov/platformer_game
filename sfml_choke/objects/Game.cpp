@@ -18,7 +18,7 @@ namespace GO {
     player = new GO::GameUnit("player.png", "player", 100, 100);
     
     for (int i = 132, j = 1; i < 132 + 32 * 5; i += 32, j++) {
-      auto unit = new GO::BaseEnemy("player.png", "enemy" + std::to_string(j), i, 100, j % 2 == 0 ? unitsDir::left : unitsDir::right);
+      auto unit = new GO::BaseEnemy("player.png", "enemy" + std::to_string(j), i, 100, j % 2 == 0 ? unitsDir::left : unitsDir::right, settings::unitsMindStates::patrol);
       units.push_back(unit);
     }
   }

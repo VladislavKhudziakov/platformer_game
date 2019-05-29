@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 
 typedef settings::unitsDirections unitsDir;
+typedef settings::unitsMindStates mindStates;
 
 namespace GO {
   
@@ -28,11 +29,13 @@ namespace GO {
     
     BaseEnemy(const sf::Texture&, const std::string&,
               float x = 0, float y = 0,
-              unitsDir startDirection = unitsDir::none);
+              unitsDir startDirection = unitsDir::none,
+              mindStates mindState = mindStates::stand);
     
     BaseEnemy(const std::string&, const std::string&,
               float x = 0, float y = 0,
-              unitsDir startDirection = unitsDir::none);
+              unitsDir startDirection = unitsDir::none,
+              mindStates mindState = mindStates::stand);
     
     BaseEnemy(const BaseEnemy&);
     

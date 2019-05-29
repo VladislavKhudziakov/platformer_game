@@ -16,8 +16,7 @@ namespace GO {
   private:
     GameUnit* owner;
     settings::unitsDirections currDirection = settings::unitsDirections::none;
-    enum mindStates {attack, patrol, stand};
-    int currMindState;
+    settings::unitsMindStates currMindState = settings::unitsMindStates::stand;
     
   protected:
     void checkHazards(const std::vector<std::string>&);
@@ -26,7 +25,10 @@ namespace GO {
     void detectPlayer();
     
   public:
-    Brain(GameUnit* owner, settings::unitsDirections direction = settings::unitsDirections::none);
+    Brain(GameUnit* owner,
+          settings::unitsDirections direction = settings::unitsDirections::none,
+          settings::unitsMindStates mindState = settings::unitsMindStates::stand);
+    
     void think(const std::vector<std::string>&);
     void handleCollisionX(const CollisionObject&);
   };

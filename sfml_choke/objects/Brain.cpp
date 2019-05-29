@@ -3,19 +3,25 @@
 
 namespace GO {
   
-  Brain::Brain(GameUnit* owner, settings::unitsDirections direction)
+  Brain::Brain(GameUnit* owner,
+   settings::unitsDirections direction,
+   settings::unitsMindStates mindState)
   {
     currDirection = direction;
+    currMindState = mindState;
     this->owner = owner;
   }
   
   void Brain::think(const std::vector<std::string>& map)
   {
-    if (owner->onGround && currDirection == settings::unitsDirections::left) {
-      owner->moveLeft();
-    } else if (owner->onGround && currDirection == settings::unitsDirections::right) {
-     owner->moveRight();
+    if (currMindState == settings::unitsMindStates::patrol) {
+      if (owner->onGround && currDirection == settings::unitsDirections::left) {
+        owner->moveLeft();
+      } else if (owner->onGround && currDirection == settings::unitsDirections::right) {
+        owner->moveRight();
+      }
     }
+
     
     checkHazards(map);
     detectPlayer();
@@ -106,8 +112,8 @@ namespace GO {
       const sf::FloatRect& ownerHitBox = owner->getHitbox();
       
       if (currDirection == settings::unitsDirections::left) {
-        xMin = ownerHitBox.left / tileSize;
-        xMax = xMin - fovX;
+        xMin = ownerHitBox.left / tileSize - fovX;
+        xMax = xMin + fovX;
       } else if (currDirection == settings::unitsDirections::right) {
         xMin = (ownerHitBox.left + ownerHitBox.width) / tileSize;
         xMax = xMin + fovX;
@@ -122,12 +128,15 @@ namespace GO {
             if ((x == playerMinX || x == playerMaxX) &&
                 (y == playerMinY || y == playerMaxY)) {
               std::cout << owner->getName() + "'s dick is up\n";
+              currMindState = settings::unitsMindStates::attack;
+              return;
             }
           } catch (std::out_of_range err) {
             std::cerr << err.what() << std::endl;
           }
         }
       }
+      currMindState = settings::unitsMindStates::patrol;
     }
   }
 

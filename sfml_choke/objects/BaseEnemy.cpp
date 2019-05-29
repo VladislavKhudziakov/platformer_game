@@ -4,18 +4,20 @@
 namespace GO {
   
   BaseEnemy::BaseEnemy(const sf::Texture& texture, const std::string& name,
-   float x, float y, unitsDir direction) : GameUnit(texture, name, x, y)
+   float x, float y, unitsDir direction, settings::unitsMindStates mindState)
+    : GameUnit(texture, name, x, y)
   {
-    brain = new GO::Brain(this, direction);
+    brain = new GO::Brain(this, direction, mindState);
     currDirection = direction;
     dx = 0.1;
   }
   
   
   BaseEnemy::BaseEnemy(const std::string& texName, const std::string& name,
-   float x, float y, unitsDir direction) : GameUnit(texName, name, x, y)
+   float x, float y, unitsDir direction, settings::unitsMindStates mindState)
+    : GameUnit(texName, name, x, y)
   {
-    brain = new GO::Brain(this, direction);
+    brain = new GO::Brain(this, direction, mindState);
     currDirection = direction;
     dx = 0.1;
   }

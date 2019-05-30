@@ -51,32 +51,17 @@ namespace GO {
       
       
       if (playerY < ownerY) {
-        
-//        for (int y = ownerY; y < ownerY + settings::jumpSize; y++) {
-//          if (exist(settings::walls, map.at(y).at(ownerX))) {
-////            if (ownerX > playerX) {
-////              currDirection = settings::unitsDirections::left;
-////              owner->moveLeft();
-////            } else if (ownerX < playerX) {
-////              currDirection = settings::unitsDirections::right;
-////              owner->moveRight();
-////            }
-//            std::cout << "wall is upper\n";
-////            return;
-//          }
-//        }
-        
         owner->jump();
       }
-//      else {
-//        if (ownerX > playerX) {
-//          currDirection = settings::unitsDirections::left;
-//          owner->moveLeft();
-//        } else if (ownerX < playerX) {
-//          currDirection = settings::unitsDirections::right;
-//          owner->moveRight();
-//        }
-//      }
+      else {
+        if (ownerX > playerX) {
+          currDirection = settings::unitsDirections::left;
+          owner->moveLeft();
+        } else if (ownerX < playerX) {
+          currDirection = settings::unitsDirections::right;
+          owner->moveRight();
+        }
+      }
     }
   }
   
@@ -158,22 +143,11 @@ namespace GO {
       sf::Vector2i fovYField = checkForWallsY(map);
       sf::Vector2i fovXField = checkForWallsX(map);
       
-//      std::cout << owner->name + " yMin: " << fovYField.x << " yMax: " << fovYField.y << "\n";
-//      std::cout << owner->name + " yMin: " << fovYField.x << " yMax: " << fovYField.y << "\n";
-//      std::cout << owner->name + " xMin: " << fovXField.x << " xMax: " << fovXField.y << "\n";
-//      std::cout <<  "player yMin: " << playerMinY << " yMax: " << playerMaxY << "\n";
-//      std::cout <<  "player xMin: " << playerMinX << " xMax: " << playerMaxX << "\n";
-      
       for (int y = fovYField.x; y < fovYField.y; y++) {
         for (int x = fovXField.x; x < fovXField.y; x++) {
           try {
             if ((x == playerMinX || x == playerMaxX) &&
                 (y == playerMinY || y == playerMaxY)) {
-                    std::cout << owner->name + " yMin: " << fovYField.x << " yMax: " << fovYField.y << "\n";
-                    std::cout << owner->name + " yMin: " << fovYField.x << " yMax: " << fovYField.y << "\n";
-                    std::cout << owner->name + " xMin: " << fovXField.x << " xMax: " << fovXField.y << "\n";
-                    std::cout <<  "player yMin: " << playerMinY << " yMax: " << playerMaxY << "\n";
-                    std::cout <<  "player xMin: " << playerMinX << " xMax: " << playerMaxX << "\n";
               currMindState = settings::unitsMindStates::attack;
               return;
             }

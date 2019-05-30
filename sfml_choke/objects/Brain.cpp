@@ -23,16 +23,15 @@ namespace GO {
     }
 
     if (currMindState == settings::unitsMindStates::attack) {
-//      std::cout << owner->name + " attacks\n";
-      attack();
+      attack(map);
     }
     
     checkHazards(map);
-    detectPlayer();
+    detectPlayer(map);
   }
   
   
-  void Brain::attack()
+  void Brain::attack(const std::vector<std::string>& map)
   {
     if (currMindState == settings::unitsMindStates::attack) {
       int tileSize = settings::sprite_resolution;
@@ -52,16 +51,32 @@ namespace GO {
       
       
       if (playerY < ownerY) {
+        
+//        for (int y = ownerY; y < ownerY + settings::jumpSize; y++) {
+//          if (exist(settings::walls, map.at(y).at(ownerX))) {
+////            if (ownerX > playerX) {
+////              currDirection = settings::unitsDirections::left;
+////              owner->moveLeft();
+////            } else if (ownerX < playerX) {
+////              currDirection = settings::unitsDirections::right;
+////              owner->moveRight();
+////            }
+//            std::cout << "wall is upper\n";
+////            return;
+//          }
+//        }
+        
         owner->jump();
-      } else {
-        if (ownerX > playerX) {
-          currDirection = settings::unitsDirections::left;
-          owner->moveLeft();
-        } else if (ownerX < playerX) {
-          currDirection = settings::unitsDirections::right;
-          owner->moveRight();
-        }
       }
+//      else {
+//        if (ownerX > playerX) {
+//          currDirection = settings::unitsDirections::left;
+//          owner->moveLeft();
+//        } else if (ownerX < playerX) {
+//          currDirection = settings::unitsDirections::right;
+//          owner->moveRight();
+//        }
+//      }
     }
   }
   
@@ -128,53 +143,147 @@ namespace GO {
   }
 
 
-  void Brain::detectPlayer()
+  void Brain::detectPlayer(const std::vector<std::string>& map)
   {
     if (GameData::playerPtr) {
       int tileSize = settings::sprite_resolution;
       
-      int fovY = 2;
-      int fovX = 4;
-      int xMin;
-      int xMax;
-      int yMin;
-      int yMax;
-      
       const sf::FloatRect& playerHitbox = GameData::playerPtr->getHitbox();
       
       int playerMinX = playerHitbox.left / tileSize;
-      int playerMaxX = (playerHitbox.left +  playerHitbox.width) / tileSize;
+      int playerMaxX = (playerHitbox.left +  playerHitbox.width) / tileSize - 1;
       int playerMinY = playerHitbox.top / tileSize;
-      int playerMaxY = (playerHitbox.top +  playerHitbox.height) / tileSize;
+      int playerMaxY = (playerHitbox.top +  playerHitbox.height) / tileSize - 1;
       
-      const sf::FloatRect& ownerHitBox = owner->getHitbox();
+      sf::Vector2i fovYField = checkForWallsY(map);
+      sf::Vector2i fovXField = checkForWallsX(map);
       
-      if (currDirection == settings::unitsDirections::left) {
-        xMin = ownerHitBox.left / tileSize - fovX;
-        xMax = xMin + fovX;
-      } else if (currDirection == settings::unitsDirections::right) {
-        xMin = (ownerHitBox.left + ownerHitBox.width) / tileSize;
-        xMax = xMin + fovX;
-      }
+//      std::cout << owner->name + " yMin: " << fovYField.x << " yMax: " << fovYField.y << "\n";
+//      std::cout << owner->name + " yMin: " << fovYField.x << " yMax: " << fovYField.y << "\n";
+//      std::cout << owner->name + " xMin: " << fovXField.x << " xMax: " << fovXField.y << "\n";
+//      std::cout <<  "player yMin: " << playerMinY << " yMax: " << playerMaxY << "\n";
+//      std::cout <<  "player xMin: " << playerMinX << " xMax: " << playerMaxX << "\n";
       
-      yMin = ownerHitBox.top / tileSize - fovY;
-      yMax = (ownerHitBox.top + ownerHitBox.height) / tileSize + fovY;
-      
-      for (int y = yMin; y < yMax; y++) {
-        for (int x = xMin; x < xMax; x++) {
+      for (int y = fovYField.x; y < fovYField.y; y++) {
+        for (int x = fovXField.x; x < fovXField.y; x++) {
           try {
             if ((x == playerMinX || x == playerMaxX) &&
                 (y == playerMinY || y == playerMaxY)) {
+                    std::cout << owner->name + " yMin: " << fovYField.x << " yMax: " << fovYField.y << "\n";
+                    std::cout << owner->name + " yMin: " << fovYField.x << " yMax: " << fovYField.y << "\n";
+                    std::cout << owner->name + " xMin: " << fovXField.x << " xMax: " << fovXField.y << "\n";
+                    std::cout <<  "player yMin: " << playerMinY << " yMax: " << playerMaxY << "\n";
+                    std::cout <<  "player xMin: " << playerMinX << " xMax: " << playerMaxX << "\n";
               currMindState = settings::unitsMindStates::attack;
               return;
             }
           } catch (std::out_of_range err) {
-            std::cerr << err.what() << std::endl;
+            std::cerr << owner->name + " player detection final loop is out of parameters\n";
           }
         }
       }
       currMindState = settings::unitsMindStates::patrol;
     }
+  }
+  
+  
+  sf::Vector2i Brain::checkForWallsY(const std::vector<std::string>& map)
+  {
+    int fovY = 2;
+    
+    int tileSize = settings::sprite_resolution;
+    
+    int ownerX = owner->getHitbox().left / tileSize + 1;
+    int ownerY = owner->getHitbox().top / tileSize;
+    
+    if (currDirection == settings::unitsDirections::right) {
+      ownerX = ownerX + owner->getHitbox().width / tileSize - 1;
+    }
+    
+    int minFovY = ownerY - fovY;
+    int maxFovY = ownerY + fovY;
+    
+    
+    for (int y = minFovY; y < ownerY; y++) {
+      try {
+        if (exist(settings::walls, map.at(y).at(ownerX))) {
+          minFovY = y;
+        }
+      } catch (std::out_of_range err) {
+        std::cerr << owner->name + " player detection Y1 loop is out of parameters\n";
+      }
+    }
+    
+    int ownerBottomY = ownerY + owner->getHitbox().width / tileSize;
+    
+    for (int y = ownerBottomY + fovY; y > ownerBottomY; y--) {
+      try {
+        if (exist(settings::walls, map.at(y).at(ownerX))) {
+          maxFovY = y;
+        }
+      } catch (std::out_of_range err) {
+        std::cerr << owner->name + " player detection Y2 loop is out of parameters\n";
+      }
+    }
+    
+    return sf::Vector2i(minFovY, maxFovY);
+  }
+  
+  
+  sf::Vector2i Brain::checkForWallsX(const std::vector<std::string>& map)
+  {
+    int fovX = 4;
+    
+    int tileSize = settings::sprite_resolution;
+    
+    int ownerX = owner->getHitbox().left / tileSize;
+    int ownerY = owner->getHitbox().top / tileSize;
+    
+    if (currDirection == settings::unitsDirections::right) {
+      ownerX =  ownerX + owner->getHitbox().width / tileSize;
+    };
+    
+    int minFovX;
+    int maxFovX;
+    
+    if (currDirection == settings::unitsDirections::left) {
+      minFovX = ownerX - fovX < 0 ? 0 : ownerX - fovX;
+      maxFovX = ownerX;
+      
+      for (int x = minFovX; x < ownerX; x++) {
+        try {
+          if (exist(settings::walls, map.at(ownerY).at(x))) {
+            minFovX = x;
+          }
+        } catch (std::out_of_range err) {
+          std::cerr << owner->name + " player detection left loop is out of parameters\n";
+        }
+      }
+    } else if (currDirection == settings::unitsDirections::right) {
+      minFovX = ownerX;
+      
+      int mapSize;
+      
+      try {
+        mapSize = map.at(ownerY).size();
+      } catch (std::out_of_range err) {
+        mapSize = map.at(0).size();
+      }
+      
+      maxFovX = ownerX + fovX >= mapSize ? mapSize - 1 : ownerX + fovX;
+      
+      for (int x = maxFovX; x > ownerX; x--) {
+        try {
+          if (exist(settings::walls, map.at(ownerY).at(x))) {
+            maxFovX = x;
+          }
+        } catch (std::out_of_range err) {
+          std::cerr << owner->name + " player detection right loop is out of parameters\n";
+        }
+      }
+    }
+    
+    return sf::Vector2i(minFovX , maxFovX);
   }
 
 

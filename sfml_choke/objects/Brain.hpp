@@ -5,6 +5,7 @@
 #include "CollisionObject.hpp"
 #include "GameData.hpp"
 #include "gameUnit.hpp"
+#include <exception>
 #include "../global.h"
 
 namespace GO {
@@ -22,8 +23,11 @@ namespace GO {
     void checkHazards(const std::vector<std::string>&);
     void checkHazardsByLeftSide(const std::vector<std::string>&);
     void checkHazardsByRightSide(const std::vector<std::string>&);
-    void detectPlayer();
-    void attack();
+    void attack(const std::vector<std::string>&);
+    
+    void detectPlayer(const std::vector<std::string>&);
+    sf::Vector2i checkForWallsY(const std::vector<std::string>&);
+    sf::Vector2i checkForWallsX(const std::vector<std::string>&);
     
   public:
     Brain(GameUnit* owner,

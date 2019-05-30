@@ -8,8 +8,6 @@
 
 #include "Game.hpp"
 
-//GO::GameUnit* playerPtr = nullptr;
-
 namespace GO {
   
   Game::Game()

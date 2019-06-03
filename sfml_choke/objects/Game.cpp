@@ -15,10 +15,13 @@ namespace GO {
     gameWindow = new sf::RenderWindow();
     player = new GO::GameUnit("player.png", "player", 100, 100);
     
-    for (int i = 132, j = 1; i < 132 + 32 * 5; i += 32, j++) {
-      auto unit = new GO::BaseEnemy("player.png", "enemy" + std::to_string(j), i, 100, j % 2 == 0 ? unitsDir::left : unitsDir::right, settings::unitsMindStates::patrol);
-      units.push_back(unit);
-    }
+//    for (int i = 132, j = 1; i < 132 + 32 * 5; i += 32, j++) {
+//      auto unit = new GO::BaseEnemy("player.png", "enemy" + std::to_string(j), i, 100, j % 2 == 0 ? unitsDir::left : unitsDir::right, settings::unitsMindStates::patrol);
+//      units.push_back(unit);
+//    }
+    
+    auto unit = new GO::BaseEnemy("player.png", "enemy", 170, 170, unitsDir::right);
+          units.push_back(unit);
   }
   
   
@@ -205,6 +208,7 @@ namespace GO {
       
       delete unit;
       auto unitIter = std::find(units.begin(), units.end(), unit);
+      
       if (unitIter != units.end()) {
         units.erase(unitIter);
       }

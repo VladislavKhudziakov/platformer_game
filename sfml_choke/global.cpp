@@ -52,6 +52,6 @@ namespace settings {
   };
   
   const std::map<char, float> damageObjectsData = {
-    {'L', 0.5},
+    {'L', 0.05},
   };
 }

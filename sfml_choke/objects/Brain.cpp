@@ -3,37 +3,35 @@
 
 namespace GO {
   
-  Brain::Brain(GameUnit* owner,
-   settings::unitsDirections direction,
-   settings::unitsMindStates mindState)
+  Brain::Brain(GameUnit* owner, settings::unitsDirections direction)
   {
     currDirection = direction;
-    currMindState = mindState;
     this->owner = owner;
   }
   
   void Brain::think(const std::vector<std::string>& map)
   {
-    if (currMindState == settings::unitsMindStates::patrol) {
-      if (owner->onGround && currDirection == settings::unitsDirections::left) {
-        owner->moveLeft();
-      } else if (owner->onGround && currDirection == settings::unitsDirections::right) {
-        owner->moveRight();
-      }
+    if (isInDanger(map)) {
+      owner->jump();
     }
-
-    if (currMindState == settings::unitsMindStates::attack) {
+    
+    if (playerDetected(map)) {
       attack(map);
     }
     
+    
+    if (currDirection == settings::unitsDirections::left) {
+      owner->moveLeft();
+    } else if ( currDirection == settings::unitsDirections::right) {
+      owner->moveRight();
+    }
+    
     checkHazards(map);
-    detectPlayer(map);
   }
   
   
   void Brain::attack(const std::vector<std::string>& map)
   {
-    if (currMindState == settings::unitsMindStates::attack) {
       int tileSize = settings::sprite_resolution;
       
       int ownerX = owner->hitBox.left / tileSize;
@@ -49,20 +47,9 @@ namespace GO {
       int playerX = playerHitbox.left / tileSize;
       int playerY = (playerHitbox.top +  playerHitbox.height) / tileSize;
       
-      
       if (playerY < ownerY) {
         owner->jump();
       }
-      else {
-        if (ownerX > playerX) {
-          currDirection = settings::unitsDirections::left;
-          owner->moveLeft();
-        } else if (ownerX < playerX) {
-          currDirection = settings::unitsDirections::right;
-          owner->moveRight();
-        }
-      }
-    }
   }
   
 
@@ -128,7 +115,7 @@ namespace GO {
   }
 
 
-  void Brain::detectPlayer(const std::vector<std::string>& map)
+  bool Brain::playerDetected(const std::vector<std::string>& map)
   {
     if (GameData::playerPtr) {
       int tileSize = settings::sprite_resolution;
@@ -148,16 +135,39 @@ namespace GO {
           try {
             if ((x == playerMinX || x == playerMaxX) &&
                 (y == playerMinY || y == playerMaxY)) {
-              currMindState = settings::unitsMindStates::attack;
-              return;
+              return true;
             }
           } catch (std::out_of_range err) {
-            std::cerr << owner->name + " player detection final loop is out of parameters\n";
+            std::cerr << owner->name + " out of range x: " << x << " y :" << y << "\n";
           }
         }
       }
-      currMindState = settings::unitsMindStates::patrol;
+      return false;
     }
+    return false;
+  }
+  
+  
+  bool Brain::isInDanger(const std::vector<std::string>& map) {
+    int tileSize = settings::sprite_resolution;
+
+    int yMin = owner->hitBox.top / tileSize;
+    int yMax =(owner->hitBox.top +  owner->hitBox.height) / tileSize;
+    int xMin = owner->hitBox.left / tileSize;
+    int xMax = (owner->hitBox.left + owner->hitBox.width) / tileSize;
+    
+    for (int y = yMin; y < yMax; y++) {
+      for (int x = xMin; x < xMax; x++) {
+        try {
+          if (exist(settings::damageObjects, map.at(y).at(x))) {
+            return true;
+          }
+        } catch (std::out_of_range err) {
+          std::cerr <<  "out of parameters y:" << y << "x: " << x << std::endl;
+        }
+      }
+    }
+    return false;
   }
   
   
@@ -184,19 +194,25 @@ namespace GO {
           minFovY = y;
         }
       } catch (std::out_of_range err) {
-        std::cerr << owner->name + " player detection Y1 loop is out of parameters\n";
+        std::cerr << owner->name + "y: " << y << " is out of range (L1)\n";
       }
     }
     
     int ownerBottomY = ownerY + owner->getHitbox().width / tileSize;
     
-    for (int y = ownerBottomY + fovY; y > ownerBottomY; y--) {
+    int maxBottomY = ownerBottomY + fovY;
+    
+    if (maxBottomY >= map.size()) {
+      maxBottomY = map.size() - 1;
+    }
+    
+    for (int y = maxBottomY; y > ownerBottomY; y--) {
       try {
         if (exist(settings::walls, map.at(y).at(ownerX))) {
           maxFovY = y;
         }
       } catch (std::out_of_range err) {
-        std::cerr << owner->name + " player detection Y2 loop is out of parameters\n";
+        std::cerr << owner->name + " y: " << y << " is out of range (L2)\n";
       }
     }
     
@@ -230,7 +246,7 @@ namespace GO {
             minFovX = x;
           }
         } catch (std::out_of_range err) {
-          std::cerr << owner->name + " player detection left loop is out of parameters\n";
+          std::cerr << owner->name + " x: " << x << " is out of range (L1)\n";
         }
       }
     } else if (currDirection == settings::unitsDirections::right) {
@@ -252,7 +268,7 @@ namespace GO {
             maxFovX = x;
           }
         } catch (std::out_of_range err) {
-          std::cerr << owner->name + " player detection right loop is out of parameters\n";
+          std::cerr << owner->name + " x: " << x << " is out of range (L2)\n";
         }
       }
     }

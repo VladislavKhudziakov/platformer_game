@@ -55,7 +55,7 @@ namespace GO {
   }
   
   
-  void BaseEnemy::onUpdate(double delta, const std::vector<std::string>& map)
+  void BaseEnemy::onUpdate(double delta)
   {
     if (isJump) {
       sf::Vector2f point = getPosition();
@@ -66,13 +66,13 @@ namespace GO {
       }
     }
     
-    brain->think(map);
+    brain->think();
     
     hitBox.top += dy * delta / 200;
-    detectCollisionY(map);
+    detectCollisionY();
     
     hitBox.left += dx * delta / 200;
-    detectCollisionX(map);
+    detectCollisionX();
     
     setPosition(hitBox.left, hitBox.top);
     

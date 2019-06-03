@@ -20,9 +20,9 @@ namespace GO {
   }
   
   
-  void Map::loadFromFile(const std::string& fileName)
+  void Map::loadFromFile(const std::string& newfileName)
   {
-    this->fileName = fileName;
+    fileName = newfileName;
     std::ifstream fin;
     std::stringstream strStream;
     fin.open(resourcePath() + fileName);

@@ -30,12 +30,13 @@ namespace GO {
   {
   private:
     sf::RenderWindow* gameWindow;
-    GO::GameUnit* player;
-    GO::Map map;
     sf::Clock timer;
     double prevFrameTime;
-    std::vector<GO::MapSprite* > tiles;
-    std::vector<GO::GameUnit* > units;
+//    GO::GameUnit* player;
+//    GO::Map map;
+
+//    std::vector<GO::MapSprite* > tiles;
+//    std::vector<GO::GameUnit* > units;
     
     void onUpdate();
     void inputKeysHandler();

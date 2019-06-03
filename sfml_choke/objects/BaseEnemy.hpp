@@ -38,7 +38,7 @@ namespace GO {
     
     virtual ~BaseEnemy();
     
-    void onUpdate(double, const std::vector<std::string>&) override;
+    void onUpdate(double) override;
     
     void operator=(const BaseEnemy&);
     };

@@ -19,21 +19,21 @@ namespace GO {
     settings::unitsDirections currDirection = settings::unitsDirections::none;
     
   protected:
-    void checkHazards(const std::vector<std::string>&);
-    void checkHazardsByLeftSide(const std::vector<std::string>&);
-    void checkHazardsByRightSide(const std::vector<std::string>&);
-    void attack(const std::vector<std::string>&);
-    bool isInDanger(const std::vector<std::string>&);
+    void checkHazards();
+    void checkHazardsByLeftSide();
+    void checkHazardsByRightSide();
+    void attack();
+    bool isInDanger();
     
-    bool playerDetected(const std::vector<std::string>&);
-    sf::Vector2i checkForWallsY(const std::vector<std::string>&);
-    sf::Vector2i checkForWallsX(const std::vector<std::string>&);
+    bool playerDetected();
+    sf::Vector2i checkForWallsY();
+    sf::Vector2i checkForWallsX();
     
   public:
     Brain(GameUnit* owner,
           settings::unitsDirections direction = settings::unitsDirections::none);
     
-    void think(const std::vector<std::string>&);
+    void think();
     void handleCollisionX(const CollisionObject&);
   };
 }

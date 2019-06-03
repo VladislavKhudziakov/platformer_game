@@ -12,8 +12,10 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <boost/algorithm/string.hpp>
 #include <vector>
+
+#include <boost/algorithm/string.hpp>
+
 #include "gameUnit.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>

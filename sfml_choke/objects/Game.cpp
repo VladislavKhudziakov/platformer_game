@@ -13,45 +13,31 @@ namespace GO {
   Game::Game()
   {
     gameWindow = new sf::RenderWindow();
-    player = new GO::GameUnit("player.png", "player", 100, 100);
-    
-//    for (int i = 132, j = 1; i < 132 + 32 * 5; i += 32, j++) {
-//      auto unit = new GO::BaseEnemy("player.png", "enemy" + std::to_string(j), i, 100, j % 2 == 0 ? unitsDir::left : unitsDir::right, settings::unitsMindStates::patrol);
-//      units.push_back(unit);
-//    }
-    
-    auto unit = new GO::BaseEnemy("player.png", "enemy", 170, 170, unitsDir::right);
-          units.push_back(unit);
+    for (int i = 132, j = 1; i < 132 + 32 * 5; i += 32, j++) {
+      auto unit = new GO::BaseEnemy("player.png", "enemy" + std::to_string(j), i, 100, j % 2 == 0 ? unitsDir::left : unitsDir::right);
+        GameData::activeUnits.push_back(unit);
+    }
   }
   
   
   Game::~Game()
   {
     delete gameWindow;
-    delete player;
-    
-    for (auto tile : tiles) {
-      delete tile;
-    }
-    
-    for (auto unit : units) {
-      delete unit;
-    }
   }
   
   
   void Game::inputKeysHandler()
   {
     if (sf::Keyboard::isKeyPressed(settings::moveLeftKey)) {
-      if (player) player->moveLeft();
+      if (GameData::player) GameData::player->moveLeft();
     }
     
     if (sf::Keyboard::isKeyPressed(settings::moveRightKey)) {
-      if (player) player->moveRight();
+      if (GameData::player) GameData::player->moveRight();
     }
     
     if (sf::Keyboard::isKeyPressed(settings::jumpKey)) {
-      if (player) player->jump();
+      if (GameData::player) GameData::player->jump();
     }
   }
   
@@ -60,7 +46,7 @@ namespace GO {
   {
     double now = timer.getElapsedTime().asMicroseconds();
     double deltaTime = now - prevFrameTime;
-    auto currMap = map.get();
+    auto currMap = GameData::map->get();
     
     prevFrameTime = now;
     
@@ -79,7 +65,7 @@ namespace GO {
   
   void Game::loadMap(const std::string& fileName)
   {
-    map.loadFromFile(fileName);
+    GameData::map->loadFromFile(fileName);
   }
   
   
@@ -88,7 +74,7 @@ namespace GO {
     try {
       assertMapBuilding();
       
-      sf::Vector2f mapSize = map.getSize();
+      sf::Vector2f mapSize = GameData::map->getSize();
       
       settings::windowWidth = mapSize.x * settings::sprite_resolution;
       settings::windowHeight = mapSize.y * settings::sprite_resolution;
@@ -96,7 +82,7 @@ namespace GO {
       gameWindow->create(sf::VideoMode(
        settings::windowWidth, settings::windowHeight), "title");
       
-      const std::vector<std::string>& mapContent = map.get();
+      const std::vector<std::string>& mapContent = GameData::map->get();
       
       for (int i = 0; i < mapContent.size(); i++) {
         for (int j = 0; j < mapContent[i].length(); j++) {
@@ -117,7 +103,7 @@ namespace GO {
             mapBlock->setTextureRect(sf::IntRect(rectLeft, rectTop, width, height));
             mapBlock->calculateSpriteScale();
             
-            tiles.push_back(mapBlock);
+            GameData::mapTiles.push_back(mapBlock);
           }
         }
       }
@@ -130,7 +116,7 @@ namespace GO {
   
   void Game::renderMap()
   {
-    for (GO::MapSprite* tile : tiles) {
+    for (GO::MapSprite* tile : GameData::mapTiles) {
       gameWindow->draw(*tile);
     }
   }
@@ -138,7 +124,7 @@ namespace GO {
   
   void Game::assertMapBuilding()
   {
-    sf::Vector2f mapSize = map.getSize();
+    sf::Vector2f mapSize = GameData::map->getSize();
     if (mapSize.x > 0 && mapSize.y > 0) {
       return;
     } else {
@@ -148,7 +134,7 @@ namespace GO {
   
    void Game::renderUnits(double delta, const std::vector<std::string>& currMap)
   {
-    for (GO::GameUnit* unit : units) {
+    for (GO::GameUnit* unit : GameData::activeUnits) {
       renderUnit(unit, delta, currMap);
     }
   }
@@ -156,12 +142,12 @@ namespace GO {
   
   void Game::start()
   {
+    GameData::map = new GO::Map();
     loadMap("Map.txt");
-    map.calculateSize();
+    GameData::map->calculateSize();
     buildMap();
     timer.restart();
-    
-    GameData::playerPtr = player;
+    GameData::player = new GO::GameUnit("player.png", "player", 100, 100);
     
     prevFrameTime = timer.getElapsedTime().asMicroseconds();
     while (gameWindow->isOpen())
@@ -187,15 +173,14 @@ namespace GO {
   
   void Game::renderPlayer(double delta, const std::vector<std::string>& map)
   {
-    if (player && player->getHp() <= 0) {
-      delete player;
-      player = nullptr;
-      GameData::playerPtr = nullptr;
+    if (GameData::player && GameData::player->getHp() <= 0) {
+      delete GameData::player;
+      GameData::player = nullptr;
     }
     
-    if (player) {
-      player->onUpdate(delta, map);
-      gameWindow->draw(*player);
+    if (GameData::player) {
+      GameData::player->onUpdate(delta);
+      gameWindow->draw(*GameData::player);
     }
   }
   
@@ -207,17 +192,17 @@ namespace GO {
     if (unit && unit->getHp() <= 0) {
       
       delete unit;
-      auto unitIter = std::find(units.begin(), units.end(), unit);
+      auto unitIter = std::find(GameData::activeUnits.begin(), GameData::activeUnits.end(), unit);
       
-      if (unitIter != units.end()) {
-        units.erase(unitIter);
+      if (unitIter != GameData::activeUnits.end()) {
+        GameData::activeUnits.erase(unitIter);
       }
       
       isDeleted = true;
     }
     
     if (!isDeleted) {
-      unit->onUpdate(delta, map);
+      unit->onUpdate(delta);
       gameWindow->draw(*unit);
     }
   }

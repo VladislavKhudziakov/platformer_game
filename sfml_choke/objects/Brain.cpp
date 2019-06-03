@@ -9,16 +9,15 @@ namespace GO {
     this->owner = owner;
   }
   
-  void Brain::think(const std::vector<std::string>& map)
+  void Brain::think()
   {
-    if (isInDanger(map)) {
+    if (isInDanger()) {
       owner->jump();
     }
     
-    if (playerDetected(map)) {
-      attack(map);
+    if (playerDetected()) {
+      attack();
     }
-    
     
     if (currDirection == settings::unitsDirections::left) {
       owner->moveLeft();
@@ -26,45 +25,49 @@ namespace GO {
       owner->moveRight();
     }
     
-    checkHazards(map);
+    checkHazards();
   }
   
   
-  void Brain::attack(const std::vector<std::string>& map)
+  void Brain::attack()
   {
-      int tileSize = settings::sprite_resolution;
-      
-      int ownerX = owner->hitBox.left / tileSize;
-      
-      if (currDirection == settings::unitsDirections::right) {
-        ownerX = (owner->hitBox.left + owner->hitBox.width) / tileSize;
-      }
-      
-      int ownerY = owner->hitBox.top / tileSize;
-      
-      const sf::FloatRect& playerHitbox = GameData::playerPtr->getHitbox();
-      
-      int playerX = playerHitbox.left / tileSize;
-      int playerY = (playerHitbox.top +  playerHitbox.height) / tileSize;
-      
-      if (playerY < ownerY) {
-        owner->jump();
-      }
+    const std::vector<std::string>& map = GameData::map->get();
+    
+    int tileSize = settings::sprite_resolution;
+    
+    int ownerX = owner->hitBox.left / tileSize;
+    
+    if (currDirection == settings::unitsDirections::right) {
+      ownerX = (owner->hitBox.left + owner->hitBox.width) / tileSize;
+    }
+    
+    int ownerY = owner->hitBox.top / tileSize;
+    
+    const sf::FloatRect& playerHitbox = GameData::player->getHitbox();
+    
+    int playerX = playerHitbox.left / tileSize;
+    int playerY = (playerHitbox.top +  playerHitbox.height) / tileSize;
+    
+    if (playerY < ownerY) {
+      owner->jump();
+    }
   }
   
 
-  void Brain::checkHazards(const std::vector<std::string>& map)
+  void Brain::checkHazards()
   {
     if (currDirection == settings::unitsDirections::left) {
-      checkHazardsByLeftSide(map);
+      checkHazardsByLeftSide();
     } else if (currDirection == settings::unitsDirections::right) {
-      checkHazardsByRightSide(map);
+      checkHazardsByRightSide();
     }
   }
 
 
-  void Brain::checkHazardsByLeftSide(const std::vector<std::string>& map)
+  void Brain::checkHazardsByLeftSide()
   {
+    const std::vector<std::string>& map = GameData::map->get();
+    
     int tileSize = settings::sprite_resolution;
     int x = owner->hitBox.left / tileSize;
     int yMin = owner->hitBox.top / tileSize;
@@ -88,8 +91,10 @@ namespace GO {
   }
 
 
-  void Brain::checkHazardsByRightSide(const std::vector<std::string>& map)
+  void Brain::checkHazardsByRightSide()
   {
+    const std::vector<std::string>& map = GameData::map->get();
+    
     int tileSize = settings::sprite_resolution;
 
     int x = (owner->hitBox.left + owner->hitBox.width) / tileSize;
@@ -115,20 +120,22 @@ namespace GO {
   }
 
 
-  bool Brain::playerDetected(const std::vector<std::string>& map)
+  bool Brain::playerDetected()
   {
-    if (GameData::playerPtr) {
+    const std::vector<std::string>& map = GameData::map->get();
+    
+    if (GameData::player) {
       int tileSize = settings::sprite_resolution;
       
-      const sf::FloatRect& playerHitbox = GameData::playerPtr->getHitbox();
+      const sf::FloatRect& playerHitbox = GameData::player->getHitbox();
       
       int playerMinX = playerHitbox.left / tileSize;
       int playerMaxX = (playerHitbox.left +  playerHitbox.width) / tileSize - 1;
       int playerMinY = playerHitbox.top / tileSize;
       int playerMaxY = (playerHitbox.top +  playerHitbox.height) / tileSize - 1;
       
-      sf::Vector2i fovYField = checkForWallsY(map);
-      sf::Vector2i fovXField = checkForWallsX(map);
+      sf::Vector2i fovYField = checkForWallsY();
+      sf::Vector2i fovXField = checkForWallsX();
       
       for (int y = fovYField.x; y < fovYField.y; y++) {
         for (int x = fovXField.x; x < fovXField.y; x++) {
@@ -148,7 +155,9 @@ namespace GO {
   }
   
   
-  bool Brain::isInDanger(const std::vector<std::string>& map) {
+  bool Brain::isInDanger() {
+    const std::vector<std::string>& map = GameData::map->get();
+    
     int tileSize = settings::sprite_resolution;
 
     int yMin = owner->hitBox.top / tileSize;
@@ -171,8 +180,10 @@ namespace GO {
   }
   
   
-  sf::Vector2i Brain::checkForWallsY(const std::vector<std::string>& map)
+  sf::Vector2i Brain::checkForWallsY()
   {
+    const std::vector<std::string>& map = GameData::map->get();
+    
     int fovY = 2;
     
     int tileSize = settings::sprite_resolution;
@@ -220,8 +231,10 @@ namespace GO {
   }
   
   
-  sf::Vector2i Brain::checkForWallsX(const std::vector<std::string>& map)
+  sf::Vector2i Brain::checkForWallsX()
   {
+    const std::vector<std::string>& map = GameData::map->get();
+    
     int fovX = 4;
     
     int tileSize = settings::sprite_resolution;

@@ -48,8 +48,8 @@ namespace GO {
     bool onGround = false;
     bool isJump = false;
     sf::FloatRect hitBox;
-    virtual void detectCollisionX(const std::vector<std::string>&);
-    virtual void detectCollisionY(const std::vector<std::string>&);
+    virtual void detectCollisionX();
+    virtual void detectCollisionY();
     virtual void handleCollisionX(const CollisionObject& );
     virtual void handleCollisionY(const CollisionObject& );
     friend class Brain;
@@ -60,7 +60,7 @@ namespace GO {
     GameUnit(const std::string&, const std::string&, float x = 0, float y = 0);
     GameUnit(const sf::Texture&, const std::string&, float x = 0, float y = 0);
     virtual ~GameUnit() { };
-    virtual void onUpdate(double, const std::vector<std::string>&);
+    virtual void onUpdate(double);
     virtual void jump();
     virtual void moveLeft();
     virtual void moveRight();

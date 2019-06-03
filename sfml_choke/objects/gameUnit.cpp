@@ -107,7 +107,7 @@ namespace GO {
   }
   
   
-  void GameUnit::onUpdate(double delta, const std::vector<std::string>& map)
+  void GameUnit::onUpdate(double delta)
   {
     if (isJump) {
       sf::Vector2f point = getPosition();
@@ -119,10 +119,10 @@ namespace GO {
     }
     
     hitBox.top += dy * delta / 200;
-    detectCollisionY(map);
+    detectCollisionY();
     
     hitBox.left += dx * delta / 200;
-    detectCollisionX(map);
+    detectCollisionX();
     
     setPosition(hitBox.left, hitBox.top);
     
@@ -134,8 +134,9 @@ namespace GO {
   }
   
   
-  void GameUnit::detectCollisionX(const std::vector<std::string>& map)
+  void GameUnit::detectCollisionX()
   {
+    const std::vector<std::string>& map = GameData::map->get();
     int tileSize = settings::sprite_resolution;
     
     for (int i = hitBox.top / tileSize; i < (hitBox.top + hitBox.height) / tileSize; i++) {
@@ -170,8 +171,9 @@ namespace GO {
   }
   
   
-  void GameUnit::detectCollisionY(const std::vector<std::string>& map)
+  void GameUnit::detectCollisionY()
   {
+    const std::vector<std::string>& map = GameData::map->get();
     int tileSize = settings::sprite_resolution;
     
     for (int i = hitBox.top / tileSize; i < (hitBox.top + hitBox.height) / tileSize; i++) {

@@ -32,18 +32,13 @@ namespace GO {
     sf::RenderWindow* gameWindow;
     sf::Clock timer;
     double prevFrameTime;
-//    GO::GameUnit* player;
-//    GO::Map map;
-
-//    std::vector<GO::MapSprite* > tiles;
-//    std::vector<GO::GameUnit* > units;
     
     void onUpdate();
     void inputKeysHandler();
     void assertMapBuilding();
     void renderMap();
     void renderPlayer(double, const std::vector<std::string>&);
-    void renderUnit(GO::GameUnit*, double, const std::vector<std::string>&);
+    void renderUnit(std::shared_ptr<GO::GameUnit>, double, const std::vector<std::string>&);
     void renderUnits(double, const std::vector<std::string>&);
     
   public:

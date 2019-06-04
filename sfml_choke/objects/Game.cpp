@@ -14,8 +14,8 @@ namespace GO {
   {
     gameWindow = new sf::RenderWindow();
     for (int i = 132, j = 1; i < 132 + 32 * 5; i += 32, j++) {
-      auto unit = new GO::BaseEnemy("player.png", "enemy" + std::to_string(j), i, 100, j % 2 == 0 ? unitsDir::left : unitsDir::right);
-        GameData::activeUnits.push_back(unit);
+      std::shared_ptr<GO::GameUnit> unit(new GO::BaseEnemy("player.png", "enemy" + std::to_string(j), i, 100, j % 2 == 0 ? unitsDir::left : unitsDir::right));
+      GameData::activeUnits.push_back(unit);
     }
   }
   
@@ -87,7 +87,7 @@ namespace GO {
       for (int i = 0; i < mapContent.size(); i++) {
         for (int j = 0; j < mapContent[i].length(); j++) {
           if (settings::tileMap.count(mapContent[i][j]) > 0) {
-            GO::MapSprite* mapBlock = new GO::MapSprite("tileSet.png");
+            std::shared_ptr<GO::MapSprite> mapBlock(new GO::MapSprite("tileSet.png"));
             
             int spritePositionX = j * settings::sprite_resolution;
             int spritePositionY = i * settings::sprite_resolution;
@@ -116,7 +116,7 @@ namespace GO {
   
   void Game::renderMap()
   {
-    for (GO::MapSprite* tile : GameData::mapTiles) {
+    for (std::shared_ptr<GO::MapSprite> tile : GameData::mapTiles) {
       gameWindow->draw(*tile);
     }
   }
@@ -134,7 +134,7 @@ namespace GO {
   
    void Game::renderUnits(double delta, const std::vector<std::string>& currMap)
   {
-    for (GO::GameUnit* unit : GameData::activeUnits) {
+    for (std::shared_ptr<GameUnit> unit : GameData::activeUnits) {
       renderUnit(unit, delta, currMap);
     }
   }
@@ -142,12 +142,12 @@ namespace GO {
   
   void Game::start()
   {
-    GameData::map = new GO::Map();
+    GameData::map = std::shared_ptr<GO::Map>(new GO::Map());
     loadMap("Map.txt");
     GameData::map->calculateSize();
     buildMap();
     timer.restart();
-    GameData::player = new GO::GameUnit("player.png", "player", 100, 100);
+    GameData::player = std::shared_ptr<GameUnit>(new GO::GameUnit("player.png", "player", 100, 100));
     
     prevFrameTime = timer.getElapsedTime().asMicroseconds();
     while (gameWindow->isOpen())
@@ -174,7 +174,6 @@ namespace GO {
   void Game::renderPlayer(double delta, const std::vector<std::string>& map)
   {
     if (GameData::player && GameData::player->getHp() <= 0) {
-      delete GameData::player;
       GameData::player = nullptr;
     }
     
@@ -185,13 +184,12 @@ namespace GO {
   }
   
   
-  void Game::renderUnit(GO::GameUnit* unit, double delta, const std::vector<std::string>& map)
+  void Game::renderUnit(std::shared_ptr<GO::GameUnit> unit, double delta, const std::vector<std::string>& map)
   {
     bool isDeleted = false;
     
     if (unit && unit->getHp() <= 0) {
       
-      delete unit;
       auto unitIter = std::find(GameData::activeUnits.begin(), GameData::activeUnits.end(), unit);
       
       if (unitIter != GameData::activeUnits.end()) {

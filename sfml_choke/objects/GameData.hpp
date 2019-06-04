@@ -3,6 +3,7 @@
 #define gameData_hpp
 
 #include <vector>
+#include <memory>
 
 #include "gameUnit.hpp"
 #include "MapSprite.hpp"
@@ -14,10 +15,10 @@ namespace GO {
 }
 
 namespace GameData {
-  extern GO::GameUnit* player;
-  extern GO::Map* map;
-  extern std::vector<GO::GameUnit* > activeUnits;
-  extern std::vector<GO::MapSprite* > mapTiles;
+  extern std::shared_ptr<GO::GameUnit> player;
+  extern std::shared_ptr<GO::Map> map;
+  extern std::vector<std::shared_ptr<GO::GameUnit>> activeUnits;
+  extern std::vector<std::shared_ptr<GO::MapSprite>> mapTiles;
 }
 
 #endif /* gameData_hpp */

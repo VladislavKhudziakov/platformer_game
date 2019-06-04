@@ -25,8 +25,6 @@
 
 namespace GO {
   
-//  class Brain;
-  
   class GameUnit : protected GameObjectBase
   {
   private:

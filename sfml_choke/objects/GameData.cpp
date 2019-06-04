@@ -6,4 +6,5 @@ namespace GameData {
   std::shared_ptr<GO::Map> map(nullptr);
   std::vector<std::shared_ptr<GO::GameUnit>> activeUnits = {};
   std::vector<std::shared_ptr<GO::MapSprite>> mapTiles = {};
+  std::vector<std::shared_ptr<GO::Ammunition>> activeAmmoInScene = {};
 }
